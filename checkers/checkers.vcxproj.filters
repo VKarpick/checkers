@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\ai">
-      <UniqueIdentifier>{537b2157-f64d-4db8-8aa4-2b0ce0dd9313}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -24,15 +21,9 @@
     <ClCompile Include="checkers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="node.cpp">
-      <Filter>Source Files\ai</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="checkers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
