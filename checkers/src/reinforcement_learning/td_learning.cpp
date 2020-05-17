@@ -1,35 +1,5 @@
 #include "td_learning.h"
 
-Policy::Policy(CheckersEnv* env) { env_ = env; }
-Policy::Policy() {}
-vector<string> Policy::Action() { return env_->actions()[0]; }
-void Policy::Reset() {}
-
-RandomWalk::RandomWalk(CheckersEnv* env) { env_ = env; }
-
-vector<string> RandomWalk::Action() {
-	vector<vector<string>> actions{ env_->actions() };
-	random_shuffle(actions.begin(), actions.end());
-	return actions[0];
-}
-
-MinimaxPolicy::MinimaxPolicy(CheckersEnv* env, Estimator* estimator, int max_depth) {
-	env_ = env;
-	max_depth_ = max_depth;
-	estimator_ = estimator;
-	node = new Node<vector<string>>(env->Reset());
-}
-
-vector<string> MinimaxPolicy::Action() {
-	tuple<double, Node<vector<string>>*> mm{ Minimax(env_, estimator_, node, 0, max_depth_, env_->current_player_, -DBL_MAX, DBL_MAX) };
-	node = get<1>(mm);
-	return node->data();
-}
-
-void MinimaxPolicy::Reset() {
-	node = new Node<vector<string>>(env_->Reset());
-}
-
 void td_lambda(CheckersEnv* env, Estimator* estimator, Policy* policy, double discount_factor, double trace_decay) {
 
 	vector<string> state = env->Reset();
