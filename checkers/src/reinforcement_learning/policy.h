@@ -1,7 +1,8 @@
 #pragma once
+
 #include "environment.h"
 #include "estimator.h"
-#include "minimax.h"
+#include "../tree/minimax.h"
 #include <random>
 
 class Policy {

@@ -1,4 +1,4 @@
-#include "tree/minimax.h"
+#include "reinforcement_learning/policy.h"
 
 int main()
 {
