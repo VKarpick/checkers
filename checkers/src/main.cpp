@@ -1,4 +1,4 @@
-#include "reinforcement_learning/td_learning.h"
+#include "tree/minimax.h"
 
 int main()
 {
