@@ -22,7 +22,7 @@ MinimaxPolicy::MinimaxPolicy(Environment* env, Estimator* estimator, int max_dep
 Action* MinimaxPolicy::action_selection(State* state) {
 	if (node_->data()->state != state) reset_node(state);
 
-	node_ = minimax_node(node, 0, node_->data()->state->current_player == max_player);
+	node_ = minimax_node(node_, 0, node_->data()->state->current_player == max_player);
 	return node_->data()->action;
 }
 
@@ -39,5 +39,6 @@ void MinimaxPolicy::extend(Node<StateActionPair*>* node) {
 	for (Action* action : env_->actions()) {
 		State* next_state = env_->step(node->data()->state, action);
 		Node<StateActionPair*> child = new Node<StateActionPair*>(next_state, action);
+		node->add_child(child);
 	}
 }
