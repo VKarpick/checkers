@@ -20,7 +20,9 @@ MinimaxPolicy::MinimaxPolicy(Environment* env, Estimator* estimator, int max_dep
 }
 
 Action* MinimaxPolicy::action_selection(State* state) {
-	node_ = minimax_node(node, 0, state->current_player == max_player);
+	if (node_->data()->state != state) reset_node(state);
+
+	node_ = minimax_node(node, 0, node_->data()->state->current_player == max_player);
 	return node_->data()->action;
 }
 
