@@ -5,7 +5,8 @@
 
 class Estimator {
 public:
-	Estimator(std::vector<double> weights, double step_size);
+	Estimator(double step_size, std::vector<double> weights);
+	Estimator(double step_size, int feature_size);
 	std::vector<double> weights();
 	void reset_eligibility_trace();
 	virtual double predict(std::vector<double> features) = 0;

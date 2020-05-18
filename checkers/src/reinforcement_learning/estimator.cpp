@@ -1,10 +1,16 @@
 #include "estimator.h"
 
 
-Estimator::Estimator(std::vector<double> weights, double step_size) {
-	weights_ = weights;
+Estimator::Estimator(double step_size, std::vector<double> weights) {
 	step_size_ = step_size;
+	weights_ = weights;
 	eligibility_trace_.assign(weights_.size(), 0);
+}
+
+Estimator::Estimator(double step_size, int feature_size) {
+	step_size_ = step_size;
+	weights_.assign(feature_size, 0);
+	eligibility_trace_.assign(feature_size, 0);
 }
 
 std::vector<double> Estimator::weights() { return weights_; }
