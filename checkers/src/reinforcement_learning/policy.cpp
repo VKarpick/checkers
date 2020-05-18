@@ -1,5 +1,4 @@
 #include "policy.h"
-#include "policy.h"
 
 
 Policy::Policy(Environment* env) { env_ = env; }
@@ -36,7 +35,7 @@ double MinimaxPolicy::evaluate(Node<StateActionPair*>* node) {
 
 void MinimaxPolicy::extend(Node<StateActionPair*>* node) {
 	for (Action* action : env_->actions()) {
-		State* next_state = env_->step(node->data(), action);
+		State* next_state = env_->step(node->data()->state, action);
 		Node<StateActionPair*> child = new Node<StateActionPair*>(next_state, action);
 	}
 }
