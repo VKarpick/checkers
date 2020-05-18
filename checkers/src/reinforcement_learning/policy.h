@@ -38,7 +38,7 @@ private:
 	Estimator* estimator_;
 	int max_depth_;
 	Node<StateActionPair*>* node_;
-	Minimax<State*>* minimax_;
+	Minimax<StateActionPair*>* minimax_;
 	std::any max_player_;
 
 	double evaluate(Node<StateActionPair*>* node);

@@ -15,14 +15,14 @@ MinimaxPolicy::MinimaxPolicy(Environment* env, Estimator* estimator, int max_dep
 	env_ = env;
 	estimator_ = estimator;
 	max_depth_ = max_depth;
-	minimax_ = new Minimax(evaluate, max_depth_, extend);
+	minimax_ = new Minimax<StateActionPair*>(evaluate, max_depth_, extend);
 	max_player_ = max_player;
 }
 
 Action* MinimaxPolicy::action_selection(State* state) {
 	if (node_->data()->state != state) reset_node(state);
 
-	node_ = minimax_node(node_, 0, node_->data()->state->current_player == max_player);
+	node_ = minimax_->minimax_node(node_, 0, node_->data()->state->current_player == max_player);
 	return node_->data()->action;
 }
 
