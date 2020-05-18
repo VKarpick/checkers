@@ -61,7 +61,7 @@ public:
 		return minimax(node, current_depth, is_max_player, alpha, beta)->value;
 	}
 
-	double minimax_node(Node<T>* node, int current_depth = 0, bool is_max_player = true, double alpha = -DBL_MAX, double beta = -DBL_MAX) {
+	Node<T>* minimax_node(Node<T>* node, int current_depth = 0, bool is_max_player = true, double alpha = -DBL_MAX, double beta = -DBL_MAX) {
 		return minimax(node, current_depth, is_max_player, alpha, beta)->node;
 	}
 

@@ -18,7 +18,8 @@ protected:
 	std::vector<double> eligibility_trace_;
 };
 
+
 class TDEstimator : public Estimator {
-	double predict(std::vector<double> features);
-	void update(double target, double estimate, std::vector<double> features, double discount_factor = 1, double trace_decay = 1);
+	double predict(std::vector<double> features) override;
+	void update(double target, double estimate, std::vector<double> features, double discount_factor = 1, double trace_decay = 1) override;
 };
