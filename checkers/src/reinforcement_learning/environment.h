@@ -1,19 +1,21 @@
 #pragma once
 
 #include <vector>
-#include <iostream>
+#include <any>
 
-struct State
-{
-	std::vector<double> observation;
-	double reward;
+
+struct State {
+	std::any observation;
+	float reward;
 	bool terminal;
-	std::string info;
 };
 
-class Environment
-{
+
+class Environment {
 public:
-	virtual void reset(State* state) = 0;
-	virtual void step() = 0;
+	virtual State* reset() = 0;
+	virtual State* step(std::any action) = 0;
+	virtual State* step(State* state, std::any action) = 0;
+	virtual std::vector<std::any> actions() = 0;
+	virtual std::vector<double> featurize(State* state) = 0;
 };

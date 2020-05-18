@@ -8,22 +8,26 @@
 class Policy {
 public:
 	Policy(Environment* env);
-	virtual int action_selection(std::vector<int> actions) = 0;
+	virtual std::any action_selection(State* state) = 0;
 
 protected:
 	Environment* env_;
 };
 
 class RandomWalkPolicy : public Policy {
-	int action_selection(std::vector<int> actions);
+	std::any action_selection(State* state);
 };
 
 class MinimaxPolicy : public Policy {
 public:
-	int action_selection(std::vector<int> actions);
-	void reset_node();
+	MinimaxPolicy(Environment* env, Estimator* estimator, int max_depth);
+
+	std::any action_selection(State* state);
+	void reset_node(State* state);
 
 private:
 	Estimator* estimator_;
 	int max_depth_;
+	Node<State*>* node_;
+	Minimax<State*>* minimax_;
 };
