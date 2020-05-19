@@ -1,9 +1,11 @@
 #pragma once
 
-#include "node.h"
 #include <functional>
 
+#include "node.h"
 
+
+// storing values and nodes together allows for easy retrieval of whichever is needed
 template<typename T>
 struct MinimaxPair {
 	double value;
@@ -11,21 +13,24 @@ struct MinimaxPair {
 };
 
 
-template <typename T>
+template <typename T>    // allowing for any type of Node requires template
 class Minimax
 {
 public:
-	// what should be public vs private variables?
+	//TODO what should be public vs private variables?
 
-	Minimax(std::function<double(Node<T>*)> evaluate_node, int init_max_depth = 0, 
+	Minimax(std::function<double(Node<T>*)> evaluate_node, int max_depth = 0, 
 		const std::function<void(Node<T>*)> extend_tree = [](Node<T>*) {}) {
 
+		// function to evaluate the value of a given node
 		evaluate_node_ = evaluate_node;
-		max_depth = init_max_depth;
+		
+		max_depth_ = max_depth;
+
+		// function to find children of a node when passing incomplete tree
+		// if complete tree is provided, can be ignored
 		extend_tree_ = extend_tree;
 	}
-
-	int max_depth;
 
 	MinimaxPair<T>* minimax(Node<T>* node, int current_depth = 0, bool is_max_player = true, 
 		double alpha = -DBL_MAX, double beta = -DBL_MAX) {
@@ -67,6 +72,7 @@ public:
 
 
 private:
+	int max_depth_;
 	std::function<void(Node<T>*)> extend_tree_;
 	std::function<double(Node<T>*)> evaluate_node_;
 };

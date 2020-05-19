@@ -1,9 +1,10 @@
 #pragma once
 
+#include <random>
+
 #include "environment.h"
 #include "estimator.h"
 #include "../tree/minimax.h"
-#include <random>
 
 
 struct StateActionPair {
@@ -12,6 +13,7 @@ struct StateActionPair {
 };
 
 
+// generic policy to be inherited from
 class Policy {
 public:
 	Policy(Environment* env);
@@ -22,11 +24,13 @@ protected:
 };
 
 
+// choose actions entirely at random
 class RandomWalkPolicy : public Policy {
 	Action* action_selection(State* state) override;
 };
 
 
+// use minimax to choose actions
 class MinimaxPolicy : public Policy {
 public:
 	MinimaxPolicy(Environment* env, Estimator* estimator, int max_depth, Player* max_player);
@@ -37,10 +41,11 @@ public:
 private:
 	Estimator* estimator_;
 	int max_depth_;
-	Node<StateActionPair*>* node_;
+	Node<StateActionPair*>* node_{ nullptr };
 	Minimax<StateActionPair*>* minimax_;
 	std::any max_player_;
 
+	// functions to be passed to minimax algorithm
 	double evaluate(Node<StateActionPair*>* node);
 	double extend(Node<StateActionPair*>* node);
 };

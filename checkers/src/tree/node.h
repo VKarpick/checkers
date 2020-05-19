@@ -2,7 +2,8 @@
 
 #include <vector>
 
-template <typename T>
+
+template <typename T>    // allow for data of any type to be provided to a node
 class Node {
 public:
 	Node(const T data) {
@@ -10,11 +11,14 @@ public:
 		parent_ = nullptr;
 	}
 
+	// getters
 	T data() { return data_; }
 	std::vector<Node<T>*> children() { return children_; }
 	Node<T>* parent() { return parent_; }
 
+	// setter
 	void parent(const Node<T>* new_parent) {
+		//TODO allow parent to change
 		if (parent_ == nullptr) parent_ = new_parent;
 	}
 
