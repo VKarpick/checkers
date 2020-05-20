@@ -7,12 +7,15 @@
 // only necessary for multi-player games
 // allow flexibility in defining players while passing around pointers to struct
 struct Player {
+	Player() { player = 0; }
+	Player(std::any p) { player = p; }
 	std::any player;
 };
 
 
 // allow flexibility in defining actions while passing around pointers to struct
 struct Action {
+	Action(std::any a) { action = a; }
 	std::any action;
 };
 
