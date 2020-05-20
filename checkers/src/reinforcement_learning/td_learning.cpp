@@ -1,45 +1,43 @@
 #include "td_learning.h"
 
-void td_lambda(CheckersEnv* env, Estimator* estimator, Policy* policy, double discount_factor, double trace_decay) {
 
-	vector<string> state = env->Reset();
-	estimator->Reset();
-	tuple<vector<string>, double, bool> subsequents;
-
-	do {
-		vector<string> action{ policy->Action() };
-		subsequents = env->Step(action);    // next_state, reward, terminal
-		vector<int> next_state_features{ env->BoardToFeatures(get<0>(subsequents)) };
-		double target{ get<1>(subsequents) + discount_factor * estimator->Predict(next_state_features) };
-		vector<int> state_features{ env->BoardToFeatures(state) };
-		double estimate{ estimator->Predict(state_features) };
-		estimator->Update(target, estimate, state_features, discount_factor, trace_decay);
-
-		state = get<0>(subsequents);
-
-	} while (!get<2>(subsequents));
-}
-
-TDLeaf::TDLeaf(CheckersEnv* env, int feature_size, int max_depth, double step_size, double discount_factor, double trace_decay) {
-
+TDLambda::TDLambda(Environment* env, Estimator* estimator, Policy* policy, double discount_factor = 1, double trace_decay = 0.86) {
 	env_ = env;
-	vector<double> weights(feature_size, 0);
-	estimator_ = new Estimator(weights, step_size);
-	policy_ = new MinimaxPolicy(env, estimator_, max_depth);
+	estimator_ = estimator;
+	policy_ = policy;
 	discount_factor_ = discount_factor;
 	trace_decay_ = trace_decay;
 }
 
-void TDLeaf::Train(int n_episodes) {
-	for (int i_episode = 0; i_episode < n_episodes; ++i_episode) {
-		env_->Reset();
-		policy_->Reset();
-		cout << "Episode:  " << (i_episode + 1) << " of " << n_episodes << endl;
-		td_lambda(env_, estimator_, policy_, discount_factor_, trace_decay_);
-	}
+void TDLambda::train(int n_episodes, bool print_update) {
+	for (int i_episode = 0; i_episode < n_episodes < ++i_episode) {
+		State* state = env_->reset();
+		estimator_->reset_eligibility_trace();
+		State* next_state = new State();
 
-	cout << "End weights" << endl;
-	for (double weight : estimator_->weights()) {
-		cout << weight << endl;
+		do {
+			Action* action{ policy_->action_selection(state) };
+			next_state = env_->step(action);
+
+			vector<double> state_features{ env_->featurize(state) };
+			vector<double> next_state_features{ env_->featurize(next_state) };
+			
+			double target{ next_state->reward + discount_factor_ * estimator_->predict(next_state_features) };
+			double estimate{ estimator_->predict(state_features) };
+
+			estimator_->update(target, estimate, state_features, discount_factor_, trace_decay_);
+
+			state = next_state;
+
+		} while (!next_state->terminal);
+
+		if (print_update) std::cout << "Episode:  " << (i_episode + 1) << " of " << n_episodes << std::endl;
 	}
+}
+
+
+TDLeaf::TDLeaf(Environment* env, Estimator* estimator, Player* max_player, int max_depth = 1, 
+	double discount_factor = 1 double trace_decay = 0.86) {
+
+	td_lambda_ = TDLambda(env, estimator, MinimaxPolicy(env, estimator, max_player, max_depth), discount_factor, trace_decay);
 }

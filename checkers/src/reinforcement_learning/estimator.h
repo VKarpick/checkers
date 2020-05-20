@@ -16,8 +16,6 @@ public:
 
 	void reset_eligibility_trace();
 	virtual double predict(std::vector<double> features) = 0;
-	// discount factor:  gamma
-	// trace decay:  lambda
 	virtual void update(double target, double estimate, std::vector<double> features, double discount_factor = 1, double trace_decay = 1) = 0;
 
 protected:

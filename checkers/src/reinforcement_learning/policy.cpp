@@ -11,12 +11,12 @@ Action* RandomWalkPolicy::action_selection(State* state) {
 }
 
 
-MinimaxPolicy::MinimaxPolicy(Environment* env, Estimator* estimator, int max_depth, Player* max_player) {
+MinimaxPolicy::MinimaxPolicy(Environment* env, Estimator* estimator, Player* max_player, int max_depth) {
 	env_ = env;
 	estimator_ = estimator;
+	max_player_ = max_player;
 	max_depth_ = max_depth;
 	minimax_ = new Minimax<StateActionPair*>(evaluate, max_depth_, extend);
-	max_player_ = max_player;
 }
 
 Action* MinimaxPolicy::action_selection(State* state) {

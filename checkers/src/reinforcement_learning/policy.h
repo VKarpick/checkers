@@ -33,17 +33,17 @@ class RandomWalkPolicy : public Policy {
 // use minimax to choose actions
 class MinimaxPolicy : public Policy {
 public:
-	MinimaxPolicy(Environment* env, Estimator* estimator, int max_depth, Player* max_player);
+	MinimaxPolicy(Environment* env, Estimator* estimator, Player* max_player, int max_depth = 1);
 
 	Action* action_selection(State* state) override;
 	void reset_node(State* state);
 
 private:
 	Estimator* estimator_;
+	Player* max_player_;
 	int max_depth_;
 	Node<StateActionPair*>* node_{ nullptr };
 	Minimax<StateActionPair*>* minimax_;
-	std::any max_player_;
 
 	// functions to be passed to minimax algorithm
 	double evaluate(Node<StateActionPair*>* node);
