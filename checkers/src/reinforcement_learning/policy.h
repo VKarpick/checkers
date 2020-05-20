@@ -13,9 +13,10 @@ struct StateActionPair {
 };
 
 
-// generic policy to be inherited from
+// abstract base class to be inherited from
 class Policy {
 public:
+	Policy();
 	Policy(Environment* env);
 	virtual Action* action_selection(State* state) = 0;
 
@@ -47,5 +48,5 @@ private:
 
 	// functions to be passed to minimax algorithm
 	double evaluate(Node<StateActionPair*>* node);
-	double extend(Node<StateActionPair*>* node);
+	void extend(Node<StateActionPair*>* node);
 };

@@ -7,15 +7,12 @@
 // only necessary for multi-player games
 // allow flexibility in defining players while passing around pointers to struct
 struct Player {
-	Player() { player = 0; }
-	Player(std::any p) { player = p; }
 	std::any player;
 };
 
 
 // allow flexibility in defining actions while passing around pointers to struct
 struct Action {
-	Action(std::any a) { action = a; }
 	std::any action;
 };
 
@@ -23,13 +20,6 @@ struct Action {
 // allow flexibility in defining observations
 // optional current_player member for multi-player games
 struct State {
-	State(std::any o, double r, bool t, Player* cp = new Player()) {
-		observation = o;
-		reward = r;
-		terminal = t;
-		current_player = cp;
-	}
-
 	std::any observation;
 	double reward;
 	bool terminal;
@@ -37,7 +27,7 @@ struct State {
 };
 
 
-// generic environment to be inherited from
+// abstract base class to be inherited from
 class Environment {
 public:
 	// reset environment to a starting state, returning the state

@@ -17,7 +17,7 @@ public:
 	Node<T>* parent() { return parent_; }
 
 	// setter
-	void parent(const Node<T>* new_parent) {
+	void parent(Node<T>* new_parent) {
 		//TODO allow parent to change
 		if (parent_ == nullptr) parent_ = new_parent;
 	}

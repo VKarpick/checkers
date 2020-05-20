@@ -35,26 +35,26 @@ public:
 	MinimaxPair<T>* minimax(Node<T>* node, int current_depth = 0, bool is_max_player = true, 
 		double alpha = -DBL_MAX, double beta = -DBL_MAX) {
 		
-		if (current_depth == max_depth) return evaluate_node_(node);
+		if (current_depth == max_depth_) return new MinimaxPair<T>{ evaluate_node_(node), node };
 		if (node->children().empty()) extend_tree_(node);
 
 		if (is_max_player) {
-			MinimaxPair<T>* best_pair = new MinimaxPair<T>(-DBL_MAX, nullptr);
+			MinimaxPair<T>* best_pair = new MinimaxPair<T>{ -DBL_MAX, nullptr };
 			for (auto child : node->children()) {
 				MinimaxPair<T>* child_pair = minimax(child, current_depth + 1, false, alpha, beta);
 				// use >= to avoid returning nullptr when children exist
-				if (child_pair->value >= best_pair->value) best_pair = new MinimaxPair<T>(child_pair->value, child);
+				if (child_pair->value >= best_pair->value) best_pair = new MinimaxPair<T>{ child_pair->value, child };
 				alpha = fmax(alpha, best_pair->value);
 				if (beta <= alpha) break;
 			}
 			return best_pair;
 		}
 		else {
-			MinimaxPair<T>* best_pair = new MinimaxPair<T>(DBL_MAX, nullptr);
+			MinimaxPair<T>* best_pair = new MinimaxPair<T>{ DBL_MAX, nullptr };
 			for (auto child : node->children()) {
 				MinimaxPair<T>* child_pair = minimax(child, current_depth + 1, true, alpha, beta);
 				// use <= to avoid returning nullptr when children exist
-				if (child_pair->value <= best_pair->value) best_pair = new MinimaxPair<T>(child_pair->value, child);
+				if (child_pair->value <= best_pair->value) best_pair = new MinimaxPair<T>{ child_pair->value, child };
 				beta = fmin(alpha, best_pair->value);
 				if (beta <= alpha) break;
 			}

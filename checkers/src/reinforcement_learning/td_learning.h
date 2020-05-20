@@ -7,11 +7,13 @@
 
 //TODO prediction vs control
 class TDLambda {
+public:
+	TDLambda();
 	TDLambda(Environment* env, Estimator* estimator, Policy* policy, double discount_factor = 1, double trace_decay = 0.86);
 
 	void train(int n_episodes = 1, bool print_update = false);
 
-private:
+protected:
 	Environment* env_;
 	Estimator* estimator_;
 	Policy* policy_;
@@ -20,11 +22,8 @@ private:
 };
 
 
-class TDLeaf : public TDLambda {
+class TDLeaf : TDLambda {
 public:
 	TDLeaf(Environment* env, Estimator* estimator, Player* max_player, int max_depth = 1,
-		double discount_factor = 1 double trace_decay = 0.86);
-
-private:
-	TDLambda td_lambda_;
+		double discount_factor = 1, double trace_decay = 0.86);
 };
