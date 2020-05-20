@@ -79,8 +79,7 @@ std::vector<Player*> CheckersEnvironment::players() {
 
 State* CheckersEnvironment::reset() {
 	play_counter_ = 0;
-	current_player_index_ = 0;
-	state_ = new State{ kDefaultBoard, 0, false, players_[current_player_index_] };
+	state_ = new State{ kDefaultBoard, 0, false, players_[0] };
 	return state_;
 }
 
@@ -91,7 +90,6 @@ State* CheckersEnvironment::step(Action* action) {
 	}
 
 	++play_counter_;
-	current_player_index_ = (current_player_index_ + 1) % 2;
 	state_ = step(state_, action);
 	return state_;
 }
@@ -100,15 +98,14 @@ State* CheckersEnvironment::step(State* state, Action* action) {
 	std::vector<std::string> observation = std::any_cast<std::vector<std::string>>(action->action);
 
 	double reward = 0;
-	char next_player_char = std::any_cast<char>(players_[current_player_index_]->player);
+	Player* opposing_player = opponent(state->current_player);
+	char next_player_char = std::any_cast<char>(opposing_player->player);
 	std::vector<std::vector<std::string>> opponent_actions{ board_actions(observation, next_player_char) };
 	if (opponent_actions.size() == 0) reward = (next_player_char == 'r') ? -1 : 1;
 
 	bool terminal = reward != 0 || play_counter_ > kMaxPlays;
 
-	Player* current_player = opponent(state->current_player);
-
-	return new State{ observation, reward, terminal, current_player };
+	return new State{ observation, reward, terminal, opposing_player };
 }
 
 std::vector<Action*> CheckersEnvironment::actions() {
@@ -145,5 +142,5 @@ std::vector<std::string> CheckersEnvironment::board_from_state(State* state) {
 }
 
 Player* CheckersEnvironment::opponent(Player* current_player) {
-	return (state_->current_player == players_[0]) ? players_[1] : players_[0];
+	return (current_player == players_[0]) ? players_[1] : players_[0];
 }

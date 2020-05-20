@@ -42,5 +42,4 @@ private:
 	State* state_;
 	int play_counter_{ 0 };
 	const std::vector<Player*> players_{ new Player{'r'}, new Player{'w'} };
-	int current_player_index_{ 0 };
 };

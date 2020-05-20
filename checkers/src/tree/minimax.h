@@ -33,13 +33,14 @@ public:
 	}
 
 	MinimaxPair<T>* minimax(Node<T>* node, int current_depth = 0, bool is_max_player = true, 
-		double alpha = -DBL_MAX, double beta = -DBL_MAX) {
+		double alpha = -DBL_MAX, double beta = DBL_MAX) {
 		
 		if (current_depth == max_depth_) return new MinimaxPair<T>{ evaluate_node_(node), node };
 		if (node->children().empty()) extend_tree_(node);
 
 		if (is_max_player) {
 			MinimaxPair<T>* best_pair = new MinimaxPair<T>{ -DBL_MAX, nullptr };
+			int i = 0;
 			for (auto child : node->children()) {
 				MinimaxPair<T>* child_pair = minimax(child, current_depth + 1, false, alpha, beta);
 				// use >= to avoid returning nullptr when children exist
@@ -55,7 +56,7 @@ public:
 				MinimaxPair<T>* child_pair = minimax(child, current_depth + 1, true, alpha, beta);
 				// use <= to avoid returning nullptr when children exist
 				if (child_pair->value <= best_pair->value) best_pair = new MinimaxPair<T>{ child_pair->value, child };
-				beta = fmin(alpha, best_pair->value);
+				beta = fmin(beta, best_pair->value);
 				if (beta <= alpha) break;
 			}
 			return best_pair;
@@ -63,13 +64,13 @@ public:
 	}
 
 	double minimax_value(Node<T>* node, int current_depth = 0, bool is_max_player = true, 
-		double alpha = -DBL_MAX, double beta = -DBL_MAX) {
+		double alpha = -DBL_MAX, double beta = DBL_MAX) {
 		
 		return minimax(node, current_depth, is_max_player, alpha, beta)->value;
 	}
 
 	Node<T>* minimax_node(Node<T>* node, int current_depth = 0, bool is_max_player = true, 
-		double alpha = -DBL_MAX, double beta = -DBL_MAX) {
+		double alpha = -DBL_MAX, double beta = DBL_MAX) {
 		
 		return minimax(node, current_depth, is_max_player, alpha, beta)->node;
 	}

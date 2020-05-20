@@ -18,6 +18,7 @@ class Policy {
 public:
 	Policy();
 	Policy(Environment* env);
+	virtual Node<StateActionPair*>* node();    // only necessary for MinimaxPolicy
 	virtual Action* action_selection(State* state) = 0;
 
 protected:
@@ -37,6 +38,9 @@ public:
 class MinimaxPolicy : public Policy {
 public:
 	MinimaxPolicy(Environment* env, Estimator* estimator, Player* max_player, int max_depth = 1);
+
+	// getter
+	Node<StateActionPair*>* node();
 
 	Action* action_selection(State* state) override;
 	void reset_node(State* state);
