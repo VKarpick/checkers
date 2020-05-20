@@ -21,9 +21,15 @@
     <ClCompile Include="src/main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="checkers_environment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src/checkers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="checkers_environment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

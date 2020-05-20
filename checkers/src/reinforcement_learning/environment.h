@@ -20,6 +20,13 @@ struct Action {
 // allow flexibility in defining observations
 // optional current_player member for multi-player games
 struct State {
+	State(std::any o, double r, bool t, Player* cp = new Player()) {
+		observation = o;
+		reward = r;
+		terminal = t;
+		current_player = cp;
+	}
+
 	std::any observation;
 	double reward;
 	bool terminal;
@@ -34,10 +41,10 @@ public:
 	virtual State* reset() = 0;
 
 	// return the new state that results from taking a given action in the current environment state
-	virtual State* step(std::any action) = 0;
+	virtual State* step(Action* action) = 0;
 
 	// return the new state that results from taking a given action from a given state
-	virtual State* step(State* state, std::any action) = 0;
+	virtual State* step(State* state, Action* action) = 0;
 
 	// vector of all available actions in the current environment state
 	virtual std::vector<Action*> actions() = 0;

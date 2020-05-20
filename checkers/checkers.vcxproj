@@ -148,10 +148,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src/ai/checkers_environment.cpp" />
     <ClCompile Include="src/checkers.cpp" />
     <ClCompile Include="src/main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src/ai/checkers_environment.h" />
     <ClInclude Include="src/checkers.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

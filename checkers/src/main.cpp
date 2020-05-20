@@ -1,7 +1,10 @@
 #include <iostream>
-#include "reinforcement_learning/policy.h"
+
+#include "ai/checkers_environment.h"
+
 
 int main()
 {
-    
+    CheckersEnvironment env;
+    env.reset();
 }
