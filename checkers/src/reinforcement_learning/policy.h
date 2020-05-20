@@ -27,6 +27,8 @@ protected:
 
 // choose actions entirely at random
 class RandomWalkPolicy : public Policy {
+public:
+	RandomWalkPolicy(Environment* env);
 	Action* action_selection(State* state) override;
 };
 

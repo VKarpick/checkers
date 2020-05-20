@@ -22,7 +22,7 @@ protected:
 };
 
 
-class TDLeaf : TDLambda {
+class TDLeaf : public TDLambda {
 public:
 	TDLeaf(Environment* env, Estimator* estimator, Player* max_player, int max_depth = 1,
 		double discount_factor = 1, double trace_decay = 0.86);

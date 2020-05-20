@@ -1,4 +1,5 @@
 #include "checkers_environment.h"
+#include <iostream>
 
 
 std::vector<std::vector<std::string>> piece_moves(
@@ -72,6 +73,10 @@ std::vector<std::vector<std::string>> board_actions(std::vector<std::string> sta
 }
 
 
+std::vector<Player*> CheckersEnvironment::players() {
+	return players_;
+}
+
 State* CheckersEnvironment::reset() {
 	play_counter_ = 0;
 	current_player_index_ = 0;
@@ -80,6 +85,11 @@ State* CheckersEnvironment::reset() {
 }
 
 State* CheckersEnvironment::step(Action* action) {
+	std::vector<std::string> observation = std::any_cast<std::vector<std::string>>(action->action);
+	for (auto row : observation) {
+		std::cout << row << std::endl;
+	}
+
 	++play_counter_;
 	current_player_index_ = (current_player_index_ + 1) % 2;
 	state_ = step(state_, action);
@@ -90,11 +100,12 @@ State* CheckersEnvironment::step(State* state, Action* action) {
 	std::vector<std::string> observation = std::any_cast<std::vector<std::string>>(action->action);
 
 	double reward = 0;
-	char next_player_char = std::any_cast<char>(players_[current_player_index_]);
+	char next_player_char = std::any_cast<char>(players_[current_player_index_]->player);
 	std::vector<std::vector<std::string>> opponent_actions{ board_actions(observation, next_player_char) };
 	if (opponent_actions.size() == 0) reward = (next_player_char == 'r') ? -1 : 1;
 
 	bool terminal = reward != 0 || play_counter_ > kMaxPlays;
+
 	Player* current_player = opponent(state->current_player);
 
 	return new State{ observation, reward, terminal, current_player };

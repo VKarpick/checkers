@@ -29,6 +29,9 @@ protected:
 // Estimator for temporal difference learning
 //TODO allow for both prediction and control, possibly non-linear learning
 class TDEstimator : public Estimator {
+public:
+	TDEstimator(double step_size, std::vector<double> weights, bool use_eligibility_trace = false);
+	TDEstimator(double step_size, int feature_size, bool use_eligibility_trace = false);
 	double predict(std::vector<double> features) override;
 	void update(double target, double estimate, std::vector<double> features, double discount_factor = 1, double trace_decay = 1) override;
 };

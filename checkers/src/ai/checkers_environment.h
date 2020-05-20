@@ -26,6 +26,9 @@ const std::vector<std::string> kDefaultBoard{
 
 class CheckersEnvironment : public Environment {
 public:
+	// getter
+	std::vector<Player*> players();
+
 	State* reset() override;
 	State* step(Action* action) override;
 	State* step(State* state, Action* action) override;

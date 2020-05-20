@@ -17,23 +17,22 @@ void TDLambda::train(int n_episodes, bool print_update) {
 		estimator_->reset_eligibility_trace();
 		State* next_state = new State();
 
+		if (print_update) std::cout << "Episode:  " << (i_episode + 1) << " of " << n_episodes << std::endl;
+
 		do {
 			Action* action{ policy_->action_selection(state) };
 			next_state = env_->step(action);
 
 			std::vector<double> state_features{ env_->featurize(state) };
 			std::vector<double> next_state_features{ env_->featurize(next_state) };
-			
+
 			double target{ next_state->reward + discount_factor_ * estimator_->predict(next_state_features) };
 			double estimate{ estimator_->predict(state_features) };
-
 			estimator_->update(target, estimate, state_features, discount_factor_, trace_decay_);
 
 			state = next_state;
 
 		} while (!next_state->terminal);
-
-		if (print_update) std::cout << "Episode:  " << (i_episode + 1) << " of " << n_episodes << std::endl;
 	}
 }
 

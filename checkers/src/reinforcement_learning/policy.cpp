@@ -1,9 +1,11 @@
 #include "policy.h"
+#include <iostream>
 
-
-Policy::Policy() { }
+Policy::Policy() {}
 Policy::Policy(Environment* env) { env_ = env; }
 
+
+RandomWalkPolicy::RandomWalkPolicy(Environment* env) : Policy(env) {}
 
 Action* RandomWalkPolicy::action_selection(State* state) {
 	std::vector<Action*> actions = env_->actions();
@@ -30,14 +32,15 @@ MinimaxPolicy::MinimaxPolicy(Environment* env, Estimator* estimator, Player* max
 
 Action* MinimaxPolicy::action_selection(State* state) {
 	// StateActionPair of node has to reflect current state to provide accurate action selection
-	if (node_ != nullptr && node_->data()->state != state) reset_node(state);
+	if (node_ == nullptr || node_->data()->state != state) reset_node(state);
 
 	node_ = minimax_->minimax_node(node_, 0, node_->data()->state->current_player == max_player_);
 	return node_->data()->action;
 }
 
 void MinimaxPolicy::reset_node(State* state) {
-	// nodes have StateActionPair as type to provide easy retrieval of action from child node minimax gives highest value to
+	// nodes have StateActionPair as type to provide easy retrieval of action from child node that minimax gives highest value to
+	std::cout << "reset node" << std::endl;
 	node_ = new Node<StateActionPair*>(new StateActionPair{ state, nullptr });
 }
 
