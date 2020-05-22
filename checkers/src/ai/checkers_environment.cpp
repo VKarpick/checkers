@@ -91,6 +91,7 @@ State* CheckersEnvironment::step(Action* action) {
 
 	++play_counter_;
 	state_ = step(state_, action);
+
 	return state_;
 }
 
