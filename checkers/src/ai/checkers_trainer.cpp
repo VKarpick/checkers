@@ -1,7 +1,8 @@
-#include "train_checkers.h"
+#include "checkers_trainer.h"
 
 
-TrainCheckers::TrainCheckers(int nEpisodes, int maxDepth, double stepSize, bool isPrintingEpisodes,
+
+CheckersTrainer::CheckersTrainer(int nEpisodes, int maxDepth, double stepSize, bool isPrintingEpisodes,
     std::string readFilename, std::string writeFilename) {
 
     nEpisodes_ = nEpisodes;
@@ -13,7 +14,7 @@ TrainCheckers::TrainCheckers(int nEpisodes, int maxDepth, double stepSize, bool 
 }
 
 
-TrainCheckers::TrainCheckers(std::vector<double> weights, int nEpisodes, int maxDepth, double stepSize, bool isPrintingEpisodes,
+CheckersTrainer::CheckersTrainer(std::vector<double> weights, int nEpisodes, int maxDepth, double stepSize, bool isPrintingEpisodes,
     std::string writeFilename) {
 
     nEpisodes_ = nEpisodes;
@@ -25,7 +26,7 @@ TrainCheckers::TrainCheckers(std::vector<double> weights, int nEpisodes, int max
 }
 
 
-std::vector<double> TrainCheckers::readWeights(std::string filename) {
+std::vector<double> CheckersTrainer::readWeights(std::string filename) {
     std::ifstream weightsFile;
     weightsFile.open(filename.c_str());
 
@@ -51,7 +52,7 @@ std::vector<double> TrainCheckers::readWeights(std::string filename) {
 }
 
 
-void TrainCheckers::writeWeights(std::string filename, std::vector<double> weights) {
+void CheckersTrainer::writeWeights(std::string filename, std::vector<double> weights) {
     std::ofstream weightsFile;
     weightsFile.open(filename.c_str());
     for (double weight : weights) {
@@ -61,7 +62,7 @@ void TrainCheckers::writeWeights(std::string filename, std::vector<double> weigh
 }
 
 
-void TrainCheckers::train() {
+void CheckersTrainer::train() {
     CheckersEnvironment checkersEnvironment;
     State* state{ checkersEnvironment.reset() };
 

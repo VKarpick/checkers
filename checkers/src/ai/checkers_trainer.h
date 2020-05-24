@@ -12,12 +12,12 @@
 // how Checkers AI was actually trained
 // automatically defaults to TD Leaf - if using with max depth < 6, have to initialize weights to something other than zero
 // otherwise, will continually force draws and never update weights
-class TrainCheckers {
+class CheckersTrainer {
 public:
-    TrainCheckers(int nEpisodes = 1, int maxDepth = 1, double stepSize = 0.01, bool isPrintingEpisodes = true,
+    CheckersTrainer(int nEpisodes = 1, int maxDepth = 1, double stepSize = 0.01, bool isPrintingEpisodes = true,
         std::string readFilename = "..\\checkers\\src\\ai\\weights.dat", 
         std::string writeFilename = "..\\checkers\\src\\ai\\weights.dat");
-    TrainCheckers(std::vector<double> weights, int nEpisodes = 1, int maxDepth = 1, double stepSize = 0.01, 
+    CheckersTrainer(std::vector<double> weights, int nEpisodes = 1, int maxDepth = 1, double stepSize = 0.01, 
         bool isPrintingEpisodes = true, std::string writeFilename = "..\\checkers\\src\\ai\\weights.dat");
     
     

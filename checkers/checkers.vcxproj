@@ -149,7 +149,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
 	<ClCompile Include="src/ai/checkers_environment.cpp" />
-	<ClCompile Include="src/ai/train_checkers.cpp" />
+	<ClCompile Include="src/ai/checkers_trainer.cpp" />
     <ClCompile Include="src/reinforcement_learning/estimator.cpp" />
 	<ClCompile Include="src/reinforcement_learning/policy.cpp" />
 	<ClCompile Include="src/reinforcement_learning/td_learning.cpp" />
@@ -158,7 +158,7 @@
   </ItemGroup>
   <ItemGroup>
 	<ClInclude Include="src/ai/checkers_environment.h" />
-	<ClInclude Include="src/ai/train_checkers.h" />
+	<ClInclude Include="src/ai/checkers_trainer.h" />
 	<ClInclude Include="src/reinforcement_learning/environment.h" />
     <ClInclude Include="src/reinforcement_learning/estimator.h" />
 	<ClInclude Include="src/reinforcement_learning/policy.h" />

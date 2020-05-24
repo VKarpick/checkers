@@ -1,10 +1,10 @@
 #include <iostream>
 
-#include "ai/train_checkers.h"
+#include "ai/checkers_trainer.h"
 
 
 int main()
 {
-    TrainCheckers trainer;
-    trainer.train();
+    CheckersTrainer checkersTrainer;
+    checkersTrainer.train();
 }
