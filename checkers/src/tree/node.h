@@ -37,6 +37,7 @@ public:
 		}
 	}
 
+
 private:
 	T data_;
 	std::vector<Node<T>*> children_;

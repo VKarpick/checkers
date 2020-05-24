@@ -3,6 +3,7 @@
 
 TDLambda::TDLambda() {}
 
+
 TDLambda::TDLambda(Environment* environment, Estimator* estimator, Policy* policy, double discountFactor, double traceDecay) {
 	environment_ = environment;
 	estimator_ = estimator;
@@ -10,6 +11,7 @@ TDLambda::TDLambda(Environment* environment, Estimator* estimator, Policy* polic
 	discountFactor_ = discountFactor;
 	traceDecay_ = traceDecay;
 }
+
 
 void TDLambda::train(int nEpisodes, bool isPrintingUpdates) {
 	for (int episodeNo = 0; episodeNo < nEpisodes; ++episodeNo) {
@@ -20,11 +22,11 @@ void TDLambda::train(int nEpisodes, bool isPrintingUpdates) {
 		if (isPrintingUpdates) std::cout << "Episode:  " << (episodeNo + 1) << " of " << nEpisodes << std::endl;
 
 		do {
-			Action* action{ policy_->action_selection(state) };
+			Action* action{ policy_->actionSelection(state) };
 			nextState = environment_->step(action);
 
 			// hacky way to avoid reseting node each time when using MinimaxPolicy
-			if (policy_->node() != nullptr) nextState = policy_->node()->getData()->state;
+			if (policy_->getNode() != nullptr) nextState = policy_->getNode()->getData()->state;
 
 			std::vector<double> stateFeatures{ environment_->featurize(state) };
 			std::vector<double> nextStateFeatures{ environment_->featurize(nextState) };
@@ -38,6 +40,7 @@ void TDLambda::train(int nEpisodes, bool isPrintingUpdates) {
 		} while (!nextState->terminal);
 	}
 }
+
 
 
 TDLeaf::TDLeaf(Environment* environment, Estimator* estimator, Player* maxPlayer, 

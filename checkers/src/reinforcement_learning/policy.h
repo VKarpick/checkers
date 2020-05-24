@@ -17,42 +17,53 @@ struct StateActionPair {
 class Policy {
 public:
 	Policy();
-	Policy(Environment* env);
-	virtual Node<StateActionPair*>* node();    // only necessary for MinimaxPolicy
-	virtual Action* action_selection(State* state) = 0;
+	Policy(Environment* environment);
+
+
+	virtual Node<StateActionPair*>* getNode();    // only necessary for MinimaxPolicy
+	
+	
+	virtual Action* actionSelection(State* state) = 0;
+
 
 protected:
-	Environment* env_;
+	Environment* environment_;
 };
+
 
 
 // choose actions entirely at random
 class RandomWalkPolicy : public Policy {
 public:
 	RandomWalkPolicy(Environment* env);
-	Action* action_selection(State* state) override;
+
+
+	Action* actionSelection(State* state) override;
 };
+
 
 
 // use minimax to choose actions
 class MinimaxPolicy : public Policy {
 public:
-	MinimaxPolicy(Environment* env, Estimator* estimator, Player* max_player, int max_depth = 1);
+	MinimaxPolicy(Environment* environment, Estimator* estimator, Player* maxPlayer, int maxDepth = 1);
 
-	// getter
-	Node<StateActionPair*>* node();
 
-	Action* action_selection(State* state) override;
-	void reset_node(State* state);
+	Node<StateActionPair*>* getNode();
+
+
+	Action* actionSelection(State* state) override;
+	void resetNode(State* state);
+
 
 private:
 	Estimator* estimator_;
-	Player* max_player_;
-	int max_depth_;
+	Player* maxPlayer_;
+	int maxDepth_;
 	Node<StateActionPair*>* node_{ nullptr };
 	Minimax<StateActionPair*>* minimax_;
 
 	// functions to be passed to minimax algorithm
-	double evaluate(Node<StateActionPair*>* node);
-	void extend(Node<StateActionPair*>* node);
+	double computeNodeValue(Node<StateActionPair*>* node);
+	void extendTree(Node<StateActionPair*>* node);
 };

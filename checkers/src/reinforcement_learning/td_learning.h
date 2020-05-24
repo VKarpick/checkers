@@ -11,7 +11,9 @@ public:
 	TDLambda();
 	TDLambda(Environment* environment, Estimator* estimator, Policy* policy, double discountFactor = 1.0, double traceDecay = 1.0);
 
+
 	void train(int nEpisodes = 1, bool isPrintingUpdates = false);
+
 
 protected:
 	Environment* environment_;
@@ -20,6 +22,7 @@ protected:
 	double discountFactor_;    // gamma
 	double traceDecay_;    // lambda
 };
+
 
 
 class TDLeaf : public TDLambda {

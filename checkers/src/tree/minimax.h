@@ -14,8 +14,7 @@ struct MinimaxPair {
 
 
 template <typename T>    // allowing for any type of Node requires template
-class Minimax
-{
+class Minimax {
 public:
 	Minimax(std::function<double(Node<T>*)> computeNodeValue, int maxDepth = 0, 
 		const std::function<void(Node<T>*)> extendTree = [](Node<T>*) {}) {
@@ -63,14 +62,14 @@ public:
 	}
 
 
-	double minimax_value(Node<T>* node, int currentDepth = 0, bool isMaxPlayer = true, 
+	double minimaxValue(Node<T>* node, int currentDepth = 0, bool isMaxPlayer = true, 
 		double alpha = -DBL_MAX, double beta = DBL_MAX) {
 		
 		return minimax(node, currentDepth, isMaxPlayer, alpha, beta)->value;
 	}
 
 
-	Node<T>* minimax_node(Node<T>* node, int currentDepth = 0, bool isMaxPlayer = true, 
+	Node<T>* minimaxNode(Node<T>* node, int currentDepth = 0, bool isMaxPlayer = true, 
 		double alpha = -DBL_MAX, double beta = DBL_MAX) {
 		
 		return minimax(node, currentDepth, isMaxPlayer, alpha, beta)->node;
