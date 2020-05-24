@@ -99,7 +99,7 @@ State* CheckersEnvironment::step(State* state, Action* action) {
 	std::vector<std::string> observation = std::any_cast<std::vector<std::string>>(action->action);
 
 	double reward = 0;
-	Player* opposing_player = opponent(state->current_player);
+	Player* opposing_player = opponent(state->currentPlayer);
 	char next_player_char = std::any_cast<char>(opposing_player->player);
 	std::vector<std::vector<std::string>> opponent_actions{ board_actions(observation, next_player_char) };
 	if (opponent_actions.size() == 0) reward = (next_player_char == 'r') ? -1 : 1;
@@ -109,14 +109,14 @@ State* CheckersEnvironment::step(State* state, Action* action) {
 	return new State{ observation, reward, terminal, opposing_player };
 }
 
-std::vector<Action*> CheckersEnvironment::actions() {
-	return actions(state_);
+std::vector<Action*> CheckersEnvironment::getActions() {
+	return getActions(state_);
 }
 
-std::vector<Action*> CheckersEnvironment::actions(State* state) {
+std::vector<Action*> CheckersEnvironment::getActions(State* state) {
 	std::vector<Action*> action_vector;
 	std::vector<std::string> current_board{ board_from_state(state) };
-	char player{ std::any_cast<char>(state->current_player->player) };
+	char player{ std::any_cast<char>(state->currentPlayer->player) };
 
 	for (std::vector<std::string> board : board_actions(current_board, player)) {
 		action_vector.push_back(new Action{ board });

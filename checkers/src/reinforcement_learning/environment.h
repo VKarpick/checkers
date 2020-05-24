@@ -11,10 +11,12 @@ struct Player {
 };
 
 
+
 // allow flexibility in defining actions while passing around pointers to struct
 struct Action {
 	std::any action;
 };
+
 
 
 // allow flexibility in defining observations
@@ -22,9 +24,10 @@ struct Action {
 struct State {
 	std::any observation;
 	double reward;
-	bool terminal;
-	Player* current_player{ new Player() };
+	bool isTerminal;
+	Player* currentPlayer{ new Player() };
 };
+
 
 
 // abstract base class to be inherited from
@@ -40,10 +43,10 @@ public:
 	virtual State* step(State* state, Action* action) = 0;
 
 	// vector of all available actions in the current environment state
-	virtual std::vector<Action*> actions() = 0;
+	virtual std::vector<Action*> getActions() = 0;
 
 	// vector of all available actions available from a given state
-	virtual std::vector<Action*> actions(State* state) = 0;
+	virtual std::vector<Action*> getActions(State* state) = 0;
 
 	// convert a state to a feature vector
 	virtual std::vector<double> featurize(State* state) = 0;

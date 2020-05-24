@@ -13,7 +13,7 @@ RandomWalkPolicy::RandomWalkPolicy(Environment* environment) : Policy(environmen
 
 
 Action* RandomWalkPolicy::actionSelection(State* state) {
-	std::vector<Action*> actions = environment_->actions();
+	std::vector<Action*> actions = environment_->getActions();
 	if (!actions.empty()) {
 		int randomIndex = rand() % actions.size();
 		return actions[randomIndex];
@@ -46,7 +46,7 @@ Action* MinimaxPolicy::actionSelection(State* state) {
 	// StateActionPair of node has to reflect current state to provide accurate action selection
 	if (node_ == nullptr || node_->getData()->state != state) resetNode(state);
 
-	node_ = minimax_->minimaxNode(node_, 0, node_->getData()->state->current_player == maxPlayer_);
+	node_ = minimax_->minimaxNode(node_, 0, node_->getData()->state->currentPlayer == maxPlayer_);
 	return node_->getData()->action;
 }
 
@@ -66,7 +66,7 @@ double MinimaxPolicy::computeNodeValue(Node<StateActionPair*>* node) {
 
 // add children for every possible action from the current state
 void MinimaxPolicy::extendTree(Node<StateActionPair*>* node) {
-	for (Action* action : environment_->actions(node->getData()->state)) {
+	for (Action* action : environment_->getActions(node->getData()->state)) {
 		State* next_state = environment_->step(node->getData()->state, action);
 		Node<StateActionPair*>* child = new Node<StateActionPair*>(new StateActionPair{ next_state, action });
 		node->addChild(child);

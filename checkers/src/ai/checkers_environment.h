@@ -32,8 +32,8 @@ public:
 	State* reset() override;
 	State* step(Action* action) override;
 	State* step(State* state, Action* action) override;
-	std::vector<Action*> actions() override;
-	std::vector<Action*> actions(State* state) override;
+	std::vector<Action*> getActions() override;
+	std::vector<Action*> getActions(State* state) override;
 	std::vector<double> featurize(State* state) override;
 	std::vector<std::string> board_from_state(State* state);
 	Player* opponent(Player* current_player);

@@ -37,7 +37,7 @@ void TDLambda::train(int nEpisodes, bool isPrintingUpdates) {
 
 			state = nextState;
 
-		} while (!nextState->terminal);
+		} while (!nextState->isTerminal);
 	}
 }
 
