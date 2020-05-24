@@ -13,10 +13,10 @@
 // otherwise, will continually force draws and never update weights
 class TrainCheckers {
 public:
-    TrainCheckers(int maxDepth = 6, int nEpisodes = 1, bool isPrintingEpisodes = true,
+    TrainCheckers(int nEpisodes = 1, int maxDepth = 6, bool isPrintingEpisodes = true,
         std::string readFilename = "..\\checkers\\src\\ai\\weights.dat", 
         std::string writeFilename = "..\\checkers\\src\\ai\\weights.dat");
-    TrainCheckers(std::vector<double> weights, int maxDepth = 6, int nEpisodes = 1, bool isPrintingEpisodes = true,
+    TrainCheckers(std::vector<double> weights, int nEpisodes = 1, int maxDepth = 6, bool isPrintingEpisodes = true,
         std::string writeFilename = "..\\checkers\\src\\ai\\weights.dat");
     
     

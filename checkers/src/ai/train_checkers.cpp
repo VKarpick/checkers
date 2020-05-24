@@ -1,22 +1,22 @@
 #include "train_checkers.h"
 
 
-TrainCheckers::TrainCheckers(int maxDepth, int nEpisodes, bool isPrintingEpisodes, 
+TrainCheckers::TrainCheckers(int nEpisodes, int maxDepth, bool isPrintingEpisodes,
     std::string readFilename, std::string writeFilename) {
 
-    maxDepth_ = maxDepth;
     nEpisodes_ = nEpisodes;
+    maxDepth_ = maxDepth;
     isPrintingEpisodes_ = isPrintingEpisodes;
     readFilename_ = readFilename;
     writeFilename_ = writeFilename;
 }
 
 
-TrainCheckers::TrainCheckers(std::vector<double> weights, int maxDepth, int nEpisodes, bool isPrintingEpisodes,
+TrainCheckers::TrainCheckers(std::vector<double> weights, int nEpisodes, int maxDepth, bool isPrintingEpisodes,
     std::string writeFilename) {
 
-    maxDepth_ = maxDepth;
     nEpisodes_ = nEpisodes;
+    maxDepth_ = maxDepth;
     isPrintingEpisodes_ = isPrintingEpisodes;
     weights_ = weights;
     writeFilename_ = writeFilename;
