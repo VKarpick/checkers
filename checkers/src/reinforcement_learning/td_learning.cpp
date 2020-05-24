@@ -26,7 +26,7 @@ void TDLambda::train(int nEpisodes, bool isPrintingUpdates) {
 			nextState = environment_->step(action);
 
 			// hacky way to avoid reseting node each time when using MinimaxPolicy
-			if (policy_->getNode() != nullptr) nextState = policy_->getNode()->getData()->state;
+			if (policy_->getNode() != nullptr) nextState = policy_->getNode()->getData().state;
 
 			std::vector<double> stateFeatures{ environment_->featurize(state) };
 			std::vector<double> nextStateFeatures{ environment_->featurize(nextState) };

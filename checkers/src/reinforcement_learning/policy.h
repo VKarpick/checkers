@@ -20,7 +20,7 @@ public:
 	Policy(Environment* environment);
 
 
-	virtual Node<StateActionPair*>* getNode();    // only necessary for MinimaxPolicy
+	virtual Node<StateActionPair>* getNode();    // only necessary for MinimaxPolicy
 	
 	
 	virtual Action* actionSelection(State* state) = 0;
@@ -49,7 +49,7 @@ public:
 	MinimaxPolicy(Environment* environment, Estimator* estimator, Player* maxPlayer, int maxDepth = 1);
 
 
-	Node<StateActionPair*>* getNode();
+	Node<StateActionPair>* getNode();
 
 
 	Action* actionSelection(State* state) override;
@@ -60,10 +60,10 @@ private:
 	Estimator* estimator_;
 	Player* maxPlayer_;
 	int maxDepth_;
-	Node<StateActionPair*>* node_{ nullptr };
-	Minimax<StateActionPair*>* minimax_;
+	Node<StateActionPair>* node_{ nullptr };
+	Minimax<StateActionPair>* minimax_;
 
 	// functions to be passed to minimax algorithm
-	double computeNodeValue(Node<StateActionPair*>* node);
-	void extendTree(Node<StateActionPair*>* node);
+	double computeNodeValue(Node<StateActionPair>* node);
+	void extendTree(Node<StateActionPair>* node);
 };
