@@ -16,7 +16,7 @@ TDLambda::TDLambda(Environment* environment, Estimator* estimator, Policy* polic
 void TDLambda::train(int nEpisodes, bool isPrintingUpdates) {
 	for (int episodeNo = 0; episodeNo < nEpisodes; ++episodeNo) {
 		State* state = environment_->reset();
-		estimator_->reset_eligibility_trace();
+		estimator_->resetEligibilityTrace();
 		State* nextState = new State();
 
 		if (isPrintingUpdates) std::cout << "Episode:  " << (episodeNo + 1) << " of " << nEpisodes << std::endl;

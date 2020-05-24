@@ -76,5 +76,5 @@ void TrainCheckers::train() {
     TDLeaf td_leaf(&env, &estimator, env.players()[0], max_depth_);
     td_leaf.train(n_episodes_, is_printing_episodes_);
     
-    if (write_filename_ != "") write_weights(write_filename_, estimator.weights());
+    if (write_filename_ != "") write_weights(write_filename_, estimator.getWeights());
 }
