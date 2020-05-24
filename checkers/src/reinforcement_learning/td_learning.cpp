@@ -1,6 +1,7 @@
 #include "td_learning.h"
 
 
+
 TDLambda::TDLambda() {}
 
 
@@ -11,6 +12,7 @@ TDLambda::TDLambda(Environment* environment, Estimator* estimator, Policy* polic
 	discountFactor_ = discountFactor;
 	traceDecay_ = traceDecay;
 }
+
 
 
 void TDLambda::train(int nEpisodes, bool isPrintingUpdates) {

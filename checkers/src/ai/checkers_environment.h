@@ -5,6 +5,7 @@
 #include "../reinforcement_learning/environment.h"
 
 
+
 const int kMaxPlays{ 150 };
 const int kStepDistance{ 1 }, kJumpDistance{ 2 };
 const std::vector<int> kColumnSteps{ -1, 1 };
@@ -24,6 +25,7 @@ const std::vector<std::string> kDefaultBoard{
 };
 
 
+
 class CheckersEnvironment : public Environment {
 public:
 	std::vector<Player*> getPlayers();
@@ -40,7 +42,7 @@ public:
 
 
 private:
-	State* state_;
+	State* state_{ nullptr };
 	int nPlays_{ 0 };
 	const std::vector<Player*> players_{ new Player{'r'}, new Player{'w'} };
 };

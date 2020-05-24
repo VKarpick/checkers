@@ -5,11 +5,12 @@
 #include "node.h"
 
 
+
 // storing values and nodes together allows for easy retrieval of whichever is needed
 template<typename T>
 struct MinimaxPair {
-	double value;
-	Node<T>* node;
+	double value{ 0.0 };
+	Node<T>* node{ nullptr };
 };
 
 
@@ -82,7 +83,7 @@ public:
 
 
 private:
-	int maxDepth_;
+	int maxDepth_{ 1 };
 
 	// function to calculate the value of a given node
 	std::function<double(Node<T>*)> computeNodeValue_;

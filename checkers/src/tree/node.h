@@ -3,6 +3,7 @@
 #include <vector>
 
 
+
 template <typename T>    // allow for data of any type to be provided to a node
 class Node {
 public:
@@ -40,6 +41,6 @@ public:
 
 private:
 	T data_;
-	std::vector<Node<T>*> children_;
-	Node<T>* parent_;
+	std::vector<Node<T>*> children_{};
+	Node<T>* parent_{ nullptr };
 };

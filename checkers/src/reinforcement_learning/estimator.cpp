@@ -1,6 +1,7 @@
 #include "estimator.h"
 
 
+
 Estimator::Estimator(double stepSize, std::vector<double> weights, bool isUsingEligibilityTrace) {
 	stepSize_ = stepSize;
 	weights_ = weights;

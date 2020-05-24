@@ -1,11 +1,14 @@
 #include "policy.h"
 
 
+
 Policy::Policy() {}
 Policy::Policy(Environment* environment) { environment_ = environment; }
 
 
-Node<StateActionPair>* Policy::getNode() { return nullptr; }
+Node<StateActionPair>* Policy::getNode() { 
+	return nullptr;
+}
 
 
 

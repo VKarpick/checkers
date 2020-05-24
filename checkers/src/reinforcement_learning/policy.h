@@ -7,10 +7,12 @@
 #include "../tree/minimax.h"
 
 
+
 struct StateActionPair {
 	State* state;
 	Action* action;
 };
+
 
 
 // abstract base class to be inherited from
@@ -27,7 +29,7 @@ public:
 
 
 protected:
-	Environment* environment_;
+	Environment* environment_{ nullptr };
 };
 
 
@@ -57,11 +59,11 @@ public:
 
 
 private:
-	Estimator* estimator_;
-	Player* maxPlayer_;
-	int maxDepth_;
+	Estimator* estimator_{ nullptr };
+	Player* maxPlayer_{ nullptr };
+	int maxDepth_{ 1 };
 	Node<StateActionPair>* node_{ nullptr };
-	Minimax<StateActionPair>* minimax_;
+	Minimax<StateActionPair>* minimax_{ nullptr };
 
 	// functions to be passed to minimax algorithm
 	double computeNodeValue(Node<StateActionPair>* node);

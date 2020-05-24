@@ -4,6 +4,7 @@
 #include <vector>
 
 
+
 // generic reinforcement learning estimator to be inherited from
 class Estimator {
 public:
@@ -22,10 +23,10 @@ public:
 
 
 protected:
-	std::vector<double> weights_;
-	double stepSize_;    // alpha
-	std::vector<double> eligibilityTrace_;
-	bool isUsingEligibilityTrace_;
+	std::vector<double> weights_{};
+	double stepSize_{ 0.0 };    // alpha
+	std::vector<double> eligibilityTrace_{};
+	bool isUsingEligibilityTrace_{ false };
 };
 
 

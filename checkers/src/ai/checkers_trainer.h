@@ -27,11 +27,11 @@ public:
 
 
 private:
-    int nEpisodes_;
-    int maxDepth_;
-    double stepSize_;
-    bool isPrintingEpisodes_;
-    std::string readFilename_ = "";
-    std::string writeFilename_;
+    int nEpisodes_{ 1 };
+    int maxDepth_{ 1 };
+    double stepSize_{ 0.01 };
+    bool isPrintingEpisodes_{ true };
+    std::string readFilename_{ "" };
+    std::string writeFilename_{ "" };
     std::vector<double> weights_{};
 };

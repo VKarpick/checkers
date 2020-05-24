@@ -4,6 +4,7 @@
 #include <vector>
 
 
+
 // only necessary for multi-player games
 // allow flexibility in defining players while passing around pointers to struct
 struct Player {
@@ -23,8 +24,8 @@ struct Action {
 // optional current_player member for multi-player games
 struct State {
 	std::any observation;
-	double reward;
-	bool isTerminal;
+	double reward{ 0.0 };
+	bool isTerminal{ false };
 	Player* currentPlayer{ new Player() };
 };
 

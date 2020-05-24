@@ -5,6 +5,7 @@
 #include "policy.h"
 
 
+
 //TODO prediction vs control
 class TDLambda {
 public:
@@ -16,11 +17,11 @@ public:
 
 
 protected:
-	Environment* environment_;
-	Estimator* estimator_;
-	Policy* policy_;
-	double discountFactor_;    // gamma
-	double traceDecay_;    // lambda
+	Environment* environment_{ nullptr };
+	Estimator* estimator_{ nullptr };
+	Policy* policy_{ nullptr };
+	double discountFactor_{ 1.0 };    // gamma
+	double traceDecay_{ 1.0 };    // lambda
 };
 
 

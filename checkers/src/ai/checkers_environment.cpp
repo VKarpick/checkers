@@ -2,6 +2,7 @@
 #include <iostream>
 
 
+
 std::vector<std::vector<std::string>> pieceMoves(
 	std::vector<std::string> startBoard, std::vector<int> rowSteps, int row, int column, int newDistance, int captureDistance) {
 
@@ -45,6 +46,7 @@ std::vector<std::vector<std::string>> pieceMoves(
 }
 
 
+
 std::vector<std::vector<std::string>> boardActions(std::vector<std::string> startBoard, char player) {
 	std::vector<std::vector<std::string>> stepBoards, jumpBoards, pieceSteps, pieceJumps;
 	std::vector<int> rowSteps;
@@ -71,6 +73,7 @@ std::vector<std::vector<std::string>> boardActions(std::vector<std::string> star
 
 	return (jumpBoards.empty()) ? stepBoards : jumpBoards;
 }
+
 
 
 std::vector<Player*> CheckersEnvironment::getPlayers() {
