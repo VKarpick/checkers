@@ -26,20 +26,21 @@ const std::vector<std::string> kDefaultBoard{
 
 class CheckersEnvironment : public Environment {
 public:
-	// getter
-	std::vector<Player*> players();
+	std::vector<Player*> getPlayers();
 
+	
 	State* reset() override;
 	State* step(Action* action) override;
 	State* step(State* state, Action* action) override;
 	std::vector<Action*> getActions() override;
 	std::vector<Action*> getActions(State* state) override;
 	std::vector<double> featurize(State* state) override;
-	std::vector<std::string> board_from_state(State* state);
+	std::vector<std::string> convertBoardToState(State* state);
 	Player* opponent(Player* current_player);
+
 
 private:
 	State* state_;
-	int play_counter_{ 0 };
+	int nPlays_{ 0 };
 	const std::vector<Player*> players_{ new Player{'r'}, new Player{'w'} };
 };

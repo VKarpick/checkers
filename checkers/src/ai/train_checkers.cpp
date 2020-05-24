@@ -77,7 +77,7 @@ void TrainCheckers::train() {
     if (!hasCorrectSize) weights_.assign(featureSize, 0);
 
     TDEstimator estimator(0.01, weights_, true);
-    TDLeaf td_leaf(&checkersEnvironment, &estimator, checkersEnvironment.players()[0], maxDepth_);
+    TDLeaf td_leaf(&checkersEnvironment, &estimator, checkersEnvironment.getPlayers()[0], maxDepth_);
     td_leaf.train(nEpisodes_, isPrintingEpisodes_);
     
     if (writeFilename_ != "") writeWeights(writeFilename_, estimator.getWeights());

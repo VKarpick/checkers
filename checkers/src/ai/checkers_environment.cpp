@@ -2,86 +2,88 @@
 #include <iostream>
 
 
-std::vector<std::vector<std::string>> piece_moves(
-	std::vector<std::string> start_board, std::vector<int> row_steps, int row, int column, int new_distance, int capture_distance) {
+std::vector<std::vector<std::string>> pieceMoves(
+	std::vector<std::string> startBoard, std::vector<int> rowSteps, int row, int column, int newDistance, int captureDistance) {
 
-	std::vector<std::vector<std::string>> move_boards, continue_boards;
-	std::vector<std::string> current_board;
-	int capture_row{ 0 }, capture_column{ 0 }, new_row{ 0 }, new_column{ 0 };
-	char piece = start_board[row][column], capture_piece;
+	std::vector<std::vector<std::string>> moveBoards, continueBoards;
+	std::vector<std::string> currentBoard;
+	int captureRow{ 0 }, captureColumn{ 0 }, newRow{ 0 }, newColumn{ 0 };
+	char piece = startBoard[row][column], capturePiece;
 
-	for (int row_step : row_steps) {
-		for (int column_step : kColumnSteps) {
-			current_board = start_board;
+	for (int rowStep : rowSteps) {
+		for (int columnStep : kColumnSteps) {
+			currentBoard = startBoard;
 
-			capture_row = row + row_step * capture_distance;
-			capture_column = column + column_step * capture_distance;
-			capture_piece = tolower(current_board[capture_row][capture_column]);
-			new_row = row + row_step * new_distance;
-			new_column = column + column_step * new_distance;
+			captureRow = row + rowStep * captureDistance;
+			captureColumn = column + columnStep * captureDistance;
+			capturePiece = tolower(currentBoard[captureRow][captureColumn]);
+			newRow = row + rowStep * newDistance;
+			newColumn = column + columnStep * newDistance;
 
-			if (current_board[new_row][new_column] == '-' && (capture_distance == 0 ||
-				(capture_piece != tolower(piece) && capture_piece != '-'))) {
+			if (currentBoard[newRow][newColumn] == '-' && (captureDistance == 0 ||
+				(capturePiece != tolower(piece) && capturePiece != '-'))) {
 
-				current_board[new_row][new_column] = (new_row == 2 || new_row == start_board.size() - 3) ? toupper(piece) : piece;
-				current_board[row][column] = '-';
+				currentBoard[newRow][newColumn] = (newRow == 2 || newRow == startBoard.size() - 3) ? toupper(piece) : piece;
+				currentBoard[row][column] = '-';
 
-				if (capture_distance != 0) {
-					current_board[capture_row][capture_column] = '-';
-					continue_boards = piece_moves(current_board, row_steps, new_row, new_column, new_distance, capture_distance);
+				if (captureDistance != 0) {
+					currentBoard[captureRow][captureColumn] = '-';
+					continueBoards = pieceMoves(currentBoard, rowSteps, newRow, newColumn, newDistance, captureDistance);
 				}
 
-				if (continue_boards.empty()) {
-					move_boards.push_back(current_board);
+				if (continueBoards.empty()) {
+					moveBoards.push_back(currentBoard);
 				}
 				else {
-					move_boards.insert(move_boards.begin(), continue_boards.begin(), continue_boards.end());
+					moveBoards.insert(moveBoards.begin(), continueBoards.begin(), continueBoards.end());
 				}
 			}
 		}
 	}
 
-	return move_boards;
+	return moveBoards;
 }
 
 
-std::vector<std::vector<std::string>> board_actions(std::vector<std::string> start_board, char player) {
-	std::vector<std::vector<std::string>> step_boards, jump_boards, piece_steps, piece_jumps;
-	std::vector<int> row_steps;
+std::vector<std::vector<std::string>> boardActions(std::vector<std::string> startBoard, char player) {
+	std::vector<std::vector<std::string>> stepBoards, jumpBoards, pieceSteps, pieceJumps;
+	std::vector<int> rowSteps;
 	char piece;
 
-	for (size_t row = 2; row < start_board.size() - 2; ++row) {
-		for (size_t column = 2 + (row + 1) % 2; column < start_board[row].size() - 2; column += 2) {
-			piece = start_board[row][column];
+	for (size_t row = 2; row < startBoard.size() - 2; ++row) {
+		for (size_t column = 2 + (row + 1) % 2; column < startBoard[row].size() - 2; column += 2) {
+			piece = startBoard[row][column];
 			if (tolower(piece) == player) {
-				if (piece == 'r') row_steps = { -kStepDistance };
-				else if (piece == 'w') row_steps = { kStepDistance };
-				else row_steps = { -kStepDistance, kStepDistance };
+				if (piece == 'r') rowSteps = { -kStepDistance };
+				else if (piece == 'w') rowSteps = { kStepDistance };
+				else rowSteps = { -kStepDistance, kStepDistance };
 
-				piece_jumps = piece_moves(start_board, row_steps, row, column, kJumpDistance, kJumpDistance / 2);
-				jump_boards.insert(jump_boards.end(), piece_jumps.begin(), piece_jumps.end());
+				pieceJumps = pieceMoves(startBoard, rowSteps, row, column, kJumpDistance, kJumpDistance / 2);
+				jumpBoards.insert(jumpBoards.end(), pieceJumps.begin(), pieceJumps.end());
 
-				if (jump_boards.empty()) {
-					piece_steps = piece_moves(start_board, row_steps, row, column, kStepDistance, 0);
-					step_boards.insert(step_boards.end(), piece_steps.begin(), piece_steps.end());
+				if (jumpBoards.empty()) {
+					pieceSteps = pieceMoves(startBoard, rowSteps, row, column, kStepDistance, 0);
+					stepBoards.insert(stepBoards.end(), pieceSteps.begin(), pieceSteps.end());
 				}
 			}
 		}
 	}
 
-	return (jump_boards.empty()) ? step_boards : jump_boards;
+	return (jumpBoards.empty()) ? stepBoards : jumpBoards;
 }
 
 
-std::vector<Player*> CheckersEnvironment::players() {
+std::vector<Player*> CheckersEnvironment::getPlayers() {
 	return players_;
 }
 
+
 State* CheckersEnvironment::reset() {
-	play_counter_ = 0;
+	nPlays_ = 0;
 	state_ = new State{ kDefaultBoard, 0, false, players_[0] };
 	return state_;
 }
+
 
 State* CheckersEnvironment::step(Action* action) {
 	std::vector<std::string> observation = std::any_cast<std::vector<std::string>>(action->action);
@@ -89,45 +91,49 @@ State* CheckersEnvironment::step(Action* action) {
 		std::cout << row << std::endl;
 	}
 
-	++play_counter_;
+	++nPlays_;
 	state_ = step(state_, action);
 
 	return state_;
 }
 
+
 State* CheckersEnvironment::step(State* state, Action* action) {
 	std::vector<std::string> observation = std::any_cast<std::vector<std::string>>(action->action);
 
 	double reward = 0;
-	Player* opposing_player = opponent(state->currentPlayer);
-	char next_player_char = std::any_cast<char>(opposing_player->player);
-	std::vector<std::vector<std::string>> opponent_actions{ board_actions(observation, next_player_char) };
-	if (opponent_actions.size() == 0) reward = (next_player_char == 'r') ? -1 : 1;
+	Player* opposingPlayer = opponent(state->currentPlayer);
+	char nextPlayerChar = std::any_cast<char>(opposingPlayer->player);
+	std::vector<std::vector<std::string>> opponentActions{ boardActions(observation, nextPlayerChar) };
+	if (opponentActions.size() == 0) reward = (nextPlayerChar == 'r') ? -1 : 1;
 
-	bool terminal = reward != 0 || play_counter_ > kMaxPlays;
+	bool isTerminal = reward != 0 || nPlays_ > kMaxPlays;
 
-	return new State{ observation, reward, terminal, opposing_player };
+	return new State{ observation, reward, isTerminal, opposingPlayer };
 }
+
 
 std::vector<Action*> CheckersEnvironment::getActions() {
 	return getActions(state_);
 }
 
+
 std::vector<Action*> CheckersEnvironment::getActions(State* state) {
-	std::vector<Action*> action_vector;
-	std::vector<std::string> current_board{ board_from_state(state) };
+	std::vector<Action*> actions;
+	std::vector<std::string> currentBoard{ convertBoardToState(state) };
 	char player{ std::any_cast<char>(state->currentPlayer->player) };
 
-	for (std::vector<std::string> board : board_actions(current_board, player)) {
-		action_vector.push_back(new Action{ board });
+	for (std::vector<std::string> board : boardActions(currentBoard, player)) {
+		actions.push_back(new Action{ board });
 	}
 
-	return action_vector;
+	return actions;
 }
+
 
 std::vector<double> CheckersEnvironment::featurize(State* state) {
 	std::vector<double> features;
-	std::vector<std::string> board{ board_from_state(state) };
+	std::vector<std::string> board{ convertBoardToState(state) };
 	for (size_t row = 2; row < board.size() - 2; ++row) {
 		for (size_t column = 2 + (row + 1) % 2; column < board[row].size() - 2; column += 2) {
 			for (char piece : {'r', 'R', 'w', 'W'}) {
@@ -138,10 +144,12 @@ std::vector<double> CheckersEnvironment::featurize(State* state) {
 	return features;
 }
 
-std::vector<std::string> CheckersEnvironment::board_from_state(State* state) {
+
+std::vector<std::string> CheckersEnvironment::convertBoardToState(State* state) {
 	return std::any_cast<std::vector<std::string>>(state->observation);
 }
 
-Player* CheckersEnvironment::opponent(Player* current_player) {
-	return (current_player == players_[0]) ? players_[1] : players_[0];
+
+Player* CheckersEnvironment::opponent(Player* currentPlayer) {
+	return (currentPlayer == players_[0]) ? players_[1] : players_[0];
 }
