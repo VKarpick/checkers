@@ -3,47 +3,49 @@
 
 TDLambda::TDLambda() {}
 
-TDLambda::TDLambda(Environment* env, Estimator* estimator, Policy* policy, double discount_factor, double trace_decay) {
-	env_ = env;
+TDLambda::TDLambda(Environment* environment, Estimator* estimator, Policy* policy, double discountFactor, double traceDecay) {
+	environment_ = environment;
 	estimator_ = estimator;
 	policy_ = policy;
-	discount_factor_ = discount_factor;
-	trace_decay_ = trace_decay;
+	discountFactor_ = discountFactor;
+	traceDecay_ = traceDecay;
 }
 
-void TDLambda::train(int n_episodes, bool print_update) {
-	for (int i_episode = 0; i_episode < n_episodes; ++i_episode) {
-		State* state = env_->reset();
+void TDLambda::train(int nEpisodes, bool isPrintingUpdates) {
+	for (int episodeNo = 0; episodeNo < nEpisodes; ++episodeNo) {
+		State* state = environment_->reset();
 		estimator_->reset_eligibility_trace();
-		State* next_state = new State();
+		State* nextState = new State();
 
-		if (print_update) std::cout << "Episode:  " << (i_episode + 1) << " of " << n_episodes << std::endl;
+		if (isPrintingUpdates) std::cout << "Episode:  " << (episodeNo + 1) << " of " << nEpisodes << std::endl;
 
 		do {
 			Action* action{ policy_->action_selection(state) };
-			next_state = env_->step(action);
+			nextState = environment_->step(action);
 
 			// hacky way to avoid reseting node each time when using MinimaxPolicy
-			if (policy_->node() != nullptr) next_state = policy_->node()->getData()->state;
+			if (policy_->node() != nullptr) nextState = policy_->node()->getData()->state;
 
-			std::vector<double> state_features{ env_->featurize(state) };
-			std::vector<double> next_state_features{ env_->featurize(next_state) };
+			std::vector<double> stateFeatures{ environment_->featurize(state) };
+			std::vector<double> nextStateFeatures{ environment_->featurize(nextState) };
 
-			double target{ next_state->reward + discount_factor_ * estimator_->predict(next_state_features) };
-			double estimate{ estimator_->predict(state_features) };
-			estimator_->update(target, estimate, state_features, discount_factor_, trace_decay_);
+			double target{ nextState->reward + discountFactor_ * estimator_->predict(nextStateFeatures) };
+			double estimate{ estimator_->predict(stateFeatures) };
+			estimator_->update(target, estimate, stateFeatures, discountFactor_, traceDecay_);
 
-			state = next_state;
+			state = nextState;
 
-		} while (!next_state->terminal);
+		} while (!nextState->terminal);
 	}
 }
 
 
-TDLeaf::TDLeaf(Environment* env, Estimator* estimator, Player* max_player, int max_depth, double discount_factor, double trace_decay) {
-	env_ = env;
+TDLeaf::TDLeaf(Environment* environment, Estimator* estimator, Player* maxPlayer, 
+	int maxDepth, double discountFactor, double traceDecay) {
+	
+	environment_ = environment;
 	estimator_ = estimator;
-	policy_ = new MinimaxPolicy(env_, estimator_, max_player, max_depth);
-	discount_factor_ = discount_factor;
-	trace_decay_ = trace_decay;
+	policy_ = new MinimaxPolicy(environment_, estimator_, maxPlayer, maxDepth);
+	discountFactor_ = discountFactor;
+	traceDecay_ = traceDecay;
 }

@@ -17,8 +17,6 @@ template <typename T>    // allowing for any type of Node requires template
 class Minimax
 {
 public:
-	//TODO what should be public vs private variables?
-
 	Minimax(std::function<double(Node<T>*)> computeNodeValue, int maxDepth = 0, 
 		const std::function<void(Node<T>*)> extendTree = [](Node<T>*) {}) {
 
@@ -31,6 +29,7 @@ public:
 		// if complete tree is provided, can be ignored
 		extendTree_ = extendTree;
 	}
+
 
 	MinimaxPair<T>* minimax(Node<T>* node, int currentDepth = 0, bool isMaxPlayer = true, 
 		double alpha = -DBL_MAX, double beta = DBL_MAX) {
@@ -63,11 +62,13 @@ public:
 		}
 	}
 
+
 	double minimax_value(Node<T>* node, int currentDepth = 0, bool isMaxPlayer = true, 
 		double alpha = -DBL_MAX, double beta = DBL_MAX) {
 		
 		return minimax(node, currentDepth, isMaxPlayer, alpha, beta)->value;
 	}
+
 
 	Node<T>* minimax_node(Node<T>* node, int currentDepth = 0, bool isMaxPlayer = true, 
 		double alpha = -DBL_MAX, double beta = DBL_MAX) {

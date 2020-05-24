@@ -9,21 +9,21 @@
 class TDLambda {
 public:
 	TDLambda();
-	TDLambda(Environment* env, Estimator* estimator, Policy* policy, double discount_factor = 1, double trace_decay = 0.86);
+	TDLambda(Environment* environment, Estimator* estimator, Policy* policy, double discountFactor = 1.0, double traceDecay = 1.0);
 
-	void train(int n_episodes = 1, bool print_update = false);
+	void train(int nEpisodes = 1, bool isPrintingUpdates = false);
 
 protected:
-	Environment* env_;
+	Environment* environment_;
 	Estimator* estimator_;
 	Policy* policy_;
-	double discount_factor_;    // gamma
-	double trace_decay_;    // lambda
+	double discountFactor_;    // gamma
+	double traceDecay_;    // lambda
 };
 
 
 class TDLeaf : public TDLambda {
 public:
-	TDLeaf(Environment* env, Estimator* estimator, Player* max_player, int max_depth = 1,
-		double discount_factor = 1, double trace_decay = 0.86);
+	TDLeaf(Environment* environment, Estimator* estimator, Player* maxPlayer, int maxDepth = 1,
+		double discountFactor = 1.0, double traceDecay = 0.86);
 };
