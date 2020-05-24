@@ -37,10 +37,10 @@ Node<StateActionPair*>* MinimaxPolicy::node() {
 
 Action* MinimaxPolicy::action_selection(State* state) {
 	// StateActionPair of node has to reflect current state to provide accurate action selection
-	if (node_ == nullptr || node_->data()->state != state) reset_node(state);
+	if (node_ == nullptr || node_->getData()->state != state) reset_node(state);
 
-	node_ = minimax_->minimax_node(node_, 0, node_->data()->state->current_player == max_player_);
-	return node_->data()->action;
+	node_ = minimax_->minimax_node(node_, 0, node_->getData()->state->current_player == max_player_);
+	return node_->getData()->action;
 }
 
 void MinimaxPolicy::reset_node(State* state) {
@@ -50,15 +50,15 @@ void MinimaxPolicy::reset_node(State* state) {
 
 // a state's value is the estimator's predicted value for that state
 double MinimaxPolicy::evaluate(Node<StateActionPair*>* node) {
-	std::vector<double> features = env_->featurize(node->data()->state);
+	std::vector<double> features = env_->featurize(node->getData()->state);
 	return estimator_->predict(features);
 }
 
 // add children for every possible action from the current state
 void MinimaxPolicy::extend(Node<StateActionPair*>* node) {
-	for (Action* action : env_->actions(node->data()->state)) {
-		State* next_state = env_->step(node->data()->state, action);
+	for (Action* action : env_->actions(node->getData()->state)) {
+		State* next_state = env_->step(node->getData()->state, action);
 		Node<StateActionPair*>* child = new Node<StateActionPair*>(new StateActionPair{ next_state, action });
-		node->add_child(child);
+		node->addChild(child);
 	}
 }

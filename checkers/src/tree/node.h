@@ -6,31 +6,32 @@
 template <typename T>    // allow for data of any type to be provided to a node
 class Node {
 public:
-	// constructors
 	Node(const T data) : data_(data) {}
 
-	// getters
-	T data() { return data_; }
-	std::vector<Node<T>*> children() { return children_; }
-	Node<T>* parent() { return parent_; }
 
-	// setters
-	void parent(Node<T>* new_parent) {
-		if (parent_ != nullptr) parent_->remove_child(this);    // have to remove this node as member of previous parent's children
-		parent_ = new_parent;
+	T getData() { return data_; }
+	std::vector<Node<T>*> getChildren() { return children_; }
+	Node<T>* getParent() { return parent_; }
+
+
+	void setParent(Node<T>* newParent) {
+		if (parent_ != nullptr) parent_->removeChild(this);    // have to remove this node as member of previous parent's children
+		parent_ = newParent;
 	}
 
-	void add_child(Node<T>* child) {
-		child->parent(this);
+
+	void addChild(Node<T>* child) {
+		child->setParent(this);
 		children_.push_back(child);
 	}
 
+
 	// removes first instance of child from the parent's children vector
-	void remove_child(Node<T>* node) {
+	void removeChild(Node<T>* node) {
 		for (auto child = children_.begin(); child != children_.end(); ++child) {
 			if (*child == node) {
 				children_.erase(child);
-				node->parent(nullptr);    // node should no longer have this as parent
+				node->setParent(nullptr);    // node should no longer have this as parent
 				break;
 			}
 		}
