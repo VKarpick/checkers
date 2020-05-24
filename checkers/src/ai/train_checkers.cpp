@@ -1,22 +1,24 @@
 #include "train_checkers.h"
 
 
-TrainCheckers::TrainCheckers(int nEpisodes, int maxDepth, bool isPrintingEpisodes,
+TrainCheckers::TrainCheckers(int nEpisodes, int maxDepth, double stepSize, bool isPrintingEpisodes,
     std::string readFilename, std::string writeFilename) {
 
     nEpisodes_ = nEpisodes;
     maxDepth_ = maxDepth;
+    stepSize_ = stepSize;
     isPrintingEpisodes_ = isPrintingEpisodes;
     readFilename_ = readFilename;
     writeFilename_ = writeFilename;
 }
 
 
-TrainCheckers::TrainCheckers(std::vector<double> weights, int nEpisodes, int maxDepth, bool isPrintingEpisodes,
+TrainCheckers::TrainCheckers(std::vector<double> weights, int nEpisodes, int maxDepth, double stepSize, bool isPrintingEpisodes,
     std::string writeFilename) {
 
     nEpisodes_ = nEpisodes;
     maxDepth_ = maxDepth;
+    stepSize_ = stepSize;
     isPrintingEpisodes_ = isPrintingEpisodes;
     weights_ = weights;
     writeFilename_ = writeFilename;
@@ -76,7 +78,7 @@ void TrainCheckers::train() {
 
     if (!hasCorrectSize) weights_.assign(featureSize, 0);
 
-    TDEstimator estimator(0.01, weights_, true);
+    TDEstimator estimator(stepSize_, weights_, true);
     TDLeaf td_leaf(&checkersEnvironment, &estimator, checkersEnvironment.getPlayers()[0], maxDepth_);
     td_leaf.train(nEpisodes_, isPrintingEpisodes_);
     
