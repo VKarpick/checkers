@@ -1,38 +1,40 @@
 #include "train_checkers.h"
 
 
-TrainCheckers::TrainCheckers(int max_depth, int n_episodes, bool is_printing_episodes, 
-    std::string read_filename, std::string write_filename) {
+TrainCheckers::TrainCheckers(int maxDepth, int nEpisodes, bool isPrintingEpisodes, 
+    std::string readFilename, std::string writeFilename) {
 
-    max_depth_ = max_depth;
-    n_episodes_ = n_episodes;
-    is_printing_episodes_ = is_printing_episodes;
-    read_filename_ = read_filename;
-    write_filename_ = write_filename;
+    maxDepth_ = maxDepth;
+    nEpisodes_ = nEpisodes;
+    isPrintingEpisodes_ = isPrintingEpisodes;
+    readFilename_ = readFilename;
+    writeFilename_ = writeFilename;
 }
 
-TrainCheckers::TrainCheckers(std::vector<double> weights, int max_depth, int n_episodes, bool is_printing_episodes,
-    std::string write_filename) {
 
-    max_depth_ = max_depth;
-    n_episodes_ = n_episodes;
-    is_printing_episodes_ = is_printing_episodes;
+TrainCheckers::TrainCheckers(std::vector<double> weights, int maxDepth, int nEpisodes, bool isPrintingEpisodes,
+    std::string writeFilename) {
+
+    maxDepth_ = maxDepth;
+    nEpisodes_ = nEpisodes;
+    isPrintingEpisodes_ = isPrintingEpisodes;
     weights_ = weights;
-    write_filename_ = write_filename;
+    writeFilename_ = writeFilename;
 }
 
-std::vector<double> TrainCheckers::read_weights(std::string filename) {
-    std::ifstream weights_file;
-    weights_file.open(filename.c_str());
 
-    if (weights_file.is_open()) {
+std::vector<double> TrainCheckers::readWeights(std::string filename) {
+    std::ifstream weightsFile;
+    weightsFile.open(filename.c_str());
+
+    if (weightsFile.is_open()) {
         std::vector<double> weights;
 
         double weight;
-        while (weights_file >> weight) {
+        while (weightsFile >> weight) {
             weights.push_back(weight);
         }
-        weights_file.close();
+        weightsFile.close();
 
         return weights;
     }
@@ -46,35 +48,37 @@ std::vector<double> TrainCheckers::read_weights(std::string filename) {
     }
 }
 
-void TrainCheckers::write_weights(std::string filename, std::vector<double> weights) {
-    std::ofstream weights_file;
-    weights_file.open(filename.c_str());
+
+void TrainCheckers::writeWeights(std::string filename, std::vector<double> weights) {
+    std::ofstream weightsFile;
+    weightsFile.open(filename.c_str());
     for (double weight : weights) {
-        weights_file << weight << std::endl;
+        weightsFile << weight << std::endl;
     }
-    weights_file.close();
+    weightsFile.close();
 }
 
-void TrainCheckers::train() {
-    CheckersEnvironment env;
-    State* state{ env.reset() };
 
-    if (!read_filename_.empty()) weights_ = read_weights(read_filename_);
+void TrainCheckers::train() {
+    CheckersEnvironment checkersEnvironment;
+    State* state{ checkersEnvironment.reset() };
+
+    if (!readFilename_.empty()) weights_ = readWeights(readFilename_);
     
-    unsigned int feature_size{ env.featurize(state).size() };
-    bool has_correct_size{ weights_.size() == feature_size };
-    if (!weights_.empty() && !has_correct_size) {
+    unsigned int featureSize{ checkersEnvironment.featurize(state).size() };
+    bool hasCorrectSize{ weights_.size() == featureSize };
+    if (!weights_.empty() && !hasCorrectSize) {
         std::cout << "Weights from file not of right size.  Weights will be initialized to zero." << std::endl;
         std::cout << "Press any key to continue... ";
         std::cin.ignore();
         std::cout << std::endl;
     }
 
-    if (!has_correct_size) weights_.assign(feature_size, 0);
+    if (!hasCorrectSize) weights_.assign(featureSize, 0);
 
     TDEstimator estimator(0.01, weights_, true);
-    TDLeaf td_leaf(&env, &estimator, env.players()[0], max_depth_);
-    td_leaf.train(n_episodes_, is_printing_episodes_);
+    TDLeaf td_leaf(&checkersEnvironment, &estimator, checkersEnvironment.players()[0], maxDepth_);
+    td_leaf.train(nEpisodes_, isPrintingEpisodes_);
     
-    if (write_filename_ != "") write_weights(write_filename_, estimator.getWeights());
+    if (writeFilename_ != "") writeWeights(writeFilename_, estimator.getWeights());
 }

@@ -13,20 +13,22 @@
 // otherwise, will continually force draws and never update weights
 class TrainCheckers {
 public:
-    TrainCheckers(int max_depth = 6, int n_episodes = 1, bool is_printing_episodes = true,
-        std::string read_filename = "..\\checkers\\src\\ai\\weights.dat", 
-        std::string write_filename = "..\\checkers\\src\\ai\\weights.dat");
-    TrainCheckers(std::vector<double> weights, int max_depth = 6, int n_episodes = 1, bool is_printing_episodes = true,
-        std::string write_filename = "..\\checkers\\src\\ai\\weights.dat");
-    std::vector<double> read_weights(std::string filename);
-    void write_weights(std::string filename, std::vector<double> weights);
+    TrainCheckers(int maxDepth = 6, int nEpisodes = 1, bool isPrintingEpisodes = true,
+        std::string readFilename = "..\\checkers\\src\\ai\\weights.dat", 
+        std::string writeFilename = "..\\checkers\\src\\ai\\weights.dat");
+    TrainCheckers(std::vector<double> weights, int maxDepth = 6, int nEpisodes = 1, bool isPrintingEpisodes = true,
+        std::string writeFilename = "..\\checkers\\src\\ai\\weights.dat");
+    
+    
+    std::vector<double> readWeights(std::string filename);
+    void writeWeights(std::string filename, std::vector<double> weights);
     void train();
 
 private:
-    int max_depth_;
-    int n_episodes_;
-    bool is_printing_episodes_;
-    std::string read_filename_ = "";
-    std::string write_filename_;
+    int maxDepth_;
+    int nEpisodes_;
+    bool isPrintingEpisodes_;
+    std::string readFilename_ = "";
+    std::string writeFilename_;
     std::vector<double> weights_{};
 };
