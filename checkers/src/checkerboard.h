@@ -17,7 +17,7 @@ public:
 	void print();
 	char getPiece(BoardPosition boardPosition);
 	void executeMove(Move move);
-	Checkerboard padBoard(int padding);
+	//Checkerboard padBoard(int padding);
 
 
 private:

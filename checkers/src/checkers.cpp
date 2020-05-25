@@ -9,6 +9,7 @@ void Checkers::printMoveBoards() {
 		Checkerboard newBoard{ checkerboard_ };
 		newBoard.executeMove(move);
 		newBoard.print();
+		std::cout << std::endl;
 	}
 }
 
@@ -29,23 +30,22 @@ void Checkers::reset() {
 void Checkers::update() {
 	std::vector<Move> jumps{};
 	std::vector<Move> steps{};
-	Checkerboard paddedBoard{ checkerboard_.padBoard(constants::kJumpDistance) };
 
 	for (int row = 0; row < constants::kBoardSize; ++row) {
 		// pieces can only be in every other column
-		for (int column = (row + 1) % 2; row < constants::kBoardSize; column += 2) {
+		for (int column = (row + 1) % 2; column < constants::kBoardSize; column += 2) {
 			BoardPosition piecePosition{ row, column };
 			char pieceChar{ checkerboard_.getPiece(piecePosition) };
 			
 			if (tolower(pieceChar) == currentPlayerChar_) {
 				std::vector<int> rowMoves{ allowableRowMoves(pieceChar) };
 
-				std::vector<Move> pieceJumps{ pieceMoves(paddedBoard, piecePosition, constants::kJumpDistance, rowMoves, true) };
+				std::vector<Move> pieceJumps{ pieceMoves(checkerboard_, piecePosition, constants::kJumpDistance, rowMoves, true) };
 				jumps.insert(jumps.end(), pieceJumps.begin(), pieceJumps.end());
 
 				// jumps are forced so only need to look for steps if no jumps are available
 				if (jumps.empty()) {
-					std::vector<Move> pieceSteps{ pieceMoves(paddedBoard, piecePosition, constants::kStepDistance, rowMoves, false) };
+					std::vector<Move> pieceSteps{ pieceMoves(checkerboard_, piecePosition, constants::kStepDistance, rowMoves, false) };
 					steps.insert(steps.end(), pieceSteps.begin(), pieceSteps.end());
 				}
 			}
@@ -69,7 +69,6 @@ std::vector<int> Checkers::allowableRowMoves(char pieceChar) {
 }
 
 
-// assumes board has been properly padded
 std::vector<Move> Checkers::pieceMoves(Checkerboard board, BoardPosition piecePosition, 
 	int moveDistance, std::vector<int> rowMoves, bool canCapture) {
 
@@ -77,7 +76,6 @@ std::vector<Move> Checkers::pieceMoves(Checkerboard board, BoardPosition piecePo
 
 	for (int rowMove : rowMoves) {
 		for (int columnMove : constants::kColumnMoves) {
-
 			BoardPosition movePosition{ piecePosition.row + rowMove * moveDistance, piecePosition.column + columnMove * moveDistance };
 			// can only move to open squares
 			bool moveAvailable{ board.getPiece(movePosition) == constants::kOpening };
@@ -90,7 +88,7 @@ std::vector<Move> Checkers::pieceMoves(Checkerboard board, BoardPosition piecePo
 				// can only capture if opponent's piece in capturePosition
 				captureAvailable = tolower(board.getPiece(capturePosition)) == opponentChar_ ;
 			}
-			
+
 			if (moveAvailable && captureAvailable) {
 				Move currentMove{ piecePosition, { movePosition }, isCrowning(board.getPiece(piecePosition), movePosition) };
 
@@ -127,12 +125,10 @@ std::vector<Move> Checkers::pieceMoves(Checkerboard board, BoardPosition piecePo
 }
 
 
-// pieces are crowned if they aren't already kings and can reach the top/bottom of the unpadded board
-// assumes board has been properly padded
+// pieces are crowned if they aren't already kings and can reach the top/bottom of the board
 bool Checkers::isCrowning(char pieceChar, BoardPosition boardPosition) {
 	bool isKing{ pieceChar == toupper(pieceChar) };
-	bool isKingRow{ boardPosition.row == constants::kJumpDistance 
-					|| boardPosition.row == constants::kBoardSize - constants::kJumpDistance };
+	bool isKingRow{ boardPosition.row == 0 || boardPosition.row == constants::kBoardSize - 1 };
 
 	return !isKing && isKingRow;
 }

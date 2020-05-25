@@ -25,7 +25,14 @@ void Checkerboard::print() {
 
 
 char Checkerboard::getPiece(BoardPosition position) {
-	return board_[position.row][position.column];
+	bool legalRow{ position.row > -1 && position.row < constants::kBoardSize };
+	bool legalColumn{ position.column > -1 && position.column < constants::kBoardSize };
+	if (legalRow && legalColumn) {
+		return board_[position.row][position.column];
+	}
+	else {
+		return ' ';
+	}
 }
 
 
@@ -43,22 +50,22 @@ void Checkerboard::executeMove(Move move) {
 }
 
 
-Checkerboard Checkerboard::padBoard(int padding) {
-	std::vector<std::string> paddedBoard{};
-	std::string columnPadding(padding, ' ');
-
-	// pad rows before board
-	for (int i = 0; i < padding; ++i) {
-		paddedBoard.push_back(columnPadding + std::string(constants::kBoardSize, ' ') + columnPadding);
-	}
-	// pad each side of the row
-	for (std::string row : board_) {
-		paddedBoard.push_back(columnPadding + row + columnPadding);
-	}
-	// pad rows after board
-	for (int i = 0; i < padding; ++i) {
-		paddedBoard.push_back(columnPadding + std::string(constants::kBoardSize, ' ') + columnPadding);
-	}
-
-	return Checkerboard(paddedBoard);
-}
+//Checkerboard Checkerboard::padBoard(int padding) {
+//	std::vector<std::string> paddedBoard{};
+//	std::string columnPadding(padding, ' ');
+//
+//	// pad rows before board
+//	for (int i = 0; i < padding; ++i) {
+//		paddedBoard.push_back(columnPadding + std::string(constants::kBoardSize, ' ') + columnPadding);
+//	}
+//	// pad each side of the row
+//	for (std::string row : board_) {
+//		paddedBoard.push_back(columnPadding + row + columnPadding);
+//	}
+//	// pad rows after board
+//	for (int i = 0; i < padding; ++i) {
+//		paddedBoard.push_back(columnPadding + std::string(constants::kBoardSize, ' ') + columnPadding);
+//	}
+//
+//	return Checkerboard(paddedBoard);
+//}
