@@ -153,6 +153,7 @@
     <ClCompile Include="src/reinforcement_learning/estimator.cpp" />
 	<ClCompile Include="src/reinforcement_learning/policy.cpp" />
 	<ClCompile Include="src/reinforcement_learning/td_learning.cpp" />
+	<ClCompile Include="src/checkerboard.cpp" />
     <ClCompile Include="src/checkers.cpp" />
     <ClCompile Include="src/main.cpp" />
   </ItemGroup>
@@ -165,6 +166,9 @@
 	<ClInclude Include="src/reinforcement_learning/td_learning.h" />
 	<ClInclude Include="src/tree/minimax.h" />
 	<ClInclude Include="src/tree/node.h" />
+	<ClInclude Include="src/constants.h" />
+	<ClInclude Include="src/checkers_structs.h" />
+	<ClInclude Include="src/checkerboard.h" />
     <ClInclude Include="src/checkers.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
