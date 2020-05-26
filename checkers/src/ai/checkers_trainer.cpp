@@ -3,27 +3,25 @@
 
 
 CheckersTrainer::CheckersTrainer(int nEpisodes, int maxDepth, double stepSize, bool isPrintingEpisodes,
-    std::string readFilename, std::string writeFilename) {
-
-    nEpisodes_ = nEpisodes;
-    maxDepth_ = maxDepth;
-    stepSize_ = stepSize;
-    isPrintingEpisodes_ = isPrintingEpisodes;
-    readFilename_ = readFilename;
-    writeFilename_ = writeFilename;
-}
+    std::string readFilename, std::string writeFilename) :
+    nEpisodes_(nEpisodes),
+    maxDepth_(maxDepth),
+    stepSize_(stepSize),
+    isPrintingEpisodes_(isPrintingEpisodes),
+    readFilename_(readFilename),
+    writeFilename_(writeFilename)
+{}
 
 
 CheckersTrainer::CheckersTrainer(std::vector<double> weights, int nEpisodes, int maxDepth, double stepSize, bool isPrintingEpisodes,
-    std::string writeFilename) {
-
-    nEpisodes_ = nEpisodes;
-    maxDepth_ = maxDepth;
-    stepSize_ = stepSize;
-    isPrintingEpisodes_ = isPrintingEpisodes;
-    weights_ = weights;
-    writeFilename_ = writeFilename;
-}
+    std::string writeFilename) :
+    nEpisodes_(nEpisodes),
+    maxDepth_(maxDepth),
+    stepSize_(stepSize),
+    isPrintingEpisodes_(isPrintingEpisodes),
+    weights_(weights),
+    writeFilename_(writeFilename)
+{}
 
 
 std::vector<double> CheckersTrainer::readWeights(std::string filename) {

@@ -3,7 +3,7 @@
 
 
 Policy::Policy() {}
-Policy::Policy(Environment* environment) { environment_ = environment; }
+Policy::Policy(Environment* environment) : environment_(environment) {}
 
 
 Node<StateActionPair>* Policy::getNode() { 
@@ -12,7 +12,7 @@ Node<StateActionPair>* Policy::getNode() {
 
 
 
-RandomWalkPolicy::RandomWalkPolicy(Environment* environment) : Policy(environment) {}
+RandomWalkPolicy::RandomWalkPolicy(Environment* environment) : environment_(environment) {}
 
 
 Action* RandomWalkPolicy::actionSelection(State* state) {
@@ -26,12 +26,12 @@ Action* RandomWalkPolicy::actionSelection(State* state) {
 
 
 
-MinimaxPolicy::MinimaxPolicy(Environment* environment, Estimator* estimator, Player* maxPlayer, int maxDepth) {
-	environment_ = environment;
-	estimator_ = estimator;
-	maxPlayer_ = maxPlayer;
-	maxDepth_ = maxDepth;
-
+MinimaxPolicy::MinimaxPolicy(Environment* environment, Estimator* estimator, Player* maxPlayer, int maxDepth) :
+	environment_(environment),
+	estimator_(estimator),
+	maxPlayer_(maxPlayer),
+	maxDepth_(maxDepth)
+{
 	minimax_ = new Minimax<StateActionPair>(
 		[this](Node<StateActionPair>* node) { return computeNodeValue(node); }, 
 		maxDepth_, 

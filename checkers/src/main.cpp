@@ -4,7 +4,6 @@
 #include "checkers.h"
 
 
-
 int main()
 {
     /*CheckersTrainer checkersTrainer;

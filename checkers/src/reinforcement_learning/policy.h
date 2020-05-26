@@ -41,6 +41,10 @@ public:
 
 
 	Action* actionSelection(State* state) override;
+
+	
+private:
+	Environment* environment_{ nullptr };
 };
 
 
@@ -59,6 +63,7 @@ public:
 
 
 private:
+	Environment* environment_{ nullptr };
 	Estimator* estimator_{ nullptr };
 	Player* maxPlayer_{ nullptr };
 	int maxDepth_{ 1 };

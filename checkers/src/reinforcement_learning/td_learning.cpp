@@ -5,13 +5,13 @@
 TDLambda::TDLambda() {}
 
 
-TDLambda::TDLambda(Environment* environment, Estimator* estimator, Policy* policy, double discountFactor, double traceDecay) {
-	environment_ = environment;
-	estimator_ = estimator;
-	policy_ = policy;
-	discountFactor_ = discountFactor;
-	traceDecay_ = traceDecay;
-}
+TDLambda::TDLambda(Environment* environment, Estimator* estimator, Policy* policy, double discountFactor, double traceDecay) :
+	environment_(environment),
+	estimator_(estimator),
+	policy_(policy),
+	discountFactor_(discountFactor),
+	traceDecay_(traceDecay)
+{}
 
 
 

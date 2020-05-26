@@ -7,9 +7,9 @@ Checkerboard::Checkerboard() {
 }
 
 
-Checkerboard::Checkerboard(std::vector<std::string> board) {
-	board_ = board;
-}
+Checkerboard::Checkerboard(std::vector<std::string> board) :
+	board_(board)
+{}
 
 
 std::vector<std::string> Checkerboard::getBoard() {

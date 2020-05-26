@@ -27,6 +27,9 @@ protected:
 	double stepSize_{ 0.0 };    // alpha
 	std::vector<double> eligibilityTrace_{};
 	bool isUsingEligibilityTrace_{ false };
+
+
+	void initializeEligibilityTrace();
 };
 
 

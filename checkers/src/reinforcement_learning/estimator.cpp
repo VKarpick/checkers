@@ -2,30 +2,21 @@
 
 
 
-Estimator::Estimator(double stepSize, std::vector<double> weights, bool isUsingEligibilityTrace) {
-	stepSize_ = stepSize;
-	weights_ = weights;
-	isUsingEligibilityTrace_ = isUsingEligibilityTrace;
-	if (isUsingEligibilityTrace_) {
-		eligibilityTrace_.assign(weights_.size(), 0);
-	}
-	else {
-		eligibilityTrace_.assign(weights_.size(), 1);  // eligibility traces set to 1 don't affect weights
-	}
+Estimator::Estimator(double stepSize, std::vector<double> weights, bool isUsingEligibilityTrace) :
+	stepSize_(stepSize),
+	weights_(weights),
+	isUsingEligibilityTrace_(isUsingEligibilityTrace)
+{
+	initializeEligibilityTrace();
 }
 
 
-Estimator::Estimator(double stepSize, int featureSize, bool isUsingEligibilityTrace) {
-	//TODO can just use other constructor?
-	stepSize_ = stepSize;
-	weights_ = std::vector<double>(featureSize, 0);
-	isUsingEligibilityTrace_ = isUsingEligibilityTrace;
-	if (isUsingEligibilityTrace_) {
-		eligibilityTrace_.assign(weights_.size(), 0);
-	}
-	else {
-		eligibilityTrace_.assign(weights_.size(), 1);  // eligibility traces set to 1 don't affect weights
-	}
+Estimator::Estimator(double stepSize, int featureSize, bool isUsingEligibilityTrace) :
+	stepSize_(stepSize),
+	weights_(std::vector<double>(featureSize, 0)),
+	isUsingEligibilityTrace_(isUsingEligibilityTrace)
+{
+	initializeEligibilityTrace();
 }
 
 
@@ -40,6 +31,16 @@ void Estimator::resetEligibilityTrace() {
 	}
 	else {
 		fill(eligibilityTrace_.begin(), eligibilityTrace_.end(), 1);
+	}
+}
+
+
+void Estimator::initializeEligibilityTrace() {
+	if (isUsingEligibilityTrace_) {
+		eligibilityTrace_.assign(weights_.size(), 0);
+	}
+	else {
+		eligibilityTrace_.assign(weights_.size(), 1);  // eligibility traces set to 1 don't affect weights
 	}
 }
 
