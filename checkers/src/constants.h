@@ -23,4 +23,8 @@ namespace constants {
 		" r r r r",
 		"r r r r ",
 	};
+	//const std::vector<std::string> kAllowableInput{    // what the user is allowed to enter outside of numbers
+	//	"q", "Q",    // quit
+
+	//};
 }

@@ -2,6 +2,19 @@
 
 
 
+bool isInt(const std::string& s) {
+	std::string::const_iterator it = s.begin();
+	while (it != s.end() && std::isdigit(*it)) ++it;
+	return !s.empty() && it == s.end();
+}
+
+
+
+Checkers::Checkers() {
+	inputMap["q"] = std::bind(&Checkers::quit, this);
+}
+
+
 //TODO remove this
 void Checkers::printMoveBoards() { 
 	update();
@@ -35,23 +48,8 @@ void Checkers::play() {
 
 	while (!availableMoveList_.empty()) {
 		update();
-		std::cout << std::endl;
-		std::cout << checkerboard_ << std::endl;
-
-		int i{ 1 };
-		for (Move move : availableMoveList_) {
-			std::cout << i++ << ") ";
-			std::cout << "(" << move.startPosition.row << ", " << move.startPosition.column << ")";
-			for (BoardPosition landingPosition : move.landingPositions) {
-				std::cout << " to (" << landingPosition.row << ", " << landingPosition.column << ")";
-			}
-			std::cout << std::endl;
-		}
-		std::cout << std::endl;
-
-		std::string moveIndex;
-		std::cin >> moveIndex;
-		
+		render();
+		processInput(getUserInput());
 	}
 }
 
@@ -90,6 +88,11 @@ void Checkers::update() {
 	}
 
 	availableMoveList_ = (jumps.empty()) ? steps : jumps;
+}
+
+
+void Checkers::quit() {
+	exit(0);
 }
 
 
@@ -176,4 +179,50 @@ bool Checkers::isCrowningMove(char pieceChar, BoardPosition boardPosition) {
 	bool isKingRow{ boardPosition.row == 0 || boardPosition.row == constants::kBoardSize - 1 };
 
 	return !isKing && isKingRow;
+}
+
+
+void Checkers::switchPlayers() {
+	std::swap(currentPlayerChar_, opponentChar_);
+}
+
+
+void Checkers::render() {
+	std::cout << std::endl;
+	std::cout << checkerboard_ << std::endl;
+
+	int i{ 1 };
+	for (Move move : availableMoveList_) {
+		std::cout << i++ << ") ";
+		std::cout << "(" << move.startPosition.row << ", " << move.startPosition.column << ")";
+		for (BoardPosition landingPosition : move.landingPositions) {
+			std::cout << " to (" << landingPosition.row << ", " << landingPosition.column << ")";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
+}
+
+
+std::string Checkers::getUserInput() {
+	std::cin.clear();
+	std::string userInput;
+	std::getline(std::cin, userInput);
+	return userInput;
+}
+
+
+void Checkers::processInput(std::string input) {
+	if (inputMap.count(input) == 1) {
+		inputMap[input]();
+	}
+	else {
+		if (isInt(input)) {
+			int moveIndex{ std::stoi(input) - 1};
+			if (-1 < moveIndex && moveIndex < availableMoveList_.size()) {
+				checkerboard_.executeMove(availableMoveList_[moveIndex]);
+				switchPlayers();
+			}
+		}
+	}
 }
