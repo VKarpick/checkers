@@ -13,8 +13,9 @@ public:
 	void update();    // updates availableMoveList
 
 
-	//TODO remove this
+	//TODO remove these
 	void printMoveBoards();
+	void boardTry();
 
 
 private:

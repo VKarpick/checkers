@@ -14,6 +14,23 @@ void Checkers::printMoveBoards() {
 }
 
 
+//TODO remove this
+void Checkers::boardTry() {
+	/*currentPlayerChar_ = 'w';
+	opponentChar_ = 'r';*/
+	checkerboard_ = { Checkerboard({
+		" w w w w",
+		"w w w w ",
+		" w - w w",
+		"- w w - ",
+		" - - - -",
+		"r w w r ",
+		" - R - r",
+		"r r r r ",
+	} ) };
+}
+
+
 void Checkers::play() {
 	checkerboard_.print();
 }
@@ -80,7 +97,7 @@ std::vector<Move> Checkers::pieceMoves(Checkerboard board, BoardPosition piecePo
 			// can only move to open squares
 			bool moveAvailable{ board.getPiece(movePosition) == constants::kOpening };
 
-			bool captureAvailable{ true };    // initialize to true to simplify if statement
+			bool captureAvailable{ true };    // initialized to true to simplify if statement
 			BoardPosition capturePosition;
 			if (canCapture) {
 				capturePosition.row = piecePosition.row + rowMove * constants::kCaptureDistance;
@@ -103,20 +120,21 @@ std::vector<Move> Checkers::pieceMoves(Checkerboard board, BoardPosition piecePo
 					std::vector<Move> continueJump{ pieceMoves(afterMoveBoard, movePosition, moveDistance, rowMoves, canCapture) };
 					
 					for (Move jump : continueJump) {
-						std::vector<BoardPosition> landings{ currentMove.landingPositions };
-						landings.insert(landings.end(), jump.landingPositions.begin(), jump.landingPositions.end());
+						currentMove.landingPositions.insert(
+							currentMove.landingPositions.end(),
+							jump.landingPositions.begin(),
+							jump.landingPositions.end());
 
-						std::vector<BoardPosition> captures{ currentMove.capturedPositions };
-						captures.insert(captures.end(), jump.capturedPositions.begin(), jump.capturedPositions.end());
+						currentMove.capturedPositions.insert(
+							currentMove.capturedPositions.end(),
+							jump.capturedPositions.begin(),
+							jump.capturedPositions.end());
 
-						Move newMove{ currentMove.startPosition, landings, jump.isCrowning, captures };
-						moves.push_back(newMove);
+						currentMove.isCrowning = jump.isCrowning;
 					}
 				}
-				else {
-					// steps end with the step
-					moves.push_back(currentMove);
-				}
+
+				moves.push_back(currentMove);
 			}
 		}
 	}
