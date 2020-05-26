@@ -13,13 +13,18 @@ public:
 	Checkerboard(std::vector<std::string> board);
 
 
+	std::vector<std::string> getBoard();
+
+
 	void reset();
-	void print();
 	char getPiece(BoardPosition boardPosition);
 	void executeMove(Move move);
-	//Checkerboard padBoard(int padding);
 
 
 private:
 	std::vector<std::string> board_;
 };
+
+
+
+std::ostream& operator<< (std::ostream& out, Checkerboard& checkerboard);

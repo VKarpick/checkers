@@ -11,6 +11,9 @@ int main()
     checkersTrainer.train();*/
 
     Checkers checkers;
-    checkers.boardTry();
-    checkers.printMoveBoards();
+    checkers.play();
+    /*checkers.executeInputMove(0);
+    checkers.printMoveBoards();*/
+    /*checkers.boardTry();
+    checkers.printMoveBoards();*/
 }

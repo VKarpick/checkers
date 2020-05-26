@@ -12,15 +12,13 @@ Checkerboard::Checkerboard(std::vector<std::string> board) {
 }
 
 
-void Checkerboard::reset() {
-	board_ = constants::kStartingBoard;
+std::vector<std::string> Checkerboard::getBoard() {
+	return board_;
 }
 
 
-void Checkerboard::print() {
-	for (auto row : board_) {
-		std::cout << row << std::endl;
-	}
+void Checkerboard::reset() {
+	board_ = constants::kStartingBoard;
 }
 
 
@@ -50,22 +48,11 @@ void Checkerboard::executeMove(Move move) {
 }
 
 
-//Checkerboard Checkerboard::padBoard(int padding) {
-//	std::vector<std::string> paddedBoard{};
-//	std::string columnPadding(padding, ' ');
-//
-//	// pad rows before board
-//	for (int i = 0; i < padding; ++i) {
-//		paddedBoard.push_back(columnPadding + std::string(constants::kBoardSize, ' ') + columnPadding);
-//	}
-//	// pad each side of the row
-//	for (std::string row : board_) {
-//		paddedBoard.push_back(columnPadding + row + columnPadding);
-//	}
-//	// pad rows after board
-//	for (int i = 0; i < padding; ++i) {
-//		paddedBoard.push_back(columnPadding + std::string(constants::kBoardSize, ' ') + columnPadding);
-//	}
-//
-//	return Checkerboard(paddedBoard);
-//}
+
+std::ostream& operator<< (std::ostream& out, Checkerboard& checkerboard) {
+	std::vector<std::string> board{ checkerboard.getBoard() };
+	for (std::string row : checkerboard.getBoard()) {
+		out << row << std::endl;
+	}
+	return out;
+}

@@ -12,6 +12,10 @@ public:
 	void reset();
 	void update();    // updates availableMoveList
 
+	
+	// move to private or remove
+	void executeInputMove(int moveIndex);
+
 
 	//TODO remove these
 	void printMoveBoards();
@@ -32,5 +36,5 @@ private:
 	std::vector<Move> pieceMoves(Checkerboard board, BoardPosition piecePosition, 
 		int moveDistance, std::vector<int> rowMoves, bool canCapture);
 
-	bool isCrowning(char pieceChar, BoardPosition boardPosition);
+	bool isCrowningMove(char pieceChar, BoardPosition boardPosition);
 };

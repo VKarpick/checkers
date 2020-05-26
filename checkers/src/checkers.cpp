@@ -8,31 +8,51 @@ void Checkers::printMoveBoards() {
 	for (Move move : availableMoveList_) {
 		Checkerboard newBoard{ checkerboard_ };
 		newBoard.executeMove(move);
-		newBoard.print();
-		std::cout << std::endl;
+		std::cout << newBoard << std::endl;
 	}
 }
 
 
 //TODO remove this
 void Checkers::boardTry() {
-	/*currentPlayerChar_ = 'w';
-	opponentChar_ = 'r';*/
+	currentPlayerChar_ = 'w';
+	opponentChar_ = 'r';
 	checkerboard_ = { Checkerboard({
-		" w w w w",
+		" w w - w",
 		"w w w w ",
-		" w - w w",
+		" w - w r",
 		"- w w - ",
 		" - - - -",
 		"r w w r ",
-		" - R - r",
-		"r r r r ",
+		" - - w r",
+		"r r r - ",
 	} ) };
 }
 
 
 void Checkers::play() {
-	checkerboard_.print();
+	reset();
+
+	while (!availableMoveList_.empty()) {
+		update();
+		std::cout << std::endl;
+		std::cout << checkerboard_ << std::endl;
+
+		int i{ 1 };
+		for (Move move : availableMoveList_) {
+			std::cout << i++ << ") ";
+			std::cout << "(" << move.startPosition.row << ", " << move.startPosition.column << ")";
+			for (BoardPosition landingPosition : move.landingPositions) {
+				std::cout << " to (" << landingPosition.row << ", " << landingPosition.column << ")";
+			}
+			std::cout << std::endl;
+		}
+		std::cout << std::endl;
+
+		std::string moveIndex;
+		std::cin >> moveIndex;
+		
+	}
 }
 
 
@@ -73,6 +93,13 @@ void Checkers::update() {
 }
 
 
+void Checkers::executeInputMove(int moveIndex) {
+	update();
+	checkerboard_.executeMove(availableMoveList_[moveIndex]);
+	std::swap(currentPlayerChar_, opponentChar_);
+}
+
+
 std::vector<int> Checkers::allowableRowMoves(char pieceChar) {
 	if (pieceChar == constants::kPlayerChars[0]) {
 		return { -1 };    // first player can only move up
@@ -107,7 +134,7 @@ std::vector<Move> Checkers::pieceMoves(Checkerboard board, BoardPosition piecePo
 			}
 
 			if (moveAvailable && captureAvailable) {
-				Move currentMove{ piecePosition, { movePosition }, isCrowning(board.getPiece(piecePosition), movePosition) };
+				Move currentMove{ piecePosition, { movePosition }, isCrowningMove(board.getPiece(piecePosition), movePosition) };
 
 				if (canCapture) {
 					currentMove.capturedPositions = { capturePosition };
@@ -144,7 +171,7 @@ std::vector<Move> Checkers::pieceMoves(Checkerboard board, BoardPosition piecePo
 
 
 // pieces are crowned if they aren't already kings and can reach the top/bottom of the board
-bool Checkers::isCrowning(char pieceChar, BoardPosition boardPosition) {
+bool Checkers::isCrowningMove(char pieceChar, BoardPosition boardPosition) {
 	bool isKing{ pieceChar == toupper(pieceChar) };
 	bool isKingRow{ boardPosition.row == 0 || boardPosition.row == constants::kBoardSize - 1 };
 
