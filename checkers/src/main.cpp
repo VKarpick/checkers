@@ -6,11 +6,11 @@
 
 int main()
 {
-    /*CheckersTrainer checkersTrainer(std::vector<double>(128, 1.0), 100, 5);
-    checkersTrainer.train();*/
+    CheckersTrainer checkersTrainer(std::vector<double>(128, 1.0), 100, 5);
+    checkersTrainer.train();
 
-    Checkers checkers;
-    checkers.play();
+    /*Checkers checkers;
+    checkers.play();*/
     /*checkers.executeInputMove(0);
     checkers.printMoveBoards();*/
     /*checkers.boardTry();

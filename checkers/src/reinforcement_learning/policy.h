@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <random>
 
 #include "environment.h"
@@ -22,7 +23,7 @@ public:
 	Policy(Environment* environment);
 
 
-	virtual Node<StateActionPair>* getNode();    // only necessary for MinimaxPolicy
+	virtual std::shared_ptr<Node<StateActionPair>> getNode();    // only necessary for MinimaxPolicy
 	
 	
 	virtual Action* actionSelection(State* state) = 0;
@@ -55,7 +56,7 @@ public:
 	MinimaxPolicy(Environment* environment, Estimator* estimator, Player* maxPlayer, int maxDepth = 1);
 
 
-	Node<StateActionPair>* getNode();
+	std::shared_ptr<Node<StateActionPair>> getNode();
 
 
 	Action* actionSelection(State* state) override;
@@ -67,10 +68,10 @@ private:
 	Estimator* estimator_{ nullptr };
 	Player* maxPlayer_{ nullptr };
 	int maxDepth_{ 1 };
-	Node<StateActionPair>* node_{ nullptr };
+	std::shared_ptr<Node<StateActionPair>> node_{ nullptr };
 	Minimax<StateActionPair>* minimax_{ nullptr };
 
 	// functions to be passed to minimax algorithm
-	double computeNodeValue(Node<StateActionPair>* node);
-	void extendTree(Node<StateActionPair>* node);
+	double computeNodeValue(std::shared_ptr<Node<StateActionPair>> node);
+	void extendTree(std::shared_ptr<Node<StateActionPair>> node);
 };

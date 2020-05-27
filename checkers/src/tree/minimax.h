@@ -10,15 +10,15 @@
 template<typename T>
 struct MinimaxPair {
 	double value{ 0.0 };
-	Node<T>* node{ nullptr };
+	std::shared_ptr<Node<T>> node{ nullptr };
 };
 
 
 template <typename T>    // allowing for any type of Node requires template
 class Minimax {
 public:
-	Minimax(std::function<double(Node<T>*)> computeNodeValue, int maxDepth = 0, 
-		const std::function<void(Node<T>*)> extendTree = [](Node<T>*) {}) {
+	Minimax(std::function<double(std::shared_ptr<Node<T>>)> computeNodeValue, int maxDepth = 0,
+		const std::function<void(std::shared_ptr<Node<T>>)> extendTree = [](std::shared_ptr<Node<T>>) {}) {
 
 		computeNodeValue_ = computeNodeValue;
 		maxDepth_ = maxDepth;
@@ -26,7 +26,7 @@ public:
 	}
 
 
-	MinimaxPair<T> minimax(Node<T>* node, int currentDepth = 0, bool isMaxPlayer = true, 
+	MinimaxPair<T> minimax(std::shared_ptr<Node<T>> node, int currentDepth = 0, bool isMaxPlayer = true,
 		double alpha = -DBL_MAX, double beta = DBL_MAX) {
 		
 		if (currentDepth == maxDepth_) return MinimaxPair<T>{ computeNodeValue_(node), node };
@@ -68,14 +68,14 @@ public:
 	}
 
 
-	double minimaxValue(Node<T>* node, int currentDepth = 0, bool isMaxPlayer = true, 
+	double minimaxValue(std::shared_ptr<Node<T>> node, int currentDepth = 0, bool isMaxPlayer = true,
 		double alpha = -DBL_MAX, double beta = DBL_MAX) {
 		
 		return minimax(node, currentDepth, isMaxPlayer, alpha, beta).value;
 	}
 
 
-	Node<T>* minimaxNode(Node<T>* node, int currentDepth = 0, bool isMaxPlayer = true, 
+	std::shared_ptr<Node<T>> minimaxNode(std::shared_ptr<Node<T>> node, int currentDepth = 0, bool isMaxPlayer = true,
 		double alpha = -DBL_MAX, double beta = DBL_MAX) {
 		
 		return minimax(node, currentDepth, isMaxPlayer, alpha, beta).node;
@@ -86,9 +86,9 @@ private:
 	int maxDepth_{ 1 };
 
 	// function to calculate the value of a given node
-	std::function<double(Node<T>*)> computeNodeValue_;
+	std::function<double(std::shared_ptr<Node<T>>)> computeNodeValue_;
 
 	// function to find children of a node when passing incomplete tree
 	// if complete tree is provided, can be ignored
-	std::function<void(Node<T>*)> extendTree_;
+	std::function<void(std::shared_ptr<Node<T>>)> extendTree_;
 };
