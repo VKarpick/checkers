@@ -30,6 +30,7 @@ private:
 	CheckersPlayer& opponent_{ players_[1] };
 	std::vector<Move> availableMoveList_{};
 	std::vector<Move> previousMoveList_{};
+	std::vector<Move> redoMoveList_{};
 
 
 	// mapping of allowable non-move input to their corresponding functions
@@ -46,6 +47,7 @@ private:
 	std::string getUserInput();
 	void processInput(std::string input);
 	void randomMove();
-	void makeMove(Move move);
+	void makeMove(Move move, bool isNewMove);
 	void undo();
+	void redo();
 };

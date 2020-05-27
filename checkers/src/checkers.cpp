@@ -23,7 +23,9 @@ Checkers::Checkers() {
 	inputMap["z"] = std::bind(&Checkers::undo, this);
 	inputMap["undo"] = std::bind(&Checkers::undo, this);
 
-	//inputMap["y"] = std::bind(&Checkers::redo, this);
+	inputMap["y"] = std::bind(&Checkers::redo, this);
+	inputMap["redo"] = std::bind(&Checkers::redo, this);
+
 	//inputMap["n"] = std::bind(&Checkers::newGame, this);
 }
 
@@ -44,6 +46,7 @@ void Checkers::reset() {
 	currentPlayer_ = players_[0];
 	opponent_ = players_[1];
 	previousMoveList_.clear();
+	redoMoveList_.clear();
 	update();
 }
 
@@ -187,7 +190,7 @@ void Checkers::processInput(std::string input) {
 		if (isInt(input)) {
 			int moveIndex{ std::stoi(input) - 1};
 			if (-1 < moveIndex && moveIndex < availableMoveList_.size()) {
-				makeMove(availableMoveList_[moveIndex]);
+				makeMove(availableMoveList_[moveIndex], true);
 			}
 		}
 	}
@@ -195,13 +198,14 @@ void Checkers::processInput(std::string input) {
 
 
 void Checkers::randomMove() {
-	makeMove(availableMoveList_[rand() % availableMoveList_.size()]);
+	makeMove(availableMoveList_[rand() % availableMoveList_.size()], true);
 }
 
 
-void Checkers::makeMove(Move move) {
+void Checkers::makeMove(Move move, bool isNewMove) {
 	checkerboard_.executeMove(move);
 	previousMoveList_.push_back(move);
+	if (isNewMove) redoMoveList_.clear();
 	switchPlayers();
 }
 
@@ -211,9 +215,22 @@ void Checkers::undo() {
 
 	if (movesToReverse <= previousMoveList_.size()) {
 		for (int i = 0; i < movesToReverse; ++i) {
-			checkerboard_.reverseMove(previousMoveList_.back());
+			Move move{ previousMoveList_.back() };
+			checkerboard_.reverseMove(move);
+			redoMoveList_.push_back(move);
 			previousMoveList_.pop_back();
 			switchPlayers();
+		}
+	}
+}
+
+
+void Checkers::redo() {
+	if (!redoMoveList_.empty()) {
+		int movesToRedo{ (opponent_.isUserControlled) ? 1 : 2 };
+		for (int i = 0; i < movesToRedo; ++i) {
+			makeMove(redoMoveList_.front(), false);
+			redoMoveList_.erase(redoMoveList_.begin());
 		}
 	}
 }
