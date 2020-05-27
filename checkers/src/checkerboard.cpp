@@ -60,9 +60,6 @@ void Checkerboard::executeMove(Move move) {
 	board_[move.landingPositions.back().row][move.landingPositions.back().column] = (move.isCrowning) ? toupper(pieceChar) : pieceChar;
 
 	// all captured pieces are removed
-	/*for (BoardPosition position : move.capturedPositions) {
-		board_[position.row][position.column] = constants::kOpening;
-	}*/
 	for (Piece capturedPiece : move.capturedPieces) {
 		board_[capturedPiece.position.row][capturedPiece.position.column] = constants::kOpening;
 	}

@@ -23,6 +23,5 @@ struct Move {
 	BoardPosition startPosition;
 	std::vector<BoardPosition> landingPositions;
 	bool isCrowning;
-	//std::vector<BoardPosition> capturedPositions{};
 	std::vector<Piece> capturedPieces{};
 };

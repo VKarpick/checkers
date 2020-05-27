@@ -23,10 +23,6 @@ public:
 	void quit();
 
 
-	//TODO remove these
-	void printMoveBoards();
-
-
 private:
 	Checkerboard checkerboard_;
 	std::vector<CheckersPlayer> players_{ CheckersPlayer('r', -1, true), CheckersPlayer('w', 1, true)};

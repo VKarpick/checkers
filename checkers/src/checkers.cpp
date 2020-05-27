@@ -28,17 +28,6 @@ Checkers::Checkers() {
 }
 
 
-//TODO remove this
-//void Checkers::printMoveBoards() { 
-//	update();
-//	for (Move move : availableMoveList_) {
-//		Checkerboard newBoard{ checkerboard_ };
-//		newBoard.executeMove(move);
-//		std::cout << newBoard << std::endl;
-//	}
-//}
-
-
 void Checkers::play() {
 	reset();
 
@@ -116,7 +105,6 @@ std::vector<Move> Checkers::pieceMoves(Checkerboard board, BoardPosition piecePo
 				Move currentMove{ piecePosition, { movePosition }, isCrowningMove(board.getPiece(piecePosition), movePosition) };
 
 				if (canCapture) {
-					//currentMove.capturedPositions = { capturePosition };
 					currentMove.capturedPieces = { Piece{capturePosition, checkerboard_.getPiece(capturePosition)} };
 
 					// for jumps, have to continue jumping until no more jumps available
@@ -131,11 +119,6 @@ std::vector<Move> Checkers::pieceMoves(Checkerboard board, BoardPosition piecePo
 							currentMove.landingPositions.end(),
 							jump.landingPositions.begin(),
 							jump.landingPositions.end());
-
-						/*currentMove.capturedPositions.insert(
-							currentMove.capturedPositions.end(),
-							jump.capturedPositions.begin(),
-							jump.capturedPositions.end());*/
 
 						currentMove.capturedPieces.insert(
 							currentMove.capturedPieces.end(),
@@ -205,8 +188,6 @@ void Checkers::processInput(std::string input) {
 			int moveIndex{ std::stoi(input) - 1};
 			if (-1 < moveIndex && moveIndex < availableMoveList_.size()) {
 				makeMove(availableMoveList_[moveIndex]);
-				/*checkerboard_.executeMove(availableMoveList_[moveIndex]);
-				switchPlayers();*/
 			}
 		}
 	}
@@ -226,9 +207,13 @@ void Checkers::makeMove(Move move) {
 
 
 void Checkers::undo() {
-	if (!previousMoveList_.empty()) {
-		checkerboard_.reverseMove(previousMoveList_.back());
-		previousMoveList_.pop_back();
-		switchPlayers();
+	int movesToReverse{ (opponent_.isUserControlled) ? 1 : 2 };
+
+	if (movesToReverse <= previousMoveList_.size()) {
+		for (int i = 0; i < movesToReverse; ++i) {
+			checkerboard_.reverseMove(previousMoveList_.back());
+			previousMoveList_.pop_back();
+			switchPlayers();
+		}
 	}
 }
