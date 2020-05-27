@@ -41,8 +41,7 @@ private:
 
 
 	// returns the moves a piece is allowed to make
-	std::vector<Move> pieceMoves(Checkerboard board, BoardPosition piecePosition, 
-		int moveDistance, std::vector<int> rowMoves, bool canCapture);
+	std::vector<Move> pieceMoves(Checkerboard board, BoardPosition piecePosition, std::vector<int> rowMoves, bool canCapture);
 
 	bool isCrowningMove(char pieceChar, BoardPosition boardPosition);
 	void switchPlayers();
