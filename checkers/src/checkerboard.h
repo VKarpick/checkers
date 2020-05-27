@@ -21,6 +21,7 @@ public:
 	char getPiece(BoardPosition boardPosition);
 	std::vector<BoardPosition> getPlayerPositions(CheckersPlayer player);
 	void executeMove(Move move);
+	void reverseMove(Move move);
 
 
 private:

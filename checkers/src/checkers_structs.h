@@ -2,11 +2,19 @@
 
 #include <vector>
 
+#include "checkerboard.h"
+
 
 
 struct BoardPosition {
-	int row{ -1 };
-	int column{ -1 };
+	int row;
+	int column;
+};
+
+
+struct Piece {
+	BoardPosition position;
+	char pieceChar;
 };
 
 
@@ -14,6 +22,7 @@ struct BoardPosition {
 struct Move {
 	BoardPosition startPosition;
 	std::vector<BoardPosition> landingPositions;
-	bool isCrowning{ false };
-	std::vector<BoardPosition> capturedPositions{};
+	bool isCrowning;
+	//std::vector<BoardPosition> capturedPositions{};
+	std::vector<Piece> capturedPieces{};
 };

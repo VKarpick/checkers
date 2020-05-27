@@ -60,8 +60,25 @@ void Checkerboard::executeMove(Move move) {
 	board_[move.landingPositions.back().row][move.landingPositions.back().column] = (move.isCrowning) ? toupper(pieceChar) : pieceChar;
 
 	// all captured pieces are removed
-	for (BoardPosition position : move.capturedPositions) {
+	/*for (BoardPosition position : move.capturedPositions) {
 		board_[position.row][position.column] = constants::kOpening;
+	}*/
+	for (Piece capturedPiece : move.capturedPieces) {
+		board_[capturedPiece.position.row][capturedPiece.position.column] = constants::kOpening;
+	}
+}
+
+
+void Checkerboard::reverseMove(Move move) {
+	BoardPosition endPosition{ move.landingPositions.back() };
+	char pieceChar{ getPiece(endPosition) };
+	if (move.isCrowning) pieceChar = tolower(pieceChar);
+
+	board_[move.startPosition.row][move.startPosition.column] = pieceChar;
+	board_[endPosition.row][endPosition.column] = constants::kOpening;
+
+	for (Piece capturedPiece : move.capturedPieces) {
+		board_[capturedPiece.position.row][capturedPiece.position.column] = capturedPiece.pieceChar;
 	}
 }
 

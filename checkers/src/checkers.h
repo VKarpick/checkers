@@ -33,6 +33,8 @@ private:
 	CheckersPlayer& currentPlayer_{ players_[0] };
 	CheckersPlayer& opponent_{ players_[1] };
 	std::vector<Move> availableMoveList_{};
+	std::vector<Move> previousMoveList_{};
+
 
 	// mapping of allowable non-move input to their corresponding functions
 	// eg) "q" -> quit()
@@ -49,4 +51,5 @@ private:
 	void processInput(std::string input);
 	void randomMove();
 	void makeMove(Move move);
+	void undo();
 };

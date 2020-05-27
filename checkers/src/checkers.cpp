@@ -19,21 +19,24 @@ Checkers::Checkers() {
 	inputMap["rand"] = std::bind(&Checkers::randomMove, this);
 	inputMap["random"] = std::bind(&Checkers::randomMove, this);
 	
-	//inputMap["z"] = std::bind(&Checkers::undo, this);
+	inputMap["u"] = std::bind(&Checkers::undo, this); 
+	inputMap["z"] = std::bind(&Checkers::undo, this);
+	inputMap["undo"] = std::bind(&Checkers::undo, this);
+
 	//inputMap["y"] = std::bind(&Checkers::redo, this);
 	//inputMap["n"] = std::bind(&Checkers::newGame, this);
 }
 
 
 //TODO remove this
-void Checkers::printMoveBoards() { 
-	update();
-	for (Move move : availableMoveList_) {
-		Checkerboard newBoard{ checkerboard_ };
-		newBoard.executeMove(move);
-		std::cout << newBoard << std::endl;
-	}
-}
+//void Checkers::printMoveBoards() { 
+//	update();
+//	for (Move move : availableMoveList_) {
+//		Checkerboard newBoard{ checkerboard_ };
+//		newBoard.executeMove(move);
+//		std::cout << newBoard << std::endl;
+//	}
+//}
 
 
 void Checkers::play() {
@@ -51,6 +54,7 @@ void Checkers::reset() {
 	checkerboard_.reset();
 	currentPlayer_ = players_[0];
 	opponent_ = players_[1];
+	previousMoveList_.clear();
 	update();
 }
 
@@ -112,7 +116,8 @@ std::vector<Move> Checkers::pieceMoves(Checkerboard board, BoardPosition piecePo
 				Move currentMove{ piecePosition, { movePosition }, isCrowningMove(board.getPiece(piecePosition), movePosition) };
 
 				if (canCapture) {
-					currentMove.capturedPositions = { capturePosition };
+					//currentMove.capturedPositions = { capturePosition };
+					currentMove.capturedPieces = { Piece{capturePosition, checkerboard_.getPiece(capturePosition)} };
 
 					// for jumps, have to continue jumping until no more jumps available
 					Checkerboard afterMoveBoard = board;
@@ -127,10 +132,15 @@ std::vector<Move> Checkers::pieceMoves(Checkerboard board, BoardPosition piecePo
 							jump.landingPositions.begin(),
 							jump.landingPositions.end());
 
-						currentMove.capturedPositions.insert(
+						/*currentMove.capturedPositions.insert(
 							currentMove.capturedPositions.end(),
 							jump.capturedPositions.begin(),
-							jump.capturedPositions.end());
+							jump.capturedPositions.end());*/
+
+						currentMove.capturedPieces.insert(
+							currentMove.capturedPieces.end(),
+							jump.capturedPieces.begin(),
+							jump.capturedPieces.end());
 
 						currentMove.isCrowning = jump.isCrowning;
 					}
@@ -210,5 +220,15 @@ void Checkers::randomMove() {
 
 void Checkers::makeMove(Move move) {
 	checkerboard_.executeMove(move);
+	previousMoveList_.push_back(move);
 	switchPlayers();
+}
+
+
+void Checkers::undo() {
+	if (!previousMoveList_.empty()) {
+		checkerboard_.reverseMove(previousMoveList_.back());
+		previousMoveList_.pop_back();
+		switchPlayers();
+	}
 }
