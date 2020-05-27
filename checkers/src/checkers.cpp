@@ -72,34 +72,72 @@ void Checkers::update() {
 	std::vector<Move> jumps{};
 	std::vector<Move> steps{};
 
-	for (int row = 0; row < constants::kBoardSize; ++row) {
-		// pieces can only be in every other column
-		for (int column = (row + 1) % 2; column < constants::kBoardSize; column += 2) {
-			BoardPosition piecePosition{ row, column };
-			char pieceChar{ checkerboard_.getPiece(piecePosition) };
-			
-			if (currentPlayer_.hasPiece(pieceChar)) {
-				std::vector<int> rowMoves;
-				if (pieceChar == toupper(pieceChar)) {    // kings can move up or down
-					rowMoves = { -1, 1 };
-				}
-				else {    // regular pieces can only move in one direction
-					rowMoves = { currentPlayer_.verticalDirection };
-				}
+	for (BoardPosition position : checkerboard_.getPlayerPositions(currentPlayer_)) {
+		char pieceChar = checkerboard_.getPiece(position);
+		std::vector<int> rowMoves;
 
-				std::vector<Move> pieceJumps{ pieceMoves(checkerboard_, piecePosition, constants::kJumpDistance, rowMoves, true) };
-				jumps.insert(jumps.end(), pieceJumps.begin(), pieceJumps.end());
+		if (pieceChar == toupper(pieceChar)) {
+			rowMoves = { -1, 1 };    // kings can move up or down
+		}
+		else {
+			rowMoves = { currentPlayer_.verticalDirection };    // regular pieces can only move in their player's direction
+		}
 
-				// jumps are forced so only need to look for steps if no jumps are available
-				if (jumps.empty()) {
-					std::vector<Move> pieceSteps{ pieceMoves(checkerboard_, piecePosition, constants::kStepDistance, rowMoves, false) };
-					steps.insert(steps.end(), pieceSteps.begin(), pieceSteps.end());
-				}
-			}
+		std::vector<Move> pieceJumps{ pieceMoves(checkerboard_, position, constants::kJumpDistance, rowMoves, true) };
+		jumps.insert(jumps.end(), pieceJumps.begin(), pieceJumps.end());
+
+		// jumps are forced so only need to look for steps if no jumps are available
+		if (jumps.empty()) {
+			std::vector<Move> pieceSteps{ pieceMoves(checkerboard_, position, constants::kStepDistance, rowMoves, false) };
+			steps.insert(steps.end(), pieceSteps.begin(), pieceSteps.end());
 		}
 	}
 
 	availableMoveList_ = (jumps.empty()) ? steps : jumps;
+
+	//			std::vector<Move> pieceJumps{ pieceMoves(checkerboard_, piecePosition, constants::kJumpDistance, rowMoves, true) };
+	//			jumps.insert(jumps.end(), pieceJumps.begin(), pieceJumps.end());
+
+	//			// jumps are forced so only need to look for steps if no jumps are available
+	//			if (jumps.empty()) {
+	//				std::vector<Move> pieceSteps{ pieceMoves(checkerboard_, piecePosition, constants::kStepDistance, rowMoves, false) };
+	//				steps.insert(steps.end(), pieceSteps.begin(), pieceSteps.end());
+	//			}
+	//		}
+	//	}
+	//}
+
+	//availableMoveList_ = (jumps.empty()) ? steps : jumps;
+
+
+	//for (int row = 0; row < constants::kBoardSize; ++row) {
+	//	// pieces can only be in every other column
+	//	for (int column = (row + 1) % 2; column < constants::kBoardSize; column += 2) {
+	//		BoardPosition piecePosition{ row, column };
+	//		char pieceChar{ checkerboard_.getPiece(piecePosition) };
+	//		
+	//		if (currentPlayer_.hasPiece(pieceChar)) {
+	//			std::vector<int> rowMoves;
+	//			if (pieceChar == toupper(pieceChar)) {    // kings can move up or down
+	//				rowMoves = { -1, 1 };
+	//			}
+	//			else {    // regular pieces can only move in one direction
+	//				rowMoves = { currentPlayer_.verticalDirection };
+	//			}
+
+	//			std::vector<Move> pieceJumps{ pieceMoves(checkerboard_, piecePosition, constants::kJumpDistance, rowMoves, true) };
+	//			jumps.insert(jumps.end(), pieceJumps.begin(), pieceJumps.end());
+
+	//			// jumps are forced so only need to look for steps if no jumps are available
+	//			if (jumps.empty()) {
+	//				std::vector<Move> pieceSteps{ pieceMoves(checkerboard_, piecePosition, constants::kStepDistance, rowMoves, false) };
+	//				steps.insert(steps.end(), pieceSteps.begin(), pieceSteps.end());
+	//			}
+	//		}
+	//	}
+	//}
+
+	//availableMoveList_ = (jumps.empty()) ? steps : jumps;
 }
 
 

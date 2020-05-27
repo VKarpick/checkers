@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "checkers_player.h"
 #include "checkers_structs.h"
 #include "constants.h"
 
@@ -18,6 +19,7 @@ public:
 
 	void reset();
 	char getPiece(BoardPosition boardPosition);
+	std::vector<BoardPosition> getPlayerPositions(CheckersPlayer player);
 	void executeMove(Move move);
 
 

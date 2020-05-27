@@ -34,6 +34,24 @@ char Checkerboard::getPiece(BoardPosition position) {
 }
 
 
+std::vector<BoardPosition> Checkerboard::getPlayerPositions(CheckersPlayer player) {
+	std::vector<BoardPosition> playerPositions;
+
+	for (size_t row = 0; row < board_.size(); ++row) {
+		// pieces can only be in every other column
+		for (size_t column = (row + 1) % 2; column < board_.size(); column += 2) {
+			BoardPosition piecePosition{ row, column };
+
+			if (player.hasPiece(board_[row][column])) {
+				playerPositions.push_back(piecePosition);
+			}
+		}
+	}
+
+	return playerPositions;
+}
+
+
 void Checkerboard::executeMove(Move move) {
 	char pieceChar{ getPiece(move.startPosition) };
 
