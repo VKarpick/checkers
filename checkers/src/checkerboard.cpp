@@ -55,7 +55,7 @@ std::vector<BoardPosition> Checkerboard::getPlayerPositions(CheckersPlayer playe
 void Checkerboard::executeMove(Move move) {
 	char pieceChar{ getPiece(move.startPosition) };
 
-	// pieces moves from starting position to last landing position
+	// piece moves from starting position to last landing position
 	board_[move.startPosition.row][move.startPosition.column] = constants::kOpening;
 	board_[move.landingPositions.back().row][move.landingPositions.back().column] = (move.isCrowning) ? toupper(pieceChar) : pieceChar;
 
@@ -69,11 +69,14 @@ void Checkerboard::executeMove(Move move) {
 void Checkerboard::reverseMove(Move move) {
 	BoardPosition endPosition{ move.landingPositions.back() };
 	char pieceChar{ getPiece(endPosition) };
+	
 	if (move.isCrowning) pieceChar = tolower(pieceChar);
 
+	// move piece back to its starting position
 	board_[move.startPosition.row][move.startPosition.column] = pieceChar;
 	board_[endPosition.row][endPosition.column] = constants::kOpening;
 
+	// add each captured piece back
 	for (Piece capturedPiece : move.capturedPieces) {
 		board_[capturedPiece.position.row][capturedPiece.position.column] = capturedPiece.pieceChar;
 	}

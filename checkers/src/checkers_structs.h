@@ -2,14 +2,18 @@
 
 #include <vector>
 
-#include "checkerboard.h"
-
 
 
 struct BoardPosition {
 	int row;
 	int column;
+
+
+	bool operator==(const BoardPosition& boardPosition) const {
+		return row == boardPosition.row && column == boardPosition.column;
+	}
 };
+
 
 
 struct Piece {
@@ -24,4 +28,9 @@ struct Move {
 	std::vector<BoardPosition> landingPositions;
 	bool isCrowning;
 	std::vector<Piece> capturedPieces{};
+
+
+	bool operator==(const Move& move) const {
+		return startPosition == move.startPosition && landingPositions == move.landingPositions;
+	}
 };

@@ -25,7 +25,7 @@ public:
 
 private:
 	Checkerboard checkerboard_;
-	std::vector<CheckersPlayer> players_{ CheckersPlayer('r', -1, true), CheckersPlayer('w', 1, true)};
+	std::vector<CheckersPlayer> players_{ CheckersPlayer('r', -1, true), CheckersPlayer('w', 1, false)};
 	CheckersPlayer& currentPlayer_{ players_[0] };
 	CheckersPlayer& opponent_{ players_[1] };
 	std::vector<Move> availableMoveList_{};
@@ -47,7 +47,8 @@ private:
 	std::string getUserInput();
 	void processInput(std::string input);
 	void randomMove();
-	void makeMove(Move move, bool isNewMove);
+	void makeMove(Move move, bool isNewMove = true);
 	void undo();
 	void redo();
+	std::string aiInput();
 };

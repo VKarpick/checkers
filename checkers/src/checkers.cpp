@@ -39,7 +39,14 @@ void Checkers::play() {
 
 	while (!availableMoveList_.empty()) {
 		render();
-		processInput(getUserInput());
+		std::string input;
+		if (currentPlayer_.isUserControlled) {
+			input = getUserInput();
+		}
+		else {
+			input = aiInput();
+		}
+		processInput(input);
 		update();
 	}
 }
@@ -191,12 +198,15 @@ std::string Checkers::getUserInput() {
 
 void Checkers::processInput(std::string input) {
 	if (inputMap.count(input) == 1) {
+		// pre-defined allowable input
 		inputMap[input]();
 	}
 	else {
 		if (isInt(input)) {
 			int moveIndex{ std::stoi(input) - 1};
 			if (-1 < moveIndex && moveIndex < availableMoveList_.size()) {
+				
+				// number representing which available move to make
 				makeMove(availableMoveList_[moveIndex], true);
 			}
 		}
@@ -211,20 +221,21 @@ void Checkers::randomMove() {
 
 void Checkers::makeMove(Move move, bool isNewMove) {
 	checkerboard_.executeMove(move);
-	previousMoveList_.push_back(move);
-	if (isNewMove) redoMoveList_.clear();
+	previousMoveList_.push_back(move);    // update for potential undo
+	if (isNewMove) redoMoveList_.clear();    // if not a redo, need to clear the redo list
 	switchPlayers();
 }
 
 
 void Checkers::undo() {
+	// if single player game, need to reverse 2 moves to get back to user's last play
 	int movesToReverse{ (opponent_.isUserControlled) ? 1 : 2 };
 
 	if (movesToReverse <= previousMoveList_.size()) {
 		for (int i = 0; i < movesToReverse; ++i) {
 			Move move{ previousMoveList_.back() };
 			checkerboard_.reverseMove(move);
-			redoMoveList_.push_back(move);
+			redoMoveList_.push_back(move);    // update for potential redo
 			previousMoveList_.pop_back();
 			switchPlayers();
 		}
@@ -234,10 +245,16 @@ void Checkers::undo() {
 
 void Checkers::redo() {
 	if (!redoMoveList_.empty()) {
+		// if single player game, redo 2 moves to avoid changing ai recalculating
 		int movesToRedo{ (opponent_.isUserControlled) ? 1 : 2 };
 		for (int i = 0; i < movesToRedo; ++i) {
 			makeMove(redoMoveList_.front(), false);
 			redoMoveList_.erase(redoMoveList_.begin());
 		}
 	}
+}
+
+
+std::string Checkers::aiInput() {
+	return "r";
 }
