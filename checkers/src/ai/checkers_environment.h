@@ -37,7 +37,7 @@ public:
 	std::vector<Action*> getActions() override;
 	std::vector<Action*> getActions(State* state) override;
 	std::vector<double> featurize(State* state) override;
-	std::vector<std::string> convertBoardToState(State* state);
+	std::vector<std::string> convertStateToBoard(State* state);
 	Player* opponent(Player* current_player);
 
 

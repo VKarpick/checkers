@@ -12,9 +12,22 @@
 
 
 
+// break these out of class for easy use with checkers_environment
+// returns the moves a piece is allowed to make
+std::vector<Move> pieceMoves(Checkerboard board, CheckersPlayer currentPlayer, BoardPosition piecePosition, 
+	std::vector<int> rowMoves, bool canCapture);
+
+// returns the moves allowable moves from the current board
+std::vector<Move> boardMoves(Checkerboard board, CheckersPlayer currentPlayer, CheckersPlayer opponent);
+
+
+
 class Checkers {
 public:
 	Checkers();
+
+
+	std::vector<Move> getAvailableMoveList();
 
 
 	void play();
@@ -38,10 +51,10 @@ private:
 	std::map<std::string, std::function<void()>> inputMap;
 
 
-	// returns the moves a piece is allowed to make
-	std::vector<Move> pieceMoves(Checkerboard board, BoardPosition piecePosition, std::vector<int> rowMoves, bool canCapture);
+	//// returns the moves a piece is allowed to make
+	//std::vector<Move> pieceMoves(Checkerboard board, BoardPosition piecePosition, std::vector<int> rowMoves, bool canCapture);
 
-	bool isCrowningMove(char pieceChar, BoardPosition boardPosition);
+	//bool isCrowningMove(char pieceChar, BoardPosition boardPosition);
 	void switchPlayers();
 	void render();
 	std::string getUserInput();

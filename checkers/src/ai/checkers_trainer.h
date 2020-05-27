@@ -10,6 +10,7 @@
 
 
 // how Checkers AI was actually trained
+// used max depth of 6, trained for _ episodes    <-------------    TODO fill in the blank
 // automatically defaults to TD Leaf - if using with max depth < 6, have to initialize weights to something other than zero
 // otherwise, will continually force draws and never update weights
 class CheckersTrainer {

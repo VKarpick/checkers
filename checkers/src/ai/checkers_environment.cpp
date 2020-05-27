@@ -2,7 +2,6 @@
 #include <iostream>
 
 
-
 std::vector<std::vector<std::string>> pieceMoves(
 	std::vector<std::string> startBoard, std::vector<int> rowSteps, int row, int column, int newDistance, int captureDistance) {
 
@@ -90,6 +89,7 @@ State* CheckersEnvironment::reset() {
 
 State* CheckersEnvironment::step(Action* action) {
 	std::vector<std::string> observation = std::any_cast<std::vector<std::string>>(action->action);
+
 	for (auto row : observation) {
 		std::cout << row << std::endl;
 	}
@@ -123,7 +123,7 @@ std::vector<Action*> CheckersEnvironment::getActions() {
 
 std::vector<Action*> CheckersEnvironment::getActions(State* state) {
 	std::vector<Action*> actions;
-	std::vector<std::string> currentBoard{ convertBoardToState(state) };
+	std::vector<std::string> currentBoard{ convertStateToBoard(state) };
 	char player{ std::any_cast<char>(state->currentPlayer->player) };
 
 	for (std::vector<std::string> board : boardActions(currentBoard, player)) {
@@ -136,7 +136,7 @@ std::vector<Action*> CheckersEnvironment::getActions(State* state) {
 
 std::vector<double> CheckersEnvironment::featurize(State* state) {
 	std::vector<double> features;
-	std::vector<std::string> board{ convertBoardToState(state) };
+	std::vector<std::string> board{ convertStateToBoard(state) };
 	for (size_t row = 2; row < board.size() - 2; ++row) {
 		for (size_t column = 2 + (row + 1) % 2; column < board[row].size() - 2; column += 2) {
 			for (char piece : {'r', 'R', 'w', 'W'}) {
@@ -148,7 +148,7 @@ std::vector<double> CheckersEnvironment::featurize(State* state) {
 }
 
 
-std::vector<std::string> CheckersEnvironment::convertBoardToState(State* state) {
+std::vector<std::string> CheckersEnvironment::convertStateToBoard(State* state) {
 	return std::any_cast<std::vector<std::string>>(state->observation);
 }
 
