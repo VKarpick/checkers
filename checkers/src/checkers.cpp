@@ -26,7 +26,11 @@ Checkers::Checkers() {
 	inputMap["y"] = std::bind(&Checkers::redo, this);
 	inputMap["redo"] = std::bind(&Checkers::redo, this);
 
-	//inputMap["n"] = std::bind(&Checkers::newGame, this);
+	// change this to new game screen when have states
+	inputMap["n"] = std::bind(&Checkers::play, this);
+	inputMap["new"] = std::bind(&Checkers::play, this);
+	inputMap["newgame"] = std::bind(&Checkers::play, this);
+	inputMap["new game"] = std::bind(&Checkers::play, this);
 }
 
 
@@ -177,7 +181,10 @@ std::string Checkers::getUserInput() {
 	std::cin.clear();
 	std::string userInput;
 	std::getline(std::cin, userInput);
-	//TODO convert input to lowercase
+	
+	// convert to lower case
+	std::transform(userInput.begin(), userInput.end(), userInput.begin(), [](unsigned char c) { return tolower(c); });
+	
 	return userInput;
 }
 
