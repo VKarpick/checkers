@@ -14,7 +14,11 @@ Checkers::Checkers() {
 	inputMap["q"] = std::bind(&Checkers::quit, this);
 	inputMap["quit"] = std::bind(&Checkers::quit, this);
 	inputMap["exit"] = std::bind(&Checkers::quit, this);
-	//inputMap["r"] = std::bind(&Checkers::randomMove, this);
+	
+	inputMap["r"] = std::bind(&Checkers::randomMove, this);
+	inputMap["rand"] = std::bind(&Checkers::randomMove, this);
+	inputMap["random"] = std::bind(&Checkers::randomMove, this);
+	
 	//inputMap["z"] = std::bind(&Checkers::undo, this);
 	//inputMap["y"] = std::bind(&Checkers::redo, this);
 	//inputMap["n"] = std::bind(&Checkers::newGame, this);
@@ -32,30 +36,13 @@ void Checkers::printMoveBoards() {
 }
 
 
-//TODO remove this
-void Checkers::boardTry() {
-	/*currentPlayerChar_ = 'w';
-	opponentChar_ = 'r';*/
-	checkerboard_ = { Checkerboard({
-		" w w - w",
-		"w w w w ",
-		" w - w r",
-		"- w w - ",
-		" - - - -",
-		"r w w r ",
-		" - - w r",
-		"r r r - ",
-	} ) };
-}
-
-
 void Checkers::play() {
 	reset();
 
 	while (!availableMoveList_.empty()) {
-		update();
 		render();
 		processInput(getUserInput());
+		update();
 	}
 }
 
@@ -99,13 +86,6 @@ void Checkers::update() {
 
 void Checkers::quit() {
 	exit(0);
-}
-
-
-void Checkers::executeInputMove(int moveIndex) {
-	update();
-	checkerboard_.executeMove(availableMoveList_[moveIndex]);
-	switchPlayers();
 }
 
 
@@ -214,9 +194,21 @@ void Checkers::processInput(std::string input) {
 		if (isInt(input)) {
 			int moveIndex{ std::stoi(input) - 1};
 			if (-1 < moveIndex && moveIndex < availableMoveList_.size()) {
-				checkerboard_.executeMove(availableMoveList_[moveIndex]);
-				switchPlayers();
+				makeMove(availableMoveList_[moveIndex]);
+				/*checkerboard_.executeMove(availableMoveList_[moveIndex]);
+				switchPlayers();*/
 			}
 		}
 	}
+}
+
+
+void Checkers::randomMove() {
+	makeMove(availableMoveList_[rand() % availableMoveList_.size()]);
+}
+
+
+void Checkers::makeMove(Move move) {
+	checkerboard_.executeMove(move);
+	switchPlayers();
 }

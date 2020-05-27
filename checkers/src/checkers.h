@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <functional>
 #include <map>
+#include <random>
 
 #include "checkerboard.h"
 #include "checkers_player.h"
@@ -24,8 +25,6 @@ public:
 
 	//TODO remove these
 	void printMoveBoards();
-	void boardTry();
-	void executeInputMove(int moveIndex);
 
 
 private:
@@ -48,4 +47,6 @@ private:
 	void render();
 	std::string getUserInput();
 	void processInput(std::string input);
+	void randomMove();
+	void makeMove(Move move);
 };
