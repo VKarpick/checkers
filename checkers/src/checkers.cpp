@@ -12,6 +12,12 @@ bool isInt(const std::string& s) {
 
 Checkers::Checkers() {
 	inputMap["q"] = std::bind(&Checkers::quit, this);
+	inputMap["quit"] = std::bind(&Checkers::quit, this);
+	inputMap["exit"] = std::bind(&Checkers::quit, this);
+	//inputMap["r"] = std::bind(&Checkers::randomMove, this);
+	//inputMap["z"] = std::bind(&Checkers::undo, this);
+	//inputMap["y"] = std::bind(&Checkers::redo, this);
+	//inputMap["n"] = std::bind(&Checkers::newGame, this);
 }
 
 
@@ -28,8 +34,8 @@ void Checkers::printMoveBoards() {
 
 //TODO remove this
 void Checkers::boardTry() {
-	currentPlayerChar_ = 'w';
-	opponentChar_ = 'r';
+	/*currentPlayerChar_ = 'w';
+	opponentChar_ = 'r';*/
 	checkerboard_ = { Checkerboard({
 		" w w - w",
 		"w w w w ",
@@ -56,8 +62,8 @@ void Checkers::play() {
 
 void Checkers::reset() {
 	checkerboard_.reset();
-	currentPlayerChar_ = constants::kPlayerChars[0];
-	opponentChar_ = constants::kPlayerChars[1];
+	currentPlayer_ = players_[0];
+	opponent_ = players_[1];
 	update();
 }
 
@@ -72,8 +78,14 @@ void Checkers::update() {
 			BoardPosition piecePosition{ row, column };
 			char pieceChar{ checkerboard_.getPiece(piecePosition) };
 			
-			if (tolower(pieceChar) == currentPlayerChar_) {
-				std::vector<int> rowMoves{ allowableRowMoves(pieceChar) };
+			if (currentPlayer_.hasPiece(pieceChar)) {
+				std::vector<int> rowMoves;
+				if (pieceChar == toupper(pieceChar)) {    // kings can move up or down
+					rowMoves = { -1, 1 };
+				}
+				else {    // regular pieces can only move in one direction
+					rowMoves = { currentPlayer_.verticalDirection };
+				}
 
 				std::vector<Move> pieceJumps{ pieceMoves(checkerboard_, piecePosition, constants::kJumpDistance, rowMoves, true) };
 				jumps.insert(jumps.end(), pieceJumps.begin(), pieceJumps.end());
@@ -99,20 +111,7 @@ void Checkers::quit() {
 void Checkers::executeInputMove(int moveIndex) {
 	update();
 	checkerboard_.executeMove(availableMoveList_[moveIndex]);
-	std::swap(currentPlayerChar_, opponentChar_);
-}
-
-
-std::vector<int> Checkers::allowableRowMoves(char pieceChar) {
-	if (pieceChar == constants::kPlayerChars[0]) {
-		return { -1 };    // first player can only move up
-	}
-	else if (pieceChar == constants::kPlayerChars[1]) {
-		return { 1 };    // second player can only move down
-	}
-	else {
-		return { -1, 1 };    // kings can move up or down
-	}
+	switchPlayers();
 }
 
 
@@ -133,7 +132,7 @@ std::vector<Move> Checkers::pieceMoves(Checkerboard board, BoardPosition piecePo
 				capturePosition.row = piecePosition.row + rowMove * constants::kCaptureDistance;
 				capturePosition.column = piecePosition.column + columnMove * constants::kCaptureDistance;
 				// can only capture if opponent's piece in capturePosition
-				captureAvailable = tolower(board.getPiece(capturePosition)) == opponentChar_ ;
+				captureAvailable = opponent_.hasPiece(board.getPiece(capturePosition));
 			}
 
 			if (moveAvailable && captureAvailable) {
@@ -183,11 +182,12 @@ bool Checkers::isCrowningMove(char pieceChar, BoardPosition boardPosition) {
 
 
 void Checkers::switchPlayers() {
-	std::swap(currentPlayerChar_, opponentChar_);
+	std::swap(currentPlayer_, opponent_);
 }
 
 
 void Checkers::render() {
+	//TODO split this into renderBoard and renderOptions
 	std::cout << std::endl;
 	std::cout << checkerboard_ << std::endl;
 
@@ -208,6 +208,7 @@ std::string Checkers::getUserInput() {
 	std::cin.clear();
 	std::string userInput;
 	std::getline(std::cin, userInput);
+	//TODO convert input to lowercase
 	return userInput;
 }
 

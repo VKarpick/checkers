@@ -6,7 +6,7 @@
 
 
 namespace constants {
-	const std::string kPlayerChars{ "rw" };    // players are red and white, represented by first letter
+	//const std::string kPlayerChars{ "rw" };    // players are red and white, represented by first letter
 	constexpr char kOpening{ '-' };    // how available spots on the board are represented
 	constexpr int kBoardSize{ 8 };    // checkerboards are 8x8
 	constexpr int kStepDistance{ 1 };    // how far a piece is allowed to step
@@ -23,8 +23,4 @@ namespace constants {
 		" r r r r",
 		"r r r r ",
 	};
-	//const std::vector<std::string> kAllowableInput{    // what the user is allowed to enter outside of numbers
-	//	"q", "Q",    // quit
-
-	//};
 }
