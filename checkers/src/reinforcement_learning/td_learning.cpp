@@ -16,6 +16,10 @@ TDLambda::TDLambda(std::shared_ptr<Environment> environment, std::shared_ptr<Est
 {}
 
 
+TDLambda::~TDLambda() {
+	delete[] policy_;
+}
+
 
 void TDLambda::train(int nEpisodes, bool isPrintingUpdates) {
 	for (int episodeNo = 0; episodeNo < nEpisodes; ++episodeNo) {

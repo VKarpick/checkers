@@ -61,12 +61,12 @@ void CheckersTrainer::writeWeights(std::string filename, std::vector<double> wei
 
 
 void CheckersTrainer::train() {
-    CheckersEnvironment checkersEnvironment;
-    std::shared_ptr<State> state{ checkersEnvironment.reset() };
+    std::shared_ptr<CheckersEnvironment> checkersEnvironment{ std::make_shared<CheckersEnvironment>() };
+    std::shared_ptr<State> state{ checkersEnvironment->reset() };
 
     if (!readFilename_.empty()) weights_ = readWeights(readFilename_);
-    
-    unsigned int featureSize{ checkersEnvironment.featurize(state).size() };
+
+    unsigned int featureSize{ checkersEnvironment->featurize(state).size() };
     bool hasCorrectSize{ weights_.size() == featureSize };
     if (!weights_.empty() && !hasCorrectSize) {
         std::cout << "Weights from file not of right size.  Weights will be initialized to zero." << std::endl;
@@ -77,11 +77,10 @@ void CheckersTrainer::train() {
 
     if (!hasCorrectSize) weights_.assign(featureSize, 0);
 
-    TDEstimator estimator(stepSize_, weights_, true);
-    Player maxPlayer{ checkersEnvironment.getPlayers()[0] };
-    TDLeaf td_leaf(std::make_shared<CheckersEnvironment>(checkersEnvironment), std::make_shared<TDEstimator>(estimator), 
-        std::make_shared<Player>(maxPlayer), maxDepth_);
+    std::shared_ptr<TDEstimator> estimator{ std::make_shared<TDEstimator>(stepSize_, weights_, true) };
+    std::shared_ptr<Player> maxPlayer{ std::make_shared<Player>(Player{ checkersEnvironment->getPlayers()[0] }) };
+    TDLeaf td_leaf(checkersEnvironment, estimator, maxPlayer, maxDepth_);
     td_leaf.train(nEpisodes_, isPrintingEpisodes_);
     
-    if (writeFilename_ != "") writeWeights(writeFilename_, estimator.getWeights());
+    if (writeFilename_ != "") writeWeights(writeFilename_, estimator->getWeights());
 }

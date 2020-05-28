@@ -14,13 +14,16 @@ public:
 		Policy* policy, double discountFactor = 1.0, double traceDecay = 1.0);
 
 
+	~TDLambda();
+
+
 	void train(int nEpisodes = 1, bool isPrintingUpdates = false);
 
 
 protected:
 	std::shared_ptr<Environment> environment_{ nullptr };
 	std::shared_ptr<Estimator> estimator_{ nullptr };
-	Policy* policy_{ nullptr };
+	Policy* policy_{ nullptr };    // can't seem to use smart pointer without causing issues to lambda expressions in MinimaxPolicy
 	double discountFactor_{ 1.0 };    // gamma
 	double traceDecay_{ 1.0 };    // lambda
 };
