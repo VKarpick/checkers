@@ -71,8 +71,4 @@ private:
 	int maxDepth_{ 1 };
 	std::shared_ptr<Node<StateActionPair>> node_{ nullptr };
 	std::unique_ptr<Minimax<StateActionPair>> minimax_{ nullptr };
-
-	// functions to be passed to minimax algorithm
-	double computeNodeValue(std::shared_ptr<Node<StateActionPair>> node);
-	void extendTree(std::shared_ptr<Node<StateActionPair>> node);
 };

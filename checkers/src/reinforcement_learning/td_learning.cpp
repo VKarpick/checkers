@@ -6,7 +6,7 @@ TDLambda::TDLambda() {}
 
 
 TDLambda::TDLambda(std::shared_ptr<Environment> environment, std::shared_ptr<Estimator> estimator, 
-	Policy* policy, double discountFactor, double traceDecay) :
+	std::shared_ptr<Policy> policy, double discountFactor, double traceDecay) :
 	
 	environment_(environment),
 	estimator_(estimator),
@@ -14,11 +14,6 @@ TDLambda::TDLambda(std::shared_ptr<Environment> environment, std::shared_ptr<Est
 	discountFactor_(discountFactor),
 	traceDecay_(traceDecay)
 {}
-
-
-TDLambda::~TDLambda() {
-	delete[] policy_;
-}
 
 
 void TDLambda::train(int nEpisodes, bool isPrintingUpdates) {
@@ -56,7 +51,7 @@ TDLeaf::TDLeaf(std::shared_ptr<Environment> environment, std::shared_ptr<Estimat
 	
 	environment_ = environment;
 	estimator_ = estimator;
-	policy_ = new MinimaxPolicy(environment_, estimator_, maxPlayer, maxDepth);
+	policy_ = std::make_shared<MinimaxPolicy>(MinimaxPolicy(environment_, estimator_, maxPlayer, maxDepth));
 	discountFactor_ = discountFactor;
 	traceDecay_ = traceDecay;
 }

@@ -34,9 +34,20 @@ MinimaxPolicy::MinimaxPolicy(std::shared_ptr<Environment> environment, std::shar
 	maxDepth_(maxDepth)
 {
 	minimax_ = std::make_unique<Minimax<StateActionPair>>(Minimax<StateActionPair>(
-		[this](std::shared_ptr<Node<StateActionPair>> node) { return computeNodeValue(node); },
+		// a state's value is the estimator's predicted value for that state
+		[environment, estimator](std::shared_ptr<Node<StateActionPair>> node) {
+			std::vector<double> features = environment->featurize(node->getData().state);
+			return estimator->predict(features);
+		},
 		maxDepth_, 
-		[this](std::shared_ptr<Node<StateActionPair>> node) { extendTree(node); }
+		// add children for every possible action from the current state
+		[environment](std::shared_ptr<Node<StateActionPair>> node) {
+			for (std::shared_ptr<Action> action : environment->getActions(node->getData().state)) {
+				std::shared_ptr<State> next_state = environment->step(node->getData().state, action);
+				std::shared_ptr<Node<StateActionPair>> child = std::make_shared<Node<StateActionPair>>(StateActionPair{ next_state, action });
+				node->addChild(child);
+			}
+		}
 	));
 }
 
@@ -58,21 +69,4 @@ std::shared_ptr<Action> MinimaxPolicy::actionSelection(std::shared_ptr<State> st
 void MinimaxPolicy::resetNode(std::shared_ptr<State> state) {
 	// nodes have StateActionPair as type to provide easy retrieval of action from child node that minimax gives highest value to
 	node_ = std::make_shared<Node<StateActionPair>>(StateActionPair{ state, nullptr });
-}
-
-
-// a state's value is the estimator's predicted value for that state
-double MinimaxPolicy::computeNodeValue(std::shared_ptr<Node<StateActionPair>> node) {
-	std::vector<double> features = environment_->featurize(node->getData().state);
-	return estimator_->predict(features);
-}
-
-
-// add children for every possible action from the current state
-void MinimaxPolicy::extendTree(std::shared_ptr<Node<StateActionPair>> node) {
-	for (std::shared_ptr<Action> action : environment_->getActions(node->getData().state)) {
-		std::shared_ptr<State> next_state = environment_->step(node->getData().state, action);
-		std::shared_ptr<Node<StateActionPair>> child = std::make_shared<Node<StateActionPair>>(StateActionPair{ next_state, action });
-		node->addChild(child);
-	}
 }
