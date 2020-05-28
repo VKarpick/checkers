@@ -10,16 +10,17 @@
 class TDLambda {
 public:
 	TDLambda();
-	TDLambda(Environment* environment, Estimator* estimator, Policy* policy, double discountFactor = 1.0, double traceDecay = 1.0);
+	TDLambda(std::shared_ptr<Environment> environment, std::shared_ptr<Estimator> estimator, 
+		std::shared_ptr<Policy> policy, double discountFactor = 1.0, double traceDecay = 1.0);
 
 
 	void train(int nEpisodes = 1, bool isPrintingUpdates = false);
 
 
 protected:
-	Environment* environment_{ nullptr };
-	Estimator* estimator_{ nullptr };
-	Policy* policy_{ nullptr };
+	std::shared_ptr<Environment> environment_{ nullptr };
+	std::shared_ptr<Estimator> estimator_{ nullptr };
+	std::shared_ptr<Policy> policy_{ nullptr };
 	double discountFactor_{ 1.0 };    // gamma
 	double traceDecay_{ 1.0 };    // lambda
 };
@@ -28,7 +29,6 @@ protected:
 
 class TDLeaf : public TDLambda {
 public:
-	//TDLeaf(Environment* environment, Estimator* estimator, Player* maxPlayer, int maxDepth = 1,
-	TDLeaf(Environment* environment, Estimator* estimator, std::shared_ptr<Player> maxPlayer, int maxDepth = 1,
-		double discountFactor = 1.0, double traceDecay = 0.86);
+	TDLeaf(std::shared_ptr<Environment> environment, std::shared_ptr<Estimator> estimator, 
+		std::shared_ptr<Player> maxPlayer, int maxDepth = 1, double discountFactor = 1.0, double traceDecay = 0.86);
 };

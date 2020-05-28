@@ -28,18 +28,9 @@ const std::vector<std::string> kDefaultBoard{
 
 class CheckersEnvironment : public Environment {
 public:
-	//std::vector<Player*> getPlayers();
 	std::vector<std::shared_ptr<Player>> getPlayers();
 
 	
-	/*State* reset() override;
-	State* step(Action* action) override;
-	State* step(State* state, Action* action) override;
-	std::vector<Action*> getActions() override;
-	std::vector<Action*> getActions(State* state) override;
-	std::vector<double> featurize(State* state) override;
-	std::vector<std::string> convertStateToBoard(State* state);
-	Player* opponent(Player* current_player);*/
 	std::shared_ptr<State> reset() override;
 	std::shared_ptr<State> step(std::shared_ptr<Action> action) override;
 	std::shared_ptr<State> step(std::shared_ptr<State> state, std::shared_ptr<Action> action) override;

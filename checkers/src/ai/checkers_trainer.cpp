@@ -62,7 +62,6 @@ void CheckersTrainer::writeWeights(std::string filename, std::vector<double> wei
 
 void CheckersTrainer::train() {
     CheckersEnvironment checkersEnvironment;
-    //State* state{ checkersEnvironment.reset() };
     std::shared_ptr<State> state{ checkersEnvironment.reset() };
 
     if (!readFilename_.empty()) weights_ = readWeights(readFilename_);
@@ -79,7 +78,9 @@ void CheckersTrainer::train() {
     if (!hasCorrectSize) weights_.assign(featureSize, 0);
 
     TDEstimator estimator(stepSize_, weights_, true);
-    TDLeaf td_leaf(&checkersEnvironment, &estimator, checkersEnvironment.getPlayers()[0], maxDepth_);
+    Player maxPlayer{ checkersEnvironment.getPlayers()[0] };
+    TDLeaf td_leaf(std::make_shared<CheckersEnvironment>(checkersEnvironment), std::make_shared<TDEstimator>(estimator), 
+        std::make_shared<Player>(maxPlayer), maxDepth_);
     td_leaf.train(nEpisodes_, isPrintingEpisodes_);
     
     if (writeFilename_ != "") writeWeights(writeFilename_, estimator.getWeights());

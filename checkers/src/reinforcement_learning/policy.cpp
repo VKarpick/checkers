@@ -3,7 +3,7 @@
 
 
 Policy::Policy() {}
-Policy::Policy(Environment* environment) : environment_(environment) {}
+Policy::Policy(std::shared_ptr<Environment> environment) : environment_(environment) {}
 
 
 std::shared_ptr<Node<StateActionPair>> Policy::getNode() {
@@ -12,12 +12,10 @@ std::shared_ptr<Node<StateActionPair>> Policy::getNode() {
 
 
 
-RandomWalkPolicy::RandomWalkPolicy(Environment* environment) : environment_(environment) {}
+RandomWalkPolicy::RandomWalkPolicy(std::shared_ptr<Environment> environment) : environment_(environment) {}
 
 
-//Action* RandomWalkPolicy::actionSelection(State* state) {
 std::shared_ptr<Action> RandomWalkPolicy::actionSelection(std::shared_ptr<State> state) {
-	//std::vector<Action*> actions = environment_->getActions();
 	std::vector<std::shared_ptr<Action>> actions = environment_->getActions();
 	if (!actions.empty()) {
 		int randomIndex = rand() % actions.size();
@@ -28,18 +26,18 @@ std::shared_ptr<Action> RandomWalkPolicy::actionSelection(std::shared_ptr<State>
 
 
 
-//MinimaxPolicy::MinimaxPolicy(Environment* environment, Estimator* estimator, Player* maxPlayer, int maxDepth) :
-MinimaxPolicy::MinimaxPolicy(Environment* environment, Estimator* estimator, std::shared_ptr<Player> maxPlayer, int maxDepth) :
+MinimaxPolicy::MinimaxPolicy(std::shared_ptr<Environment> environment, std::shared_ptr<Estimator> estimator, 
+	std::shared_ptr<Player> maxPlayer, int maxDepth) :
 	environment_(environment),
 	estimator_(estimator),
 	maxPlayer_(maxPlayer),
 	maxDepth_(maxDepth)
 {
-	minimax_ = new Minimax<StateActionPair>(
+	minimax_ = std::make_unique<Minimax<StateActionPair>>(Minimax<StateActionPair>(
 		[this](std::shared_ptr<Node<StateActionPair>> node) { return computeNodeValue(node); },
 		maxDepth_, 
 		[this](std::shared_ptr<Node<StateActionPair>> node) { extendTree(node); }
-	);
+	));
 }
 
 
@@ -48,7 +46,6 @@ std::shared_ptr<Node<StateActionPair>> MinimaxPolicy::getNode() {
 }
 
 
-//Action* MinimaxPolicy::actionSelection(State* state) {
 std::shared_ptr<Action> MinimaxPolicy::actionSelection(std::shared_ptr<State> state) {
 	// StateActionPair of node has to reflect current state to provide accurate action selection
 	if (node_ == nullptr || node_->getData().state != state) resetNode(state);
@@ -58,7 +55,6 @@ std::shared_ptr<Action> MinimaxPolicy::actionSelection(std::shared_ptr<State> st
 }
 
 
-//void MinimaxPolicy::resetNode(State* state) {
 void MinimaxPolicy::resetNode(std::shared_ptr<State> state) {
 	// nodes have StateActionPair as type to provide easy retrieval of action from child node that minimax gives highest value to
 	node_ = std::make_shared<Node<StateActionPair>>(StateActionPair{ state, nullptr });
@@ -74,9 +70,7 @@ double MinimaxPolicy::computeNodeValue(std::shared_ptr<Node<StateActionPair>> no
 
 // add children for every possible action from the current state
 void MinimaxPolicy::extendTree(std::shared_ptr<Node<StateActionPair>> node) {
-	//for (Action* action : environment_->getActions(node->getData().state)) {
 	for (std::shared_ptr<Action> action : environment_->getActions(node->getData().state)) {
-		/*State* next_state = environment_->step(node->getData().state, action);*/
 		std::shared_ptr<State> next_state = environment_->step(node->getData().state, action);
 		std::shared_ptr<Node<StateActionPair>> child = std::make_shared<Node<StateActionPair>>(StateActionPair{ next_state, action });
 		node->addChild(child);
