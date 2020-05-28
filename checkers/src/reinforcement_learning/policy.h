@@ -10,8 +10,10 @@
 
 
 struct StateActionPair {
-	State* state;
-	Action* action;
+	/*State* state;
+	Action* action;*/
+	std::shared_ptr<State> state;
+	std::shared_ptr<Action> action;
 };
 
 
@@ -26,7 +28,8 @@ public:
 	virtual std::shared_ptr<Node<StateActionPair>> getNode();    // only necessary for MinimaxPolicy
 	
 	
-	virtual Action* actionSelection(State* state) = 0;
+	//virtual Action* actionSelection(State* state) = 0;
+	virtual std::shared_ptr<Action> actionSelection(std::shared_ptr<State> state) = 0;
 
 
 protected:
@@ -41,7 +44,8 @@ public:
 	RandomWalkPolicy(Environment* env);
 
 
-	Action* actionSelection(State* state) override;
+	//Action* actionSelection(State* state) override;
+	std::shared_ptr<Action> actionSelection(std::shared_ptr<State> state) override;
 
 	
 private:
@@ -53,20 +57,24 @@ private:
 // use minimax to choose actions
 class MinimaxPolicy : public Policy {
 public:
-	MinimaxPolicy(Environment* environment, Estimator* estimator, Player* maxPlayer, int maxDepth = 1);
+	//MinimaxPolicy(Environment* environment, Estimator* estimator, Player* maxPlayer, int maxDepth = 1);
+	MinimaxPolicy(Environment* environment, Estimator* estimator, std::shared_ptr<Player> maxPlayer, int maxDepth = 1);
 
 
 	std::shared_ptr<Node<StateActionPair>> getNode();
 
 
-	Action* actionSelection(State* state) override;
-	void resetNode(State* state);
+	//Action* actionSelection(State* state) override;
+	std::shared_ptr<Action> actionSelection(std::shared_ptr<State> state) override;
+	//void resetNode(State* state);
+	void resetNode(std::shared_ptr<State> state);
 
 
 private:
 	Environment* environment_{ nullptr };
 	Estimator* estimator_{ nullptr };
-	Player* maxPlayer_{ nullptr };
+	//Player* maxPlayer_{ nullptr };
+	std::shared_ptr<Player> maxPlayer_{ nullptr };
 	int maxDepth_{ 1 };
 	std::shared_ptr<Node<StateActionPair>> node_{ nullptr };
 	Minimax<StateActionPair>* minimax_{ nullptr };

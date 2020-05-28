@@ -28,21 +28,30 @@ const std::vector<std::string> kDefaultBoard{
 
 class CheckersEnvironment : public Environment {
 public:
-	std::vector<Player*> getPlayers();
+	//std::vector<Player*> getPlayers();
+	std::vector<std::shared_ptr<Player>> getPlayers();
 
 	
-	State* reset() override;
+	/*State* reset() override;
 	State* step(Action* action) override;
 	State* step(State* state, Action* action) override;
 	std::vector<Action*> getActions() override;
 	std::vector<Action*> getActions(State* state) override;
 	std::vector<double> featurize(State* state) override;
 	std::vector<std::string> convertStateToBoard(State* state);
-	Player* opponent(Player* current_player);
+	Player* opponent(Player* current_player);*/
+	std::shared_ptr<State> reset() override;
+	std::shared_ptr<State> step(std::shared_ptr<Action> action) override;
+	std::shared_ptr<State> step(std::shared_ptr<State> state, std::shared_ptr<Action> action) override;
+	std::vector<std::shared_ptr<Action>> getActions() override;
+	std::vector<std::shared_ptr<Action>> getActions(std::shared_ptr<State> state) override;
+	std::vector<double> featurize(std::shared_ptr<State> state) override;
+	std::vector<std::string> convertStateToBoard(std::shared_ptr<State> state);
+	std::shared_ptr<Player> opponent(std::shared_ptr<Player> current_player);
 
 
 private:
-	State* state_{ nullptr };
+	std::shared_ptr<State> state_{ nullptr };
 	int nPlays_{ 0 };
-	const std::vector<Player*> players_{ new Player{'r'}, new Player{'w'} };
+	const std::vector<std::shared_ptr<Player>> players_{ std::make_shared<Player>(Player{'r'}), std::make_shared<Player>(Player{'w'}) };
 };

@@ -17,14 +17,17 @@ TDLambda::TDLambda(Environment* environment, Estimator* estimator, Policy* polic
 
 void TDLambda::train(int nEpisodes, bool isPrintingUpdates) {
 	for (int episodeNo = 0; episodeNo < nEpisodes; ++episodeNo) {
-		State* state = environment_->reset();
+		//State* state = environment_->reset();
+		std::shared_ptr<State> state = environment_->reset();
 		estimator_->resetEligibilityTrace();
-		State* nextState = new State();
+		//State* nextState = new State();
+		std::shared_ptr<State> nextState = std::make_shared<State>();
 
 		if (isPrintingUpdates) std::cout << "Episode:  " << (episodeNo + 1) << " of " << nEpisodes << std::endl;
 
 		do {
-			Action* action{ policy_->actionSelection(state) };
+			//Action* action{ policy_->actionSelection(state) };
+			std::shared_ptr<Action> action{ policy_->actionSelection(state) };
 			nextState = environment_->step(action);
 
 			// hacky way to avoid reseting node each time when using MinimaxPolicy
@@ -45,7 +48,8 @@ void TDLambda::train(int nEpisodes, bool isPrintingUpdates) {
 
 
 
-TDLeaf::TDLeaf(Environment* environment, Estimator* estimator, Player* maxPlayer, 
+//TDLeaf::TDLeaf(Environment* environment, Estimator* estimator, Player* maxPlayer, 
+TDLeaf::TDLeaf(Environment* environment, Estimator* estimator, std::shared_ptr<Player> maxPlayer,
 	int maxDepth, double discountFactor, double traceDecay) {
 	
 	environment_ = environment;

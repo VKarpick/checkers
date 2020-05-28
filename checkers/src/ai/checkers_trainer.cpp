@@ -62,7 +62,8 @@ void CheckersTrainer::writeWeights(std::string filename, std::vector<double> wei
 
 void CheckersTrainer::train() {
     CheckersEnvironment checkersEnvironment;
-    State* state{ checkersEnvironment.reset() };
+    //State* state{ checkersEnvironment.reset() };
+    std::shared_ptr<State> state{ checkersEnvironment.reset() };
 
     if (!readFilename_.empty()) weights_ = readWeights(readFilename_);
     

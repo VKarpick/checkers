@@ -28,6 +28,7 @@ protected:
 
 class TDLeaf : public TDLambda {
 public:
-	TDLeaf(Environment* environment, Estimator* estimator, Player* maxPlayer, int maxDepth = 1,
+	//TDLeaf(Environment* environment, Estimator* estimator, Player* maxPlayer, int maxDepth = 1,
+	TDLeaf(Environment* environment, Estimator* estimator, std::shared_ptr<Player> maxPlayer, int maxDepth = 1,
 		double discountFactor = 1.0, double traceDecay = 0.86);
 };
