@@ -6,7 +6,7 @@ TDLambda::TDLambda() {}
 
 
 TDLambda::TDLambda(std::shared_ptr<Environment> environment, std::shared_ptr<Estimator> estimator, 
-	std::shared_ptr<Policy> policy, double discountFactor, double traceDecay) :
+	Policy* policy, double discountFactor, double traceDecay) :
 	
 	environment_(environment),
 	estimator_(estimator),
@@ -52,7 +52,7 @@ TDLeaf::TDLeaf(std::shared_ptr<Environment> environment, std::shared_ptr<Estimat
 	
 	environment_ = environment;
 	estimator_ = estimator;
-	policy_ = std::make_shared<MinimaxPolicy>(MinimaxPolicy(environment_, estimator_, maxPlayer, maxDepth));
+	policy_ = new MinimaxPolicy(environment_, estimator_, maxPlayer, maxDepth);
 	discountFactor_ = discountFactor;
 	traceDecay_ = traceDecay;
 }
