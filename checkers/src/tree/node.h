@@ -2,7 +2,7 @@
 
 #include <memory>
 #include <vector>
-
+#include <iostream>
 
 
 template <typename T>    // allow for data of any type to be provided to a node
@@ -13,12 +13,12 @@ public:
 
 	T getData() { return data_; }
 	std::vector<std::shared_ptr<Node<T>>> getChildren() { return children_; }
-	std::shared_ptr<Node<T>> getParent() { return parent_; }
+	std::shared_ptr<Node<T>> getParent() { return parent_.lock(); }
 
 
 	void setParent(std::shared_ptr<Node<T>> newParent) {
 		// have to remove this node as member of previous parent's children
-		if (parent_ != nullptr) parent_->removeChild(this->shared_from_this());
+		if (parent_.lock() != nullptr) parent_.lock()->removeChild(this->shared_from_this());
 		parent_ = newParent;
 	}
 
@@ -46,5 +46,5 @@ public:
 private:
 	T data_;
 	std::vector<std::shared_ptr<Node<T>>> children_{};
-	std::shared_ptr<Node<T>> parent_{ nullptr };
+	std::weak_ptr<Node<T>> parent_;
 };

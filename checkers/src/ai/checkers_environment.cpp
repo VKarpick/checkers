@@ -89,9 +89,9 @@ std::shared_ptr<State> CheckersEnvironment::reset() {
 std::shared_ptr<State> CheckersEnvironment::step(std::shared_ptr<Action> action) {
 	std::vector<std::string> observation = std::any_cast<std::vector<std::string>>(action->action);
 
-	for (auto row : observation) {
+	/*for (auto row : observation) {
 		std::cout << row << std::endl;
-	}
+	}*/
 
 	++nPlays_;
 	state_ = step(state_, action);
