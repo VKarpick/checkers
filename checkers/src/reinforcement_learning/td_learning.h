@@ -23,6 +23,9 @@ protected:
 	std::shared_ptr<Policy> policy_{ nullptr };
 	double discountFactor_{ 1.0 };    // gamma
 	double traceDecay_{ 1.0 };    // lambda
+
+
+	void trainSingleEpisode();
 };
 
 

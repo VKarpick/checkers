@@ -6,7 +6,8 @@
 
 int main()
 {
-    CheckersTrainer checkersTrainer(std::vector<double>(128, 1.0), 3, 1);
+    //CheckersTrainer checkersTrainer(100, 6);
+    CheckersTrainer checkersTrainer(std::vector<double>(128, 2.0), 3, 4);
     checkersTrainer.train();
 
     /*Checkers checkers;
