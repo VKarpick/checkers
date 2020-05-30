@@ -4,15 +4,14 @@
 
 
 
-class CheckersPlayer {
+struct CheckersPlayer {
 public:
-	CheckersPlayer(char pChar, int direction, bool isUser);
-	
-
-	char playerChar;
-	int verticalDirection;
-	bool isUserControlled;
+	char player_char;
+	int vertical_direction;
+	bool is_user_controlled;
 
 	
-	bool hasPiece(char piece);
+	bool has_piece(char piece) {
+		return tolower(piece) == player_char;
+	}
 };

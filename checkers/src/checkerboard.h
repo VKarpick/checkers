@@ -14,14 +14,14 @@ public:
 	Checkerboard(std::vector<std::string> board);
 
 
-	std::vector<std::string> getBoard();
+	std::vector<std::string> get_board();
 
 
 	void reset();
-	char getPiece(BoardPosition boardPosition);
-	std::vector<BoardPosition> getPlayerPositions(CheckersPlayer player);
-	void executeMove(Move move);
-	void reverseMove(Move move);
+	char get_piece(BoardPosition board_position);
+	std::vector<BoardPosition> get_player_positions(CheckersPlayer player);
+	void execute_move(Move move);
+	void reverse_move(Move move);
 
 
 private:

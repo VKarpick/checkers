@@ -2,40 +2,40 @@
 
 
 
-CheckersTrainer::CheckersTrainer(int nEpisodes, int maxDepth, double stepSize, bool isPrintingEpisodes,
-    std::string readFilename, std::string writeFilename) :
-    nEpisodes_(nEpisodes),
-    maxDepth_(maxDepth),
-    stepSize_(stepSize),
-    isPrintingEpisodes_(isPrintingEpisodes),
-    readFilename_(readFilename),
-    writeFilename_(writeFilename)
+CheckersTrainer::CheckersTrainer(int n_episodes, int max_depth, double step_size, bool is_printing_episodes,
+    std::string read_filename, std::string write_filename) :
+    n_episodes_(n_episodes),
+    max_depth_(max_depth),
+    step_size_(step_size),
+    is_printing_episodes_(is_printing_episodes),
+    read_filename_(read_filename),
+    write_filename_(write_filename)
 {}
 
 
-CheckersTrainer::CheckersTrainer(std::vector<double> weights, int nEpisodes, int maxDepth, double stepSize, bool isPrintingEpisodes,
-    std::string writeFilename) :
-    nEpisodes_(nEpisodes),
-    maxDepth_(maxDepth),
-    stepSize_(stepSize),
-    isPrintingEpisodes_(isPrintingEpisodes),
+CheckersTrainer::CheckersTrainer(std::vector<double> weights, int n_episodes, int max_depth, double step_size, bool is_printing_episodes,
+    std::string write_filename) :
+    n_episodes_(n_episodes),
+    max_depth_(max_depth),
+    step_size_(step_size),
+    is_printing_episodes_(is_printing_episodes),
     weights_(weights),
-    writeFilename_(writeFilename)
+    write_filename_(write_filename)
 {}
 
 
-std::vector<double> CheckersTrainer::readWeights(std::string filename) {
-    std::ifstream weightsFile;
-    weightsFile.open(filename.c_str());
+std::vector<double> CheckersTrainer::read_weights(std::string filename) {
+    std::ifstream weights_file;
+    weights_file.open(filename.c_str());
 
-    if (weightsFile.is_open()) {
+    if (weights_file.is_open()) {
         std::vector<double> weights;
 
         double weight;
-        while (weightsFile >> weight) {
+        while (weights_file >> weight) {
             weights.push_back(weight);
         }
-        weightsFile.close();
+        weights_file.close();
 
         return weights;
     }
@@ -50,37 +50,42 @@ std::vector<double> CheckersTrainer::readWeights(std::string filename) {
 }
 
 
-void CheckersTrainer::writeWeights(std::string filename, std::vector<double> weights) {
-    std::ofstream weightsFile;
-    weightsFile.open(filename.c_str());
+void CheckersTrainer::write_weights(std::string filename, std::vector<double> weights) {
+    std::ofstream weights_file;
+    weights_file.open(filename.c_str());
     for (double weight : weights) {
-        weightsFile << weight << std::endl;
+        weights_file << weight << std::endl;
     }
-    weightsFile.close();
+    weights_file.close();
 }
 
 
 void CheckersTrainer::train() {
-    std::shared_ptr<CheckersEnvironment> checkersEnvironment{ std::make_shared<CheckersEnvironment>() };
-    std::shared_ptr<State> state{ checkersEnvironment->reset() };
+    std::shared_ptr<CheckersEnvironment> checkers_environment{ std::make_shared<CheckersEnvironment>() };
+    std::shared_ptr<State> state{ checkers_environment->reset() };
 
-    if (!readFilename_.empty()) weights_ = readWeights(readFilename_);
-
-    unsigned int featureSize{ checkersEnvironment->featurize(state).size() };
-    bool hasCorrectSize{ weights_.size() == featureSize };
-    if (!weights_.empty() && !hasCorrectSize) {
-        std::cout << "Weights from file not of right size.  Weights will be initialized to zero." << std::endl;
-        std::cout << "Press any key to continue... ";
-        std::cin.ignore();
-        std::cout << std::endl;
+    if (!read_filename_.empty()) {
+        weights_ = read_weights(read_filename_);
     }
 
-    if (!hasCorrectSize) weights_.assign(featureSize, 0);
+    unsigned int feature_size{ checkers_environment->featurize(state).size() };
+    bool has_correct_size{ weights_.size() == feature_size };
+    if (!has_correct_size) {
+        if (!weights_.empty()) {
+            std::cout << "Weights from file not of right size.  Weights will be initialized to zero." << std::endl;
+            std::cout << "Press any key to continue... ";
+            std::cin.ignore();
+            std::cout << std::endl;
+        }
 
-    std::shared_ptr<TDEstimator> estimator{ std::make_shared<TDEstimator>(stepSize_, weights_, true) };
-    std::shared_ptr<Player> maxPlayer{ std::make_shared<Player>(Player{ checkersEnvironment->getPlayers()[0] }) };
-    TDLeaf td_leaf(checkersEnvironment, estimator, maxPlayer, maxDepth_);
-    td_leaf.train(nEpisodes_, isPrintingEpisodes_);
+        weights_.assign(feature_size, 0);
+    }
+
+    std::shared_ptr<TDEstimator> estimator{ std::make_shared<TDEstimator>(step_size_, weights_, true) };
+    std::shared_ptr<Player> max_player{ std::make_shared<Player>(Player{ checkers_environment->get_players()[0] }) };
+    TDLeaf td_leaf(checkers_environment, estimator, max_player, max_depth_);
     
-    if (writeFilename_ != "") writeWeights(writeFilename_, estimator->getWeights());
+    td_leaf.train(n_episodes_, is_printing_episodes_);
+    
+    if (write_filename_ != "") write_weights(write_filename_, estimator->get_weights());
 }

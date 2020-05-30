@@ -17,78 +17,83 @@ struct MinimaxPair {
 template <typename T>    // allowing for any type of Node requires template
 class Minimax {
 public:
-	Minimax(std::function<double(std::shared_ptr<Node<T>>)> computeNodeValue, int maxDepth = 0,
-		const std::function<void(std::shared_ptr<Node<T>>)> extendTree = [](std::shared_ptr<Node<T>>) {}) {
+	Minimax(std::function<double(std::shared_ptr<Node<T>>)> compute_node_value, int max_depth = 0,
+		const std::function<void(std::shared_ptr<Node<T>>)> extend_tree = [](std::shared_ptr<Node<T>>) {}) {
 
-		computeNodeValue_ = computeNodeValue;
-		maxDepth_ = maxDepth;
-		extendTree_ = extendTree;
+		compute_node_value_ = compute_node_value;
+		max_depth_ = max_depth;
+		extend_tree_ = extend_tree;
 	}
 
 
-	MinimaxPair<T> minimax(std::shared_ptr<Node<T>> node, int currentDepth = 0, bool isMaxPlayer = true,
+	MinimaxPair<T> minimax(std::shared_ptr<Node<T>> node, int current_depth = 0, bool is_max_player = true,
 		double alpha = -DBL_MAX, double beta = DBL_MAX) {
 		
-		if (currentDepth == maxDepth_) return MinimaxPair<T>{ computeNodeValue_(node), node };
-		if (node->getChildren().empty()) extendTree_(node);
+		if (current_depth == max_depth_) {
+			return MinimaxPair<T>{ compute_node_value_(node), node };
+		}
 
-		if (isMaxPlayer) {
-			MinimaxPair<T> bestPair{ -DBL_MAX, nullptr };
+		if (node->get_children().empty()) {
+			extend_tree_(node);
+		}
+
+		if (is_max_player) {
+			MinimaxPair<T> best_pair{ -DBL_MAX, nullptr };
 			int i{ 0 };
-			for (auto child : node->getChildren()) {
-				MinimaxPair<T> childPair{ minimax(child, currentDepth + 1, false, alpha, beta) };
+			for (auto child : node->get_children()) {
+				MinimaxPair<T> child_pair{ minimax(child, current_depth + 1, false, alpha, beta) };
 
 				// use >= to avoid returning nullptr when children exist
-				if (childPair.value >= bestPair.value) {
-					bestPair.value = childPair.value;
-					bestPair.node = child;
+				if (child_pair.value >= best_pair.value) {
+					best_pair.value = child_pair.value;
+					best_pair.node = child;
 				}
 
-				alpha = fmax(alpha, bestPair.value);
+				alpha = fmax(alpha, best_pair.value);
 				if (beta <= alpha) break;
 			}
-			return bestPair;
+			return best_pair;
 		}
 		else {
-			MinimaxPair<T> bestPair{ DBL_MAX, nullptr };
-			for (auto child : node->getChildren()) {
-				MinimaxPair<T> childPair{ minimax(child, currentDepth + 1, true, alpha, beta) };
+			MinimaxPair<T> best_pair{ DBL_MAX, nullptr };
+			for (auto child : node->get_children()) {
+				MinimaxPair<T> child_pair{ minimax(child, current_depth + 1, true, alpha, beta) };
 				
 				// use <= to avoid returning nullptr when children exist
-				if (childPair.value <= bestPair.value) {
-					bestPair.value = childPair.value;
-					bestPair.node = child;
+				if (child_pair.value <= best_pair.value) {
+					best_pair.value = child_pair.value;
+					best_pair.node = child;
 				}
 				
-				beta = fmin(beta, bestPair.value);
+				beta = fmin(beta, best_pair.value);
 				if (beta <= alpha) break;
 			}
-			return bestPair;
+			return best_pair;
 		}
 	}
 
 
-	double minimaxValue(std::shared_ptr<Node<T>> node, int currentDepth = 0, bool isMaxPlayer = true,
+	double minimax_value(std::shared_ptr<Node<T>> node, int current_depth = 0, bool is_max_player = true,
 		double alpha = -DBL_MAX, double beta = DBL_MAX) {
 		
-		return minimax(node, currentDepth, isMaxPlayer, alpha, beta).value;
+		return minimax(node, current_depth, is_max_player, alpha, beta).value;
 	}
 
 
-	std::shared_ptr<Node<T>> minimaxNode(std::shared_ptr<Node<T>> node, int currentDepth = 0, bool isMaxPlayer = true,
+	std::shared_ptr<Node<T>> minimax_node(std::shared_ptr<Node<T>> node, int current_depth = 0, bool is_max_player = true,
 		double alpha = -DBL_MAX, double beta = DBL_MAX) {
 		
-		return minimax(node, currentDepth, isMaxPlayer, alpha, beta).node;
+		return minimax(node, current_depth, is_max_player, alpha, beta).node;
 	}
 
 
 private:
-	int maxDepth_{ 1 };
+	int max_depth_{ 1 };
 
 	// function to calculate the value of a given node
-	std::function<double(std::shared_ptr<Node<T>>)> computeNodeValue_;
+	std::function<double(std::shared_ptr<Node<T>>)> compute_node_value_;
 
 	// function to find children of a node when passing incomplete tree
 	// if complete tree is provided, can be ignored
-	std::function<void(std::shared_ptr<Node<T>>)> extendTree_;
+	std::function<void(std::shared_ptr<Node<T>>)> extend_tree_;
 };

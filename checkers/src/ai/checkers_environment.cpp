@@ -74,7 +74,7 @@ std::vector<std::vector<std::string>> boardActions(std::vector<std::string> star
 }
 
 
-std::vector<std::shared_ptr<Player>> CheckersEnvironment::getPlayers() {
+std::vector<std::shared_ptr<Player>> CheckersEnvironment::get_players() {
 	return players_;
 }
 
@@ -104,7 +104,7 @@ std::shared_ptr<State> CheckersEnvironment::step(std::shared_ptr<State> state, s
 	std::vector<std::string> observation = std::any_cast<std::vector<std::string>>(action->action);
 
 	double reward = 0;
-	std::shared_ptr<Player> opposingPlayer = opponent(state->currentPlayer);
+	std::shared_ptr<Player> opposingPlayer = opponent(state->current_player);
 	char nextPlayerChar = std::any_cast<char>(opposingPlayer->player);
 	std::vector<std::vector<std::string>> opponentActions{ boardActions(observation, nextPlayerChar) };
 	if (opponentActions.size() == 0) reward = (nextPlayerChar == 'r') ? -1 : 1;
@@ -115,15 +115,15 @@ std::shared_ptr<State> CheckersEnvironment::step(std::shared_ptr<State> state, s
 }
 
 
-std::vector<std::shared_ptr<Action>> CheckersEnvironment::getActions() {
-	return getActions(state_);
+std::vector<std::shared_ptr<Action>> CheckersEnvironment::get_actions() {
+	return get_actions(state_);
 }
 
 
-std::vector<std::shared_ptr<Action>> CheckersEnvironment::getActions(std::shared_ptr<State> state) {
+std::vector<std::shared_ptr<Action>> CheckersEnvironment::get_actions(std::shared_ptr<State> state) {
 	std::vector<std::shared_ptr<Action>> actions;
-	std::vector<std::string> currentBoard{ convertStateToBoard(state) };
-	char player{ std::any_cast<char>(state->currentPlayer->player) };
+	std::vector<std::string> currentBoard{ convert_state_to_board(state) };
+	char player{ std::any_cast<char>(state->current_player->player) };
 
 	for (std::vector<std::string> board : boardActions(currentBoard, player)) {
 		actions.push_back(std::make_shared<Action>(Action{ board }));
@@ -135,7 +135,7 @@ std::vector<std::shared_ptr<Action>> CheckersEnvironment::getActions(std::shared
 
 std::vector<double> CheckersEnvironment::featurize(std::shared_ptr<State> state) {
 	std::vector<double> features;
-	std::vector<std::string> board{ convertStateToBoard(state) };
+	std::vector<std::string> board{ convert_state_to_board(state) };
 	for (size_t row = 2; row < board.size() - 2; ++row) {
 		for (size_t column = 2 + (row + 1) % 2; column < board[row].size() - 2; column += 2) {
 			for (char piece : {'r', 'R', 'w', 'W'}) {
@@ -147,7 +147,7 @@ std::vector<double> CheckersEnvironment::featurize(std::shared_ptr<State> state)
 }
 
 
-std::vector<std::string> CheckersEnvironment::convertStateToBoard(std::shared_ptr<State> state) {
+std::vector<std::string> CheckersEnvironment::convert_state_to_board(std::shared_ptr<State> state) {
 	return std::any_cast<std::vector<std::string>>(state->observation);
 }
 

@@ -9,8 +9,8 @@ struct BoardPosition {
 	int column;
 
 
-	bool operator==(const BoardPosition& boardPosition) const {
-		return row == boardPosition.row && column == boardPosition.column;
+	bool operator==(const BoardPosition& board_position) const {
+		return row == board_position.row && column == board_position.column;
 	}
 };
 
@@ -18,19 +18,19 @@ struct BoardPosition {
 
 struct Piece {
 	BoardPosition position;
-	char pieceChar;
+	char piece;
 };
 
 
 
 struct Move {
-	BoardPosition startPosition;
-	std::vector<BoardPosition> landingPositions;
-	bool isCrowning;
-	std::vector<Piece> capturedPieces{};
+	BoardPosition start_position;
+	std::vector<BoardPosition> landing_positions;
+	bool is_crowning;
+	std::vector<Piece> captured_pieces{};
 
 
 	bool operator==(const Move& move) const {
-		return startPosition == move.startPosition && landingPositions == move.landingPositions;
+		return start_position == move.start_position && landing_positions == move.landing_positions;
 	}
 };

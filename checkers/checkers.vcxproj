@@ -153,7 +153,6 @@
     <ClCompile Include="src/reinforcement_learning/estimator.cpp" />
 	<ClCompile Include="src/reinforcement_learning/policy.cpp" />
 	<ClCompile Include="src/reinforcement_learning/td_learning.cpp" />
-	<ClCompile Include="src/checkers_player.cpp" />
     <ClCompile Include="src/checkerboard.cpp" />
 	<ClCompile Include="src/checkers.cpp" />
     <ClCompile Include="src/main.cpp" />

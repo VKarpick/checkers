@@ -14,11 +14,11 @@
 
 // break these out of class for easy use with checkers_environment
 // returns the moves a piece is allowed to make
-std::vector<Move> pieceMoves(Checkerboard board, CheckersPlayer currentPlayer, BoardPosition piecePosition, 
-	std::vector<int> rowMoves, bool canCapture);
+std::vector<Move> piece_moves(Checkerboard board, CheckersPlayer current_player, BoardPosition piece_position, 
+	std::vector<int> row_moves, bool can_capture);
 
 // returns the moves allowable moves from the current board
-std::vector<Move> boardMoves(Checkerboard board, CheckersPlayer currentPlayer, CheckersPlayer opponent);
+std::vector<Move> board_moves(Checkerboard board, CheckersPlayer current_player, CheckersPlayer opponent);
 
 
 
@@ -27,7 +27,7 @@ public:
 	Checkers();
 
 
-	std::vector<Move> getAvailableMoveList();
+	std::vector<Move> get_available_moves();
 
 
 	void play();
@@ -38,30 +38,27 @@ public:
 
 private:
 	Checkerboard checkerboard_;
-	std::vector<CheckersPlayer> players_{ CheckersPlayer('r', -1, true), CheckersPlayer('w', 1, false)};
-	CheckersPlayer& currentPlayer_{ players_[0] };
+	std::vector<CheckersPlayer> players_{ CheckersPlayer{'r', -1, true}, CheckersPlayer{'w', 1, false} };
+	CheckersPlayer& current_player_{ players_[0] };
 	CheckersPlayer& opponent_{ players_[1] };
-	std::vector<Move> availableMoveList_{};
-	std::vector<Move> previousMoveList_{};
-	std::vector<Move> redoMoveList_{};
+	std::vector<Move> available_moves_{};
+	std::vector<Move> previous_moves_{};
+	std::vector<Move> redo_moves_{};
 
 
 	// mapping of allowable non-move input to their corresponding functions
 	// eg) "q" -> quit()
-	std::map<std::string, std::function<void()>> inputMap;
+	std::map<std::string, std::function<void()>> input_map;
 
-
-	//// returns the moves a piece is allowed to make
-	//std::vector<Move> pieceMoves(Checkerboard board, BoardPosition piecePosition, std::vector<int> rowMoves, bool canCapture);
 
 	//bool isCrowningMove(char pieceChar, BoardPosition boardPosition);
-	void switchPlayers();
+	void switch_players();
 	void render();
-	std::string getUserInput();
-	void processInput(std::string input);
-	void randomMove();
-	void makeMove(Move move, bool isNewMove = true);
+	std::string get_user_input();
+	void process_input(std::string input);
+	void random_move();
+	void make_move(Move move, bool is_new_move = true);
 	void undo();
 	void redo();
-	std::string aiInput();
+	std::string ai_input();
 };

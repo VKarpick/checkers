@@ -12,20 +12,20 @@ Checkerboard::Checkerboard(std::vector<std::string> board) :
 {}
 
 
-std::vector<std::string> Checkerboard::getBoard() {
+std::vector<std::string> Checkerboard::get_board() {
 	return board_;
 }
 
 
 void Checkerboard::reset() {
-	board_ = constants::kStartingBoard;
+	board_ = constants::starting_board;
 }
 
 
-char Checkerboard::getPiece(BoardPosition position) {
-	bool legalRow{ position.row > -1 && position.row < constants::kBoardSize };
-	bool legalColumn{ position.column > -1 && position.column < constants::kBoardSize };
-	if (legalRow && legalColumn) {
+char Checkerboard::get_piece(BoardPosition position) {
+	bool legal_row{ position.row > -1 && position.row < board_.size() };
+	bool legal_column{ position.column > -1 && position.column < board_.size() };
+	if (legal_row && legal_column) {
 		return board_[position.row][position.column];
 	}
 	else {
@@ -34,59 +34,59 @@ char Checkerboard::getPiece(BoardPosition position) {
 }
 
 
-std::vector<BoardPosition> Checkerboard::getPlayerPositions(CheckersPlayer player) {
-	std::vector<BoardPosition> playerPositions;
+std::vector<BoardPosition> Checkerboard::get_player_positions(CheckersPlayer player) {
+	std::vector<BoardPosition> player_positions;
 
 	for (size_t row = 0; row < board_.size(); ++row) {
 		// pieces can only be in every other column
 		for (size_t column = (row + 1) % 2; column < board_.size(); column += 2) {
-			BoardPosition piecePosition{ row, column };
+			BoardPosition piece_position{ row, column };
 
-			if (player.hasPiece(board_[row][column])) {
-				playerPositions.push_back(piecePosition);
+			if (player.has_piece(board_[row][column])) {
+				player_positions.push_back(piece_position);
 			}
 		}
 	}
 
-	return playerPositions;
+	return player_positions;
 }
 
 
-void Checkerboard::executeMove(Move move) {
-	char pieceChar{ getPiece(move.startPosition) };
+void Checkerboard::execute_move(Move move) {
+	char piece{ get_piece(move.start_position) };
 
 	// piece moves from starting position to last landing position
-	board_[move.startPosition.row][move.startPosition.column] = constants::kOpening;
-	board_[move.landingPositions.back().row][move.landingPositions.back().column] = (move.isCrowning) ? toupper(pieceChar) : pieceChar;
+	board_[move.start_position.row][move.start_position.column] = constants::board_opening;
+	board_[move.landing_positions.back().row][move.landing_positions.back().column] = (move.is_crowning) ? toupper(piece) : piece;
 
 	// all captured pieces are removed
-	for (Piece capturedPiece : move.capturedPieces) {
-		board_[capturedPiece.position.row][capturedPiece.position.column] = constants::kOpening;
+	for (Piece captured_piece : move.captured_pieces) {
+		board_[captured_piece.position.row][captured_piece.position.column] = constants::board_opening;
 	}
 }
 
 
-void Checkerboard::reverseMove(Move move) {
-	BoardPosition endPosition{ move.landingPositions.back() };
-	char pieceChar{ getPiece(endPosition) };
+void Checkerboard::reverse_move(Move move) {
+	BoardPosition end_position{ move.landing_positions.back() };
+	char piece{ get_piece(end_position) };
 	
-	if (move.isCrowning) pieceChar = tolower(pieceChar);
+	if (move.is_crowning) piece = tolower(piece);
 
 	// move piece back to its starting position
-	board_[move.startPosition.row][move.startPosition.column] = pieceChar;
-	board_[endPosition.row][endPosition.column] = constants::kOpening;
+	board_[move.start_position.row][move.start_position.column] = piece;
+	board_[end_position.row][end_position.column] = constants::board_opening;
 
 	// add each captured piece back
-	for (Piece capturedPiece : move.capturedPieces) {
-		board_[capturedPiece.position.row][capturedPiece.position.column] = capturedPiece.pieceChar;
+	for (Piece captured_piece : move.captured_pieces) {
+		board_[captured_piece.position.row][captured_piece.position.column] = captured_piece.piece;
 	}
 }
 
 
 
 std::ostream& operator<< (std::ostream& out, Checkerboard& checkerboard) {
-	std::vector<std::string> board{ checkerboard.getBoard() };
-	for (std::string row : checkerboard.getBoard()) {
+	std::vector<std::string> board{ checkerboard.get_board() };
+	for (std::string row : checkerboard.get_board()) {
 		out << row << std::endl;
 	}
 	return out;

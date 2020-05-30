@@ -15,24 +15,24 @@
 // otherwise, will continually force draws and never update weights
 class CheckersTrainer {
 public:
-    CheckersTrainer(int nEpisodes = 1, int maxDepth = 1, double stepSize = 0.01, bool isPrintingEpisodes = true,
-        std::string readFilename = "..\\checkers\\src\\ai\\weights.dat", 
-        std::string writeFilename = "..\\checkers\\src\\ai\\weights.dat");
-    CheckersTrainer(std::vector<double> weights, int nEpisodes = 1, int maxDepth = 1, double stepSize = 0.01, 
-        bool isPrintingEpisodes = true, std::string writeFilename = "..\\checkers\\src\\ai\\weights.dat");
+    CheckersTrainer(int n_episodes = 1, int max_depth = 1, double step_size = 0.01, bool is_printing_episodes = true,
+        std::string read_filename = "..\\checkers\\src\\ai\\weights.dat", 
+        std::string write_filename = "..\\checkers\\src\\ai\\weights.dat");
+    CheckersTrainer(std::vector<double> weights, int n_episodes = 1, int max_depth = 1, double step_size = 0.01, 
+        bool is_printing_episodes = true, std::string write_filename = "..\\checkers\\src\\ai\\weights.dat");
     
     
-    std::vector<double> readWeights(std::string filename);
-    void writeWeights(std::string filename, std::vector<double> weights);
+    std::vector<double> read_weights(std::string filename);
+    void write_weights(std::string filename, std::vector<double> weights);
     void train();
 
 
 private:
-    int nEpisodes_{ 1 };
-    int maxDepth_{ 1 };
-    double stepSize_{ 0.01 };
-    bool isPrintingEpisodes_{ true };
-    std::string readFilename_{ "" };
-    std::string writeFilename_{ "" };
+    int n_episodes_{ 1 };
+    int max_depth_{ 1 };
+    double step_size_{ 0.01 };
+    bool is_printing_episodes_{ true };
+    std::string read_filename_{ "" };
+    std::string write_filename_{ "" };
     std::vector<double> weights_{};
 };

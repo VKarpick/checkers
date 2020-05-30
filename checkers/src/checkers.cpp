@@ -2,7 +2,7 @@
 
 
 
-bool isInt(const std::string& s) {
+bool is_int(const std::string& s) {
 	std::string::const_iterator it = s.begin();
 	while (it != s.end() && std::isdigit(*it)) ++it;
 	return !s.empty() && it == s.end();
@@ -11,64 +11,64 @@ bool isInt(const std::string& s) {
 
 
 // pieces are crowned if they aren't already kings and can reach the top/bottom of the board
-bool isCrowningMove(char pieceChar, BoardPosition boardPosition) {
-	bool isKing{ pieceChar == toupper(pieceChar) };
-	bool isKingRow{ boardPosition.row == 0 || boardPosition.row == constants::kBoardSize - 1 };
+bool is_crowning_move(char piece, BoardPosition board_position) {
+	bool is_king{ piece == toupper(piece) };
+	//TODO remove 8 from this
+	bool is_in_king_row{ board_position.row == 0 || board_position.row == 8 - 1 };
 
-	return !isKing && isKingRow;
+	return !is_king && is_in_king_row;
 }
 
 
-std::vector<Move> pieceMoves(Checkerboard board, CheckersPlayer opponent,
-	BoardPosition piecePosition, std::vector<int> rowMoves, bool canCapture) {
+std::vector<Move> piece_moves(Checkerboard board, CheckersPlayer opponent,
+	BoardPosition piece_position, std::vector<int> row_moves, bool can_capture) {
 
 	std::vector<Move> moves;
-	int moveDistance{ (canCapture) ? constants::kJumpDistance : constants::kStepDistance };
+	int move_distance{ (can_capture) ? constants::jump_distance : constants::step_distance };
 
-	for (int rowMove : rowMoves) {
-		for (int columnMove : constants::kColumnMoves) {
-			BoardPosition movePosition{ piecePosition.row + rowMove * moveDistance, piecePosition.column + columnMove * moveDistance };
+	for (int row_move : row_moves) {
+		for (int column_move : constants::column_moves) {
+			BoardPosition move_position{ piece_position.row + row_move * move_distance, piece_position.column + column_move * move_distance };
 			// can only move to open squares
-			bool moveAvailable{ board.getPiece(movePosition) == constants::kOpening };
+			bool is_legal_move{ board.get_piece(move_position) == constants::board_opening };
 
-			bool captureAvailable{ true };    // initialized to true to simplify if statement
-			BoardPosition capturePosition;
-			if (canCapture) {
-				capturePosition.row = piecePosition.row + rowMove * constants::kCaptureDistance;
-				capturePosition.column = piecePosition.column + columnMove * constants::kCaptureDistance;
-				// can only capture if opponent's piece in capturePosition
-				captureAvailable = opponent.hasPiece(board.getPiece(capturePosition));
+			bool is_legal_capture{ true };    // initialized to true to simplify if statement
+			BoardPosition capture_position;
+			if (can_capture) {
+				capture_position.row = piece_position.row + row_move * constants::capture_distance;
+				capture_position.column = piece_position.column + column_move * constants::capture_distance;
+				is_legal_capture = opponent.has_piece(board.get_piece(capture_position));
 			}
 
-			if (moveAvailable && captureAvailable) {
-				Move currentMove{ piecePosition, { movePosition }, isCrowningMove(board.getPiece(piecePosition), movePosition) };
+			if (is_legal_move && is_legal_capture) {
+				Move current_move{ piece_position, { move_position }, is_crowning_move(board.get_piece(piece_position), move_position) };
 
-				if (canCapture) {
-					currentMove.capturedPieces = { Piece{capturePosition, board.getPiece(capturePosition)} };
+				if (can_capture) {
+					current_move.captured_pieces = { Piece{capture_position, board.get_piece(capture_position)} };
 
 					// for jumps, have to continue jumping until no more jumps available
-					Checkerboard afterMoveBoard = board;
-					afterMoveBoard.executeMove(currentMove);
+					Checkerboard board_after_move = board;
+					board_after_move.execute_move(current_move);
 
 					// use recursion to continue jump
-					std::vector<Move> continueJump{ pieceMoves(afterMoveBoard, opponent, movePosition, rowMoves, canCapture) };
+					std::vector<Move> moves_continuing_jump{ piece_moves(board_after_move, opponent, move_position, row_moves, can_capture) };
 
-					for (Move jump : continueJump) {
-						currentMove.landingPositions.insert(
-							currentMove.landingPositions.end(),
-							jump.landingPositions.begin(),
-							jump.landingPositions.end());
+					for (Move jump : moves_continuing_jump) {
+						current_move.landing_positions.insert(
+							current_move.landing_positions.end(),
+							jump.landing_positions.begin(),
+							jump.landing_positions.end());
 
-						currentMove.capturedPieces.insert(
-							currentMove.capturedPieces.end(),
-							jump.capturedPieces.begin(),
-							jump.capturedPieces.end());
+						current_move.captured_pieces.insert(
+							current_move.captured_pieces.end(),
+							jump.captured_pieces.begin(),
+							jump.captured_pieces.end());
 
-						currentMove.isCrowning = jump.isCrowning;
+						current_move.is_crowning = jump.is_crowning;
 					}
 				}
 
-				moves.push_back(currentMove);
+				moves.push_back(current_move);
 			}
 		}
 	}
@@ -77,28 +77,28 @@ std::vector<Move> pieceMoves(Checkerboard board, CheckersPlayer opponent,
 }
 
 
-std::vector<Move> boardMoves(Checkerboard board, CheckersPlayer currentPlayer, CheckersPlayer opponent) {
+std::vector<Move> board_moves(Checkerboard board, CheckersPlayer current_player, CheckersPlayer opponent) {
 	std::vector<Move> jumps{};
 	std::vector<Move> steps{};
 
-	for (BoardPosition position : board.getPlayerPositions(currentPlayer)) {
-		char pieceChar = board.getPiece(position);
-		std::vector<int> rowMoves;
+	for (BoardPosition position : board.get_player_positions(current_player)) {
+		char piece = board.get_piece(position);
+		std::vector<int> row_moves;
 
-		if (pieceChar == toupper(pieceChar)) {
-			rowMoves = { -1, 1 };    // kings can move up or down
+		if (piece == toupper(piece)) {
+			row_moves = { -1, 1 };    // kings can move up or down
 		}
 		else {
-			rowMoves = { currentPlayer.verticalDirection };    // regular pieces can only move in their player's direction
+			row_moves = { current_player.vertical_direction };    // regular pieces can only move in their player's direction
 		}
 
-		std::vector<Move> pieceJumps{ pieceMoves(board, opponent, position, rowMoves, true) };
-		jumps.insert(jumps.end(), pieceJumps.begin(), pieceJumps.end());
+		std::vector<Move> piece_jumps{ piece_moves(board, opponent, position, row_moves, true) };
+		jumps.insert(jumps.end(), piece_jumps.begin(), piece_jumps.end());
 
 		// jumps are forced so only need to look for steps if no jumps are available
 		if (jumps.empty()) {
-			std::vector<Move> pieceSteps{ pieceMoves(board, opponent, position, rowMoves, false) };
-			steps.insert(steps.end(), pieceSteps.begin(), pieceSteps.end());
+			std::vector<Move> piece_steps{ piece_moves(board, opponent, position, row_moves, false) };
+			steps.insert(steps.end(), piece_steps.begin(), piece_steps.end());
 		}
 	}
 
@@ -108,47 +108,50 @@ std::vector<Move> boardMoves(Checkerboard board, CheckersPlayer currentPlayer, C
 
 
 Checkers::Checkers() {
-	inputMap["q"] = std::bind(&Checkers::quit, this);
-	inputMap["quit"] = std::bind(&Checkers::quit, this);
-	inputMap["exit"] = std::bind(&Checkers::quit, this);
+	input_map["q"] = std::bind(&Checkers::quit, this);
+	input_map["quit"] = std::bind(&Checkers::quit, this);
+	input_map["exit"] = std::bind(&Checkers::quit, this);
 	
-	inputMap["r"] = std::bind(&Checkers::randomMove, this);
-	inputMap["rand"] = std::bind(&Checkers::randomMove, this);
-	inputMap["random"] = std::bind(&Checkers::randomMove, this);
+	input_map["r"] = std::bind(&Checkers::random_move, this);
+	input_map["rand"] = std::bind(&Checkers::random_move, this);
+	input_map["random"] = std::bind(&Checkers::random_move, this);
 	
-	inputMap["u"] = std::bind(&Checkers::undo, this); 
-	inputMap["z"] = std::bind(&Checkers::undo, this);
-	inputMap["undo"] = std::bind(&Checkers::undo, this);
+	input_map["u"] = std::bind(&Checkers::undo, this); 
+	input_map["z"] = std::bind(&Checkers::undo, this);
+	input_map["undo"] = std::bind(&Checkers::undo, this);
 
-	inputMap["y"] = std::bind(&Checkers::redo, this);
-	inputMap["redo"] = std::bind(&Checkers::redo, this);
+	input_map["y"] = std::bind(&Checkers::redo, this);
+	input_map["redo"] = std::bind(&Checkers::redo, this);
 
-	// change this to new game screen when have states
-	inputMap["n"] = std::bind(&Checkers::play, this);
-	inputMap["new"] = std::bind(&Checkers::play, this);
-	inputMap["newgame"] = std::bind(&Checkers::play, this);
-	inputMap["new game"] = std::bind(&Checkers::play, this);
+	//TODO change this to new game screen when have states
+	input_map["n"] = std::bind(&Checkers::play, this);
+	input_map["new"] = std::bind(&Checkers::play, this);
+	input_map["newgame"] = std::bind(&Checkers::play, this);
+	input_map["new game"] = std::bind(&Checkers::play, this);
 }
 
 
-std::vector<Move> Checkers::getAvailableMoveList() {
-	return availableMoveList_;
+std::vector<Move> Checkers::get_available_moves() {
+	return available_moves_;
 }
 
 
 void Checkers::play() {
 	reset();
 
-	while (!availableMoveList_.empty()) {
+	while (!available_moves_.empty()) {
 		render();
+
 		std::string input;
-		if (currentPlayer_.isUserControlled) {
-			input = getUserInput();
+		if (current_player_.is_user_controlled) {
+			input = get_user_input();
 		}
 		else {
-			input = aiInput();
+			input = ai_input();
 		}
-		processInput(input);
+
+		process_input(input);
+		
 		update();
 	}
 }
@@ -156,16 +159,16 @@ void Checkers::play() {
 
 void Checkers::reset() {
 	checkerboard_.reset();
-	currentPlayer_ = players_[0];
+	current_player_ = players_[0];
 	opponent_ = players_[1];
-	previousMoveList_.clear();
-	redoMoveList_.clear();
+	previous_moves_.clear();
+	redo_moves_.clear();
 	update();
 }
 
 
 void Checkers::update() {
-	availableMoveList_ = boardMoves(checkerboard_, currentPlayer_, opponent_);
+	available_moves_ = board_moves(checkerboard_, current_player_, opponent_);
 }
 
 
@@ -174,8 +177,8 @@ void Checkers::quit() {
 }
 
 
-void Checkers::switchPlayers() {
-	std::swap(currentPlayer_, opponent_);
+void Checkers::switch_players() {
+	std::swap(current_player_, opponent_);
 }
 
 
@@ -185,11 +188,11 @@ void Checkers::render() {
 	std::cout << checkerboard_ << std::endl;
 
 	int i{ 1 };
-	for (Move move : availableMoveList_) {
+	for (Move move : available_moves_) {
 		std::cout << i++ << ") ";
-		std::cout << "(" << move.startPosition.row << ", " << move.startPosition.column << ")";
-		for (BoardPosition landingPosition : move.landingPositions) {
-			std::cout << " to (" << landingPosition.row << ", " << landingPosition.column << ")";
+		std::cout << "(" << move.start_position.row << ", " << move.start_position.column << ")";
+		for (BoardPosition landing_position : move.landing_positions) {
+			std::cout << " to (" << landing_position.row << ", " << landing_position.column << ")";
 		}
 		std::cout << std::endl;
 	}
@@ -197,77 +200,82 @@ void Checkers::render() {
 }
 
 
-std::string Checkers::getUserInput() {
+std::string Checkers::get_user_input() {
 	std::cin.clear();
-	std::string userInput;
-	std::getline(std::cin, userInput);
+	std::string user_input;
+	std::getline(std::cin, user_input);
 	
 	// convert to lower case
-	std::transform(userInput.begin(), userInput.end(), userInput.begin(), [](unsigned char c) { return tolower(c); });
+	std::transform(user_input.begin(), user_input.end(), user_input.begin(), [](unsigned char c) { return tolower(c); });
 	
-	return userInput;
+	return user_input;
 }
 
 
-void Checkers::processInput(std::string input) {
-	if (inputMap.count(input) == 1) {
+void Checkers::process_input(std::string input) {
+	if (input_map.count(input) == 1) {
 		// pre-defined allowable input
-		inputMap[input]();
+		input_map[input]();
 	}
 	else {
-		if (isInt(input)) {
-			int moveIndex{ std::stoi(input) - 1};
-			if (-1 < moveIndex && moveIndex < availableMoveList_.size()) {
+		if (is_int(input)) {
+			int move_index{ std::stoi(input) - 1};
+			if (-1 < move_index && move_index < available_moves_.size()) {
 				
 				// number representing which available move to make
-				makeMove(availableMoveList_[moveIndex], true);
+				make_move(available_moves_[move_index], true);
 			}
 		}
 	}
 }
 
 
-void Checkers::randomMove() {
-	makeMove(availableMoveList_[rand() % availableMoveList_.size()], true);
+void Checkers::random_move() {
+	make_move(available_moves_[rand() % available_moves_.size()], true);
 }
 
 
-void Checkers::makeMove(Move move, bool isNewMove) {
-	checkerboard_.executeMove(move);
-	previousMoveList_.push_back(move);    // update for potential undo
-	if (isNewMove) redoMoveList_.clear();    // if not a redo, need to clear the redo list
-	switchPlayers();
+void Checkers::make_move(Move move, bool is_new_move) {
+	checkerboard_.execute_move(move);
+	previous_moves_.push_back(move);    // update for potential undo
+
+	// if not a redo, need to clear the redo list
+	if (is_new_move) {
+		redo_moves_.clear();
+	}
+
+	switch_players();
 }
 
 
 void Checkers::undo() {
 	// if single player game, need to reverse 2 moves to get back to user's last play
-	int movesToReverse{ (opponent_.isUserControlled) ? 1 : 2 };
+	int moves_to_reverse{ (opponent_.is_user_controlled) ? 1 : 2 };
 
-	if (movesToReverse <= previousMoveList_.size()) {
-		for (int i = 0; i < movesToReverse; ++i) {
-			Move move{ previousMoveList_.back() };
-			checkerboard_.reverseMove(move);
-			redoMoveList_.push_back(move);    // update for potential redo
-			previousMoveList_.pop_back();
-			switchPlayers();
+	if (moves_to_reverse <= previous_moves_.size()) {
+		for (int i = 0; i < moves_to_reverse; ++i) {
+			Move move{ previous_moves_.back() };
+			checkerboard_.reverse_move(move);
+			redo_moves_.push_back(move);    // update for potential redo
+			previous_moves_.pop_back();
+			switch_players();
 		}
 	}
 }
 
 
 void Checkers::redo() {
-	if (!redoMoveList_.empty()) {
+	if (!redo_moves_.empty()) {
 		// if single player game, redo 2 moves to avoid changing ai recalculating
-		int movesToRedo{ (opponent_.isUserControlled) ? 1 : 2 };
-		for (int i = 0; i < movesToRedo; ++i) {
-			makeMove(redoMoveList_.front(), false);
-			redoMoveList_.erase(redoMoveList_.begin());
+		int n_moves_to_redo{ (opponent_.is_user_controlled) ? 1 : 2 };
+		for (int i = 0; i < n_moves_to_redo; ++i) {
+			make_move(redo_moves_.front(), false);
+			redo_moves_.erase(redo_moves_.begin());
 		}
 	}
 }
 
 
-std::string Checkers::aiInput() {
+std::string Checkers::ai_input() {
 	return "r";
 }
