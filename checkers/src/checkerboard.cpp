@@ -39,7 +39,7 @@ std::vector<BoardPosition> Checkerboard::get_player_positions(CheckersPlayer pla
 
 	for (size_t row = 0; row < board_.size(); ++row) {
 		// pieces can only be in every other column
-		for (size_t column = (row + 1) % 2; column < board_.size(); column += 2) {
+		for (size_t column = (row + 1) % 2; column < board_[row].size(); column += 2) {
 			BoardPosition piece_position{ row, column };
 
 			if (player.has_piece(board_[row][column])) {
