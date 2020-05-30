@@ -12,16 +12,6 @@
 
 
 
-//// break these out of class for easy use with checkers_environment
-//// returns the moves a piece is allowed to make
-//std::vector<Move> piece_moves(Checkerboard board, CheckersPlayer current_player, BoardPosition piece_position, 
-//	std::vector<int> row_moves, bool can_capture);
-//
-//// returns the moves allowable moves from the current board
-//std::vector<Move> board_moves(Checkerboard board, CheckersPlayer current_player, CheckersPlayer opponent);
-
-
-
 class Checkers {
 public:
 	Checkers();
