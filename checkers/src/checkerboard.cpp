@@ -83,7 +83,7 @@ void Checkerboard::reverse_move(Move move) {
 }
 
 
-bool Checkerboard::is_in_king_row(BoardPosition board_position) {
+bool Checkerboard::is_king_row(BoardPosition board_position) {
 	return board_position.row == 0 || board_position.row == board_.size() - 1;
 }
 

@@ -22,7 +22,7 @@ public:
 	std::vector<BoardPosition> get_player_positions(CheckersPlayer player);
 	void execute_move(Move move);
 	void reverse_move(Move move);
-	bool is_in_king_row(BoardPosition board_position);
+	bool is_king_row(BoardPosition board_position);
 
 
 private:

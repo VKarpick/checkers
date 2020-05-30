@@ -127,9 +127,7 @@ std::vector<Move> Checkers::board_moves(Checkerboard checkerboard, CheckersPlaye
 // pieces are crowned if they aren't already kings and can reach the top/bottom of the board
 bool Checkers::is_crowning_move(Checkerboard checkerboard, char piece, BoardPosition board_position) {
 	bool is_king{ piece == toupper(piece) };
-	//bool is_in_king_row{ board_position.row == 0 || board_position.row == 8 - 1 };
-
-	return !is_king && checkerboard.is_in_king_row(board_position);
+	return !is_king && checkerboard.is_king_row(board_position);
 }
 
 
