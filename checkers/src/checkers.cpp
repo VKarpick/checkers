@@ -10,17 +10,17 @@ bool is_int(const std::string& s) {
 
 
 
-// pieces are crowned if they aren't already kings and can reach the top/bottom of the board
-bool is_crowning_move(char piece, BoardPosition board_position) {
-	bool is_king{ piece == toupper(piece) };
-	//TODO remove 8 from this
-	//TODO is_in_king_row should come from checkerboard
-	bool is_in_king_row{ board_position.row == 0 || board_position.row == 8 - 1 };
-
-	return !is_king && is_in_king_row;
-}
-
-
+//// pieces are crowned if they aren't already kings and can reach the top/bottom of the board
+//bool is_crowning_move(char piece, BoardPosition board_position) {
+//	bool is_king{ piece == toupper(piece) };
+//	//TODO remove 8 from this
+//	//TODO is_in_king_row should come from checkerboard
+//	bool is_in_king_row{ board_position.row == 0 || board_position.row == 8 - 1 };
+//
+//	return !is_king && is_in_king_row;
+//}
+//
+//
 //std::vector<Move> piece_moves(Checkerboard board, CheckersPlayer opponent,
 //	BoardPosition piece_position, std::vector<int> row_moves, bool can_capture) {
 //
@@ -132,7 +132,7 @@ Checkers::Checkers() {
 }
 
 
-std::vector<Move> Checkers::piece_moves(Checkerboard board, CheckersPlayer opponent,
+std::vector<Move> Checkers::piece_moves(Checkerboard checkerboard, CheckersPlayer opponent,
 	BoardPosition piece_position, std::vector<int> row_moves, bool can_capture) {
 
 	std::vector<Move> moves;
@@ -142,24 +142,28 @@ std::vector<Move> Checkers::piece_moves(Checkerboard board, CheckersPlayer oppon
 		for (int column_move : constants::column_moves) {
 			BoardPosition move_position{ piece_position.row + row_move * move_distance, piece_position.column + column_move * move_distance };
 			// can only move to open squares
-			bool is_legal_move{ board.get_piece(move_position) == constants::board_opening };
+			bool is_legal_move{ checkerboard.get_piece(move_position) == constants::board_opening };
 
 			bool is_legal_capture{ true };    // initialized to true to simplify if statement
 			BoardPosition capture_position;
 			if (can_capture) {
 				capture_position.row = piece_position.row + row_move * constants::capture_distance;
 				capture_position.column = piece_position.column + column_move * constants::capture_distance;
-				is_legal_capture = opponent.has_piece(board.get_piece(capture_position));
+				is_legal_capture = opponent.has_piece(checkerboard.get_piece(capture_position));
 			}
 
 			if (is_legal_move && is_legal_capture) {
-				Move current_move{ piece_position, { move_position }, is_crowning_move(board.get_piece(piece_position), move_position) };
+				Move current_move{ 
+					piece_position, 
+					{ move_position }, 
+					is_crowning_move(checkerboard, checkerboard.get_piece(piece_position), move_position)
+				};
 
 				if (can_capture) {
-					current_move.captured_pieces = { Piece{capture_position, board.get_piece(capture_position)} };
+					current_move.captured_pieces = { Piece{capture_position, checkerboard.get_piece(capture_position)} };
 
 					// for jumps, have to continue jumping until no more jumps available
-					Checkerboard board_after_move = board;
+					Checkerboard board_after_move = checkerboard;
 					board_after_move.execute_move(current_move);
 
 					// use recursion to continue jump
@@ -189,12 +193,12 @@ std::vector<Move> Checkers::piece_moves(Checkerboard board, CheckersPlayer oppon
 }
 
 
-std::vector<Move> Checkers::board_moves(Checkerboard board, CheckersPlayer current_player, CheckersPlayer opponent) {
+std::vector<Move> Checkers::board_moves(Checkerboard checkerboard, CheckersPlayer current_player, CheckersPlayer opponent) {
 	std::vector<Move> jumps{};
 	std::vector<Move> steps{};
 
-	for (BoardPosition position : board.get_player_positions(current_player)) {
-		char piece = board.get_piece(position);
+	for (BoardPosition position : checkerboard.get_player_positions(current_player)) {
+		char piece = checkerboard.get_piece(position);
 		std::vector<int> row_moves;
 
 		if (piece == toupper(piece)) {
@@ -204,17 +208,26 @@ std::vector<Move> Checkers::board_moves(Checkerboard board, CheckersPlayer curre
 			row_moves = { current_player.vertical_direction };    // regular pieces can only move in their player's direction
 		}
 
-		std::vector<Move> piece_jumps{ piece_moves(board, opponent, position, row_moves, true) };
+		std::vector<Move> piece_jumps{ piece_moves(checkerboard, opponent, position, row_moves, true) };
 		jumps.insert(jumps.end(), piece_jumps.begin(), piece_jumps.end());
 
 		// jumps are forced so only need to look for steps if no jumps are available
 		if (jumps.empty()) {
-			std::vector<Move> piece_steps{ piece_moves(board, opponent, position, row_moves, false) };
+			std::vector<Move> piece_steps{ piece_moves(checkerboard, opponent, position, row_moves, false) };
 			steps.insert(steps.end(), piece_steps.begin(), piece_steps.end());
 		}
 	}
 
 	return (jumps.empty()) ? steps : jumps;
+}
+
+
+// pieces are crowned if they aren't already kings and can reach the top/bottom of the board
+bool Checkers::is_crowning_move(Checkerboard checkerboard, char piece, BoardPosition board_position) {
+	bool is_king{ piece == toupper(piece) };
+	//bool is_in_king_row{ board_position.row == 0 || board_position.row == 8 - 1 };
+
+	return !is_king && checkerboard.is_in_king_row(board_position);
 }
 
 

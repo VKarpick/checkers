@@ -27,12 +27,14 @@ public:
 	Checkers();
 
 
+	// returns the moves allowable moves from the current board
+	static std::vector<Move> board_moves(Checkerboard board, CheckersPlayer current_player, CheckersPlayer opponent);
+	
 	// returns the moves a piece is allowed to make
 	static std::vector<Move> piece_moves(Checkerboard board, CheckersPlayer current_player, BoardPosition piece_position,
 		std::vector<int> row_moves, bool can_capture);
 
-	// returns the moves allowable moves from the current board
-	static std::vector<Move> board_moves(Checkerboard board, CheckersPlayer current_player, CheckersPlayer opponent);
+	static bool is_crowning_move(Checkerboard checkerboard, char piece, BoardPosition board_position);
 
 
 	std::vector<Move> get_available_moves();
@@ -52,7 +54,6 @@ private:
 	std::vector<Move> available_moves_{};
 	std::vector<Move> previous_moves_{};
 	std::vector<Move> redo_moves_{};
-
 
 	// mapping of allowable non-move input to their corresponding functions
 	// eg) "q" -> quit()
