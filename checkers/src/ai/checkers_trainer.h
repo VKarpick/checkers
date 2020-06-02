@@ -22,7 +22,7 @@ public:
         bool is_printing_episodes = true, std::string write_filename = "..\\checkers\\src\\ai\\weights.dat");
     
     
-    std::vector<double> read_weights(std::string filename);
+    static std::vector<double> read_weights(std::string filename);
     void write_weights(std::string filename, std::vector<double> weights);
     void train();
 

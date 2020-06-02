@@ -31,7 +31,7 @@ private:
 	int n_plays_{ 0 };
 	const int max_plays{ 150 };    // simple way of determining draws, terminate after given number of plays
 	std::vector<std::shared_ptr<Player>> players_{
-		std::make_shared<Player>(Player{CheckersPlayer{'r', -1, false}}),
+		std::make_shared<Player>(Player{CheckersPlayer{'r', -1, false}}),    //TODO remove magic variables
 		std::make_shared<Player>(Player{CheckersPlayer{'w', 1, false}})
 	};
 };
