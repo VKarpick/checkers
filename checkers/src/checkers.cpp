@@ -49,7 +49,7 @@ void Checkers::play() {
 		if (current_player_.is_user_controlled) {
 			input = get_user_input();
 		}
-		else {
+		if (!current_player_.is_user_controlled || input == "a") {
 			input = ai_input();
 		}
 
@@ -90,14 +90,17 @@ void Checkers::render() {
 	std::cout << std::endl;
 	std::cout << checkerboard_ << std::endl;
 
-	int i{ 1 };
-	for (Move move : available_moves_) {
-		std::cout << i++ << ") ";
-		std::cout << "(" << move.start_position.row << ", " << move.start_position.column << ")";
-		for (BoardPosition landing_position : move.landing_positions) {
-			std::cout << " to (" << landing_position.row << ", " << landing_position.column << ")";
+	// only display available moves for user
+	if (current_player_.is_user_controlled) {
+		int i{ 1 };
+		for (Move move : available_moves_) {
+			std::cout << i++ << ") ";
+			std::cout << "(" << move.start_position.row << ", " << move.start_position.column << ")";
+			for (BoardPosition landing_position : move.landing_positions) {
+				std::cout << " to (" << landing_position.row << ", " << landing_position.column << ")";
+			}
+			std::cout << std::endl;
 		}
-		std::cout << std::endl;
 	}
 	std::cout << std::endl;
 }

@@ -50,7 +50,7 @@ TDEstimator::TDEstimator(double step_size, int feature_size, bool is_using_eligi
 
 
 double TDEstimator::predict(std::vector<double> features) {
-	return inner_product(features.begin(), features.end(), weights_.begin(), 0);
+	return inner_product(features.begin(), features.end(), weights_.begin(), 0.0);
 }
 
 
