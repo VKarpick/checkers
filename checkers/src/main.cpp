@@ -11,6 +11,6 @@ int main()
     //CheckersTrainer checkers_trainer(1, 1);
     //checkers_trainer.train();
 
-    /*Checkers checkers;
-    checkers.play();*/
+    Checkers checkers;
+    checkers.play();
 }

@@ -1,7 +1,11 @@
 #pragma once
 #include "checkers_environment.h"
-//#include "checkers_trainer.h"
+#include "checkers_trainer.h"
 #include "../reinforcement_learning/policy.h"
+
+
+
+const std::string weights_file{ "..\\checkers\\src\\ai\\weights.dat" };
 
 
 
@@ -15,8 +19,7 @@ public:
 
 
 private:
-	CheckersEnvironment checkers_environment_;
-	//std::shared_ptr<CheckersEnvironment> checkers_environment_;
+	std::shared_ptr<CheckersEnvironment> checkers_environment_;
 	std::shared_ptr<State> state_;
 	std::shared_ptr<TDEstimator> estimator_;
 	int max_depth_{ 6 };
