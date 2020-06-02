@@ -155,6 +155,7 @@
 	<ClCompile Include="src/reinforcement_learning/policy.cpp" />
 	<ClCompile Include="src/reinforcement_learning/td_learning.cpp" />
     <ClCompile Include="src/checkerboard.cpp" />
+	<ClCompile Include="src/checkerboard_moves.cpp" />
 	<ClCompile Include="src/checkers.cpp" />
     <ClCompile Include="src/main.cpp" />
   </ItemGroup>
@@ -172,6 +173,7 @@
 	<ClInclude Include="src/constants.h" />
 	<ClInclude Include="src/checkers_structs.h" />
 	<ClInclude Include="src/checkerboard.h" />
+	<ClInclude Include="src/checkerboard_moves.h" />
     <ClInclude Include="src/checkers.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

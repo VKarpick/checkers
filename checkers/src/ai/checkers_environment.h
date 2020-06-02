@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "../checkers.h"
+#include "../checkerboard_moves.h"
 #include "../reinforcement_learning/environment.h"
 
 

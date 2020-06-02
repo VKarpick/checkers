@@ -29,7 +29,7 @@ std::shared_ptr<State> CheckersEnvironment::step(std::shared_ptr<State> state, s
 
 	CheckersPlayer current_player{ checkers_player_from_state(state) };
 	std::shared_ptr<Player> opponent{ opponent_from_state(state) };
-	std::vector<Move> opponent_actions{ Checkers::board_moves(checkerboard, checkers_player_from_player(opponent), current_player) };
+	std::vector<Move> opponent_actions{ CheckerboardMoves::board_moves(checkerboard, checkers_player_from_player(opponent), current_player) };
 
 	if (opponent_actions.size() == 0) {
 		//TODO remove magic variable
@@ -53,7 +53,7 @@ std::vector<std::shared_ptr<Action>> CheckersEnvironment::get_actions(std::share
 	CheckersPlayer current_player{ checkers_player_from_state(state) };
 	CheckersPlayer opponent{ checkers_player_from_player(opponent_from_state(state)) };
 	
-	for (Move move : Checkers::board_moves(checkerboard, current_player, opponent)) {
+	for (Move move : CheckerboardMoves::board_moves(checkerboard, current_player, opponent)) {
 		actions.push_back(std::make_shared<Action>(Action{ move }));
 	}
 
