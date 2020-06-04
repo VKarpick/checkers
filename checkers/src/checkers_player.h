@@ -14,4 +14,11 @@ public:
 	bool has_piece(char piece) {
 		return tolower(piece) == player;
 	}
+
+
+	bool operator==(const CheckersPlayer& checkers_player) const {
+		return player == checkers_player.player 
+			&& vertical_direction == checkers_player.vertical_direction 
+			&& is_user_controlled == checkers_player.is_user_controlled;
+	}
 };

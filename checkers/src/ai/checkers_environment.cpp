@@ -79,6 +79,11 @@ std::vector<double> CheckersEnvironment::featurize(std::shared_ptr<State> state)
 }
 
 
+void CheckersEnvironment::set_state(std::shared_ptr<State> state) {
+	state_ = state;
+}
+
+
 Checkerboard CheckersEnvironment::checkerboard_from_state(std::shared_ptr<State> state) {
 	return std::any_cast<Checkerboard>(state->observation);
 }

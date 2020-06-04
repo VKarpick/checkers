@@ -43,7 +43,6 @@ private:
 	std::map<std::string, std::function<void()>> input_map;
 
 
-	//bool isCrowningMove(char pieceChar, BoardPosition boardPosition);
 	void switch_players();
 	void render();
 	std::string get_user_input();

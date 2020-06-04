@@ -20,10 +20,7 @@ public:
 	std::vector<double> featurize(std::shared_ptr<State> state) override;
 
 
-	Checkerboard checkerboard_from_state(std::shared_ptr<State> state);
-	std::shared_ptr<Player> opponent_from_state(std::shared_ptr<State> state);
-	CheckersPlayer checkers_player_from_state(std::shared_ptr<State> state);
-	CheckersPlayer checkers_player_from_player(std::shared_ptr<Player> player);
+	void set_state(std::shared_ptr<State> state);
 
 
 private:
@@ -34,4 +31,10 @@ private:
 		std::make_shared<Player>(Player{CheckersPlayer{'r', -1, false}}),    //TODO remove magic variables
 		std::make_shared<Player>(Player{CheckersPlayer{'w', 1, false}})
 	};
+
+
+	Checkerboard checkerboard_from_state(std::shared_ptr<State> state);
+	std::shared_ptr<Player> opponent_from_state(std::shared_ptr<State> state);
+	CheckersPlayer checkers_player_from_state(std::shared_ptr<State> state);
+	CheckersPlayer checkers_player_from_player(std::shared_ptr<Player> player);
 };

@@ -143,7 +143,6 @@ void Checkers::random_move() {
 
 void Checkers::make_move(Move move, bool is_new_move) {
 	checkerboard_.execute_move(move);
-	checkers_ai_.process_move(move);
 	previous_moves_.push_back(move);    // update for potential undo
 
 	// if not a redo, need to clear the redo list
@@ -184,8 +183,7 @@ void Checkers::redo() {
 
 
 std::string Checkers::ai_input() {
-	//return "r";
-	Move ai_move{ checkers_ai_.action_selection() };
+	Move ai_move{ checkers_ai_.action_selection(checkerboard_, current_player_) };
 
 	for (int i = 0; i < available_moves_.size(); ++i) {
 		if (available_moves_[i] == ai_move) {
