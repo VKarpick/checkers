@@ -2,7 +2,6 @@
 
 #include <iostream>
 
-#include "checkers_player.h"
 #include "checkers_structs.h"
 #include "constants.h"
 

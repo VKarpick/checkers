@@ -7,7 +7,6 @@
 
 #include "checkerboard.h"
 #include "checkerboard_moves.h"
-#include "checkers_player.h"
 #include "checkers_structs.h"
 #include "constants.h"
 #include "ai/checkers_ai.h"

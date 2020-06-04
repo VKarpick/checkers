@@ -169,7 +169,6 @@
 	<ClInclude Include="src/reinforcement_learning/td_learning.h" />
 	<ClInclude Include="src/tree/minimax.h" />
 	<ClInclude Include="src/tree/node.h" />
-	<ClInclude Include="src/checkers_player.h" />
 	<ClInclude Include="src/constants.h" />
 	<ClInclude Include="src/checkers_structs.h" />
 	<ClInclude Include="src/checkerboard.h" />
