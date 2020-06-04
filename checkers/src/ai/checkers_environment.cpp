@@ -2,11 +2,6 @@
 
 
 
-std::vector<std::shared_ptr<Player>> CheckersEnvironment::get_players() {
-	return players_;
-}
-
-
 std::shared_ptr<State> CheckersEnvironment::reset() {
 	n_plays_ = 0;
 	state_ = std::make_shared<State>(State{ Checkerboard(constants::starting_board), 0, false, players_[0] });
@@ -76,6 +71,11 @@ std::vector<double> CheckersEnvironment::featurize(std::shared_ptr<State> state)
 	}
 
 	return features;
+}
+
+
+std::vector<std::shared_ptr<Player>> CheckersEnvironment::get_players() {
+	return players_;
 }
 
 
