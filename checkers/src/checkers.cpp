@@ -92,7 +92,7 @@ void Checkers::render() {
 
 	// only display available moves for user
 	if (current_player_.is_user_controlled) {
-		int i{ 1 };
+		int i{ 0 };
 		for (Move move : available_moves_) {
 			std::cout << i++ << ") ";
 			std::cout << "(" << move.start_position.row << ", " << move.start_position.column << ")";
@@ -125,7 +125,7 @@ void Checkers::process_input(std::string input) {
 	}
 	else {
 		if (is_int(input)) {
-			int move_index{ std::stoi(input) - 1};
+			int move_index{ std::stoi(input) };
 			if (-1 < move_index && move_index < available_moves_.size()) {
 				
 				// number representing which available move to make
@@ -187,7 +187,7 @@ std::string Checkers::ai_input() {
 
 	for (int i = 0; i < available_moves_.size(); ++i) {
 		if (available_moves_[i] == ai_move) {
-			return std::to_string(i + 1);    // processing of moves assumes input comes from the user which uses 1-indexing
+			return std::to_string(i);
 		}
 	}
 
