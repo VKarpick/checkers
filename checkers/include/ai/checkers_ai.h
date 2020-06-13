@@ -5,7 +5,7 @@
 
 
 
-const std::string weights_file{ "..\\checkers\\src\\ai\\weights.dat" };
+const std::string weights_file{ "..\\checkers\\data\\weights.dat" };
 
 
 
