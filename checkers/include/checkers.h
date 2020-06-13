@@ -24,6 +24,7 @@ public:
 	void play();
 	void reset();
 	void update();    // updates availableMoveList
+	void render();
 	void quit();
 
 
@@ -42,8 +43,9 @@ private:
 	std::map<std::string, std::function<void()>> input_map;
 
 
+	void render_board();
+	void render_options();
 	void switch_players();
-	void render();
 	std::string get_user_input();
 	void process_input(std::string input);
 	void random_move();

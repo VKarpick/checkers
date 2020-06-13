@@ -1,4 +1,4 @@
-#include "checkers_environment.h"
+#include "ai/checkers_environment.h"
 
 
 

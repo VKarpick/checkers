@@ -75,24 +75,16 @@ void Checkers::update() {
 }
 
 
-void Checkers::quit() {
-	exit(0);
-}
-
-
-void Checkers::switch_players() {
-	std::swap(current_player_, opponent_);
-}
-
-
 void Checkers::render() {
 	//TODO split this into renderBoard and renderOptions
 	std::cout << std::endl;
-	std::cout << checkerboard_ << std::endl;
+	//std::cout << checkerboard_ << std::endl;
+	render_board();
 
 	// only display available moves for user
 	if (current_player_.is_user_controlled) {
-		int i{ 0 };
+		render_options();
+		/*int i{ 0 };
 		for (Move move : available_moves_) {
 			std::cout << i++ << ") ";
 			std::cout << "(" << move.start_position.row << ", " << move.start_position.column << ")";
@@ -100,9 +92,37 @@ void Checkers::render() {
 				std::cout << " to (" << landing_position.row << ", " << landing_position.column << ")";
 			}
 			std::cout << std::endl;
-		}
+		}*/
 	}
 	std::cout << std::endl;
+}
+
+
+void Checkers::quit() {
+	exit(0);
+}
+
+
+void Checkers::render_board() {
+	std::cout << checkerboard_ << std::endl;
+}
+
+
+void Checkers::render_options() {
+	int i{ 0 };
+	for (Move move : available_moves_) {
+		std::cout << i++ << ") ";
+		std::cout << "(" << move.start_position.row << ", " << move.start_position.column << ")";
+		for (BoardPosition landing_position : move.landing_positions) {
+			std::cout << " to (" << landing_position.row << ", " << landing_position.column << ")";
+		}
+		std::cout << std::endl;
+	}
+}
+
+
+void Checkers::switch_players() {
+	std::swap(current_player_, opponent_);
 }
 
 

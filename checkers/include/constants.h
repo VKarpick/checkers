@@ -22,4 +22,5 @@ namespace constants {
 		" r r r r",
 		"r r r r ",
 	};
+	const int square_size{ 64 };
 }
