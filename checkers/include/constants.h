@@ -1,11 +1,18 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
+
 #include <string>
 #include <vector>
 
 
 
 namespace constants {
+	constexpr int checkerboard_square_size{ 64 };
+	const sf::Color buff{ sf::Color(240, 220, 130) };
+	const sf::Color green{ sf::Color(0, 150, 0) };
+	const std::vector<sf::Color> checkerboard_colors{ buff, green };
+
 	constexpr char board_opening{ '-' };    // how available spots on the board are represented
 	constexpr int step_distance{ 1 };    // how far a piece is allowed to step
 	constexpr int jump_distance{ 2 };    // how far a piece is allowed to jump
@@ -22,5 +29,4 @@ namespace constants {
 		" r r r r",
 		"r r r r ",
 	};
-	const int square_size{ 64 };
 }

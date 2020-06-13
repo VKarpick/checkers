@@ -17,6 +17,22 @@ std::vector<std::string> Checkerboard::get_board() {
 }
 
 
+void Checkerboard::draw(sf::RenderTarget& target, sf::RenderStates state) const {
+	int inner_square_size{ constants::checkerboard_square_size * 7 / 8 };
+	for (size_t row = 0; row < board_.size(); ++row) {
+		for (size_t column = 0; column < board_[row].size(); ++column) {
+			sf::RectangleShape square(sf::Vector2f(inner_square_size, inner_square_size));
+			square.setFillColor(((row + column) % 2 == 0) ? constants::checkerboard_colors[0] : constants::checkerboard_colors[1]);
+			square.setPosition(sf::Vector2f(column * constants::checkerboard_square_size + 4, row * constants::checkerboard_square_size + 4));
+			square.setOutlineThickness(4);
+			square.setOutlineColor(square.getFillColor());
+
+			target.draw(square, state);
+		}
+	}
+}
+
+
 void Checkerboard::reset() {
 	board_ = constants::starting_board;
 }

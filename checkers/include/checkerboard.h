@@ -2,12 +2,14 @@
 
 #include <iostream>
 
+#include <SFML/Graphics.hpp>
+
 #include "checkers_structs.h"
 #include "constants.h"
 
 
 
-class Checkerboard {
+class Checkerboard : public sf::Drawable {
 public:
 	Checkerboard();
 	Checkerboard(std::vector<std::string> board);
@@ -16,6 +18,7 @@ public:
 	std::vector<std::string> get_board();
 
 
+	void draw(sf::RenderTarget& target, sf::RenderStates state) const override;
 	void reset();
 	char get_piece(BoardPosition board_position);
 	std::vector<BoardPosition> get_player_positions(CheckersPlayer player);

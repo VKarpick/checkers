@@ -2,7 +2,7 @@
 
 
 CheckersSFML::CheckersSFML() {
-	window.create(sf::VideoMode(512, 512), "Checkers");
+	window_.create(sf::VideoMode(512, 512), "Checkers");
 }
 
 

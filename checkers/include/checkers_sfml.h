@@ -5,13 +5,14 @@
 #include "checkers.h"
 
 
+
 class CheckersSFML : public Checkers{
 public:
 	CheckersSFML();
 
 
 private:
-	sf::RenderWindow window;
+	sf::RenderWindow window_;
 
 
 	void render_board();
