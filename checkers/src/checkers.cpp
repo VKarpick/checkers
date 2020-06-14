@@ -76,23 +76,12 @@ void Checkers::update() {
 
 
 void Checkers::render() {
-	//TODO split this into renderBoard and renderOptions
 	std::cout << std::endl;
-	//std::cout << checkerboard_ << std::endl;
 	render_board();
 
 	// only display available moves for user
 	if (current_player_.is_user_controlled) {
 		render_options();
-		/*int i{ 0 };
-		for (Move move : available_moves_) {
-			std::cout << i++ << ") ";
-			std::cout << "(" << move.start_position.row << ", " << move.start_position.column << ")";
-			for (BoardPosition landing_position : move.landing_positions) {
-				std::cout << " to (" << landing_position.row << ", " << landing_position.column << ")";
-			}
-			std::cout << std::endl;
-		}*/
 	}
 	std::cout << std::endl;
 }

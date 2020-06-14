@@ -24,14 +24,14 @@ public:
 	void play();
 	void reset();
 	void update();    // updates availableMoveList
-	void render();
+	virtual void render();
 	void quit();
 
 
-private:
+protected:
 	Checkerboard checkerboard_;
 	CheckersAI checkers_ai_;
-	std::vector<CheckersPlayer> players_{ CheckersPlayer{'r', -1, true}, CheckersPlayer{'w', 1, false} };
+	std::vector<CheckersPlayer> players_{ CheckersPlayer{'r', -1, false}, CheckersPlayer{'w', 1, false} };
 	CheckersPlayer& current_player_{ players_[0] };
 	CheckersPlayer& opponent_{ players_[1] };
 	std::vector<Move> available_moves_{};

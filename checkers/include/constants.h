@@ -9,6 +9,7 @@
 
 namespace constants {
 	constexpr int checkerboard_square_size{ 64 };
+	constexpr int window_size{ checkerboard_square_size * 8 };
 	constexpr int checkerboard_square_thickness{ 4 };
 	constexpr int piece_size((checkerboard_square_size - checkerboard_square_thickness * 5) / 2);
 	constexpr int piece_thickness{ checkerboard_square_thickness / 2 };

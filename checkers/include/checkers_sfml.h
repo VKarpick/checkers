@@ -8,13 +8,10 @@
 
 class CheckersSFML : public Checkers{
 public:
-	CheckersSFML();
+	void play();
+	void render();
 
 
 private:
 	sf::RenderWindow window_;
-
-
-	void render_board();
-	void render_options();
 };

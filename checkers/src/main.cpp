@@ -16,10 +16,13 @@ int main()
     //CheckersTrainer checkers_trainer(1, 1);
     //checkers_trainer.train();
 
-    /*Checkers checkers;
+    Checkers checkers;
+    checkers.play();
+
+    /*CheckersSFML checkers;
     checkers.play();*/
 
-    Checkerboard board;
+    /*Checkerboard board;
 
     sf::RenderWindow window(sf::VideoMode(512, 512), "Checkers");
     while (window.isOpen()) {
@@ -35,7 +38,7 @@ int main()
 
             window.display();
         }
-    }
+    }*/
 
     return 0;
 }
