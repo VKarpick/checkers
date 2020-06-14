@@ -25,6 +25,7 @@ namespace constants {
 	const std::vector<int> column_moves{ -1, 1 };    // all pieces are allowed to move left or right
 
 	const std::string pieces{ "rw" };    // how the pieces are represented on the board
+	const std::vector<std::string> player_colors{ "Red", "White" };
 	const std::vector<sf::Color> piece_colors{ sf::Color::Red, sf::Color::White };
 	constexpr char board_opening{ '-' };    // how available spots on the board are represented
 	const std::vector<std::string> starting_board{

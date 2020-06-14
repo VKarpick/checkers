@@ -17,10 +17,10 @@ int main()
     //checkers_trainer.train();
 
     Checkers checkers;
-    checkers.play();
+    checkers.start();
 
     /*CheckersSFML checkers;
-    checkers.play();*/
+    checkers.start();*/
 
     /*Checkerboard board;
 

@@ -11,6 +11,8 @@ bool is_int(const std::string& s) {
 
 
 Checkers::Checkers() {
+	srand(time(0));
+
 	input_map["q"] = std::bind(&Checkers::quit, this);
 	input_map["quit"] = std::bind(&Checkers::quit, this);
 	input_map["exit"] = std::bind(&Checkers::quit, this);
@@ -26,11 +28,10 @@ Checkers::Checkers() {
 	input_map["y"] = std::bind(&Checkers::redo, this);
 	input_map["redo"] = std::bind(&Checkers::redo, this);
 
-	//TODO change this to new game screen when have states
-	input_map["n"] = std::bind(&Checkers::play, this);
-	input_map["new"] = std::bind(&Checkers::play, this);
-	input_map["newgame"] = std::bind(&Checkers::play, this);
-	input_map["new game"] = std::bind(&Checkers::play, this);
+	input_map["n"] = std::bind(&Checkers::new_game, this);
+	input_map["new"] = std::bind(&Checkers::new_game, this);
+	input_map["newgame"] = std::bind(&Checkers::new_game, this);
+	input_map["new game"] = std::bind(&Checkers::new_game, this);
 }
 
 
@@ -39,23 +40,99 @@ std::vector<Move> Checkers::get_available_moves() {
 }
 
 
-void Checkers::play() {
+void Checkers::start() {
+	while (state_ != CheckersState::Exiting) {
+		game_loop();
+	}
+	exit(0);
+}
+
+
+void Checkers::game_loop() {
+	switch (state_) {
+		case CheckersState::StartScreen: {
+			render_start_screen();
+			break;
+		}
+		case CheckersState::Playing: {
+			update();
+			render();
+
+			if (available_moves_.empty()) {
+				state_ = CheckersState::EndScreen;
+			}
+			else {
+				process_input();
+			}
+			
+			break;
+		}
+		case CheckersState::EndScreen: {
+			render_end_screen();
+			break;
+		}
+	}
+}
+
+
+void Checkers::render_start_screen() {
+	std::string user_input;
+	std::vector<std::string> ordinal{ "first", "second" };
+	std::vector<int> directions{ -1, 1 };
+	players_.clear();
+	while (players_.size() < 2) {
+		std::string player_color{ constants::player_colors[players_.size()] };
+		std::cout << "User controlling " << ordinal[players_.size()] << " player (" << player_color << ")? (y/n) ";
+		user_input = get_user_input();
+
+		if (user_input == "yes") { user_input = "y"; }
+		if (user_input == "no") { user_input = "n"; }
+
+		if (user_input == "y" || user_input == "n") {
+			char piece{ constants::pieces[players_.size()] };
+			int direction{ directions[players_.size()] };
+			players_.push_back(CheckersPlayer{ piece, direction, user_input == "y" });
+		}
+
+		if (user_input == "q" || user_input == "quit") {
+			quit();
+			return;
+		}
+	}
 	reset();
+	state_ = CheckersState::Playing;
+}
 
-	while (!available_moves_.empty()) {
-		render();
 
-		std::string input;
-		if (current_player_.is_user_controlled) {
-			input = get_user_input();
+void Checkers::render_end_screen() {
+	int winner{ (players_[0] == current_player_) ? 1 : 0 };
+	if (players_[0].is_user_controlled == players_[1].is_user_controlled) {
+		std::cout << constants::player_colors[winner] << " wins!" << std::endl;
+	}
+	else {
+		std::string won_lost{ (players_[winner].is_user_controlled) ? " won" : "lost" };
+		std::cout << "Looks like you " << won_lost << " that one." << std::endl;
+	}
+
+	std::string user_input;
+	while (state_ == CheckersState::EndScreen) {
+		std::cout << "\nPlay again?" << std::endl;
+		std::cout << "0) Yes" << std::endl;
+		std::cout << "1) Change settings" << std::endl;
+		std::cout << "2) No" << std::endl;
+		user_input = get_user_input();
+
+		if (user_input == "0" || user_input == "y" || user_input == "yes") {
+			reset();
+			state_ = CheckersState::Playing;
 		}
-		if (!current_player_.is_user_controlled || input == "a") {
-			input = ai_input();
+		else if (user_input == "1" || user_input == "change" || user_input == "change settings") {
+			state_ = CheckersState::StartScreen;
 		}
-
-		process_input(input);
-		
-		update();
+		else if (user_input == "2" || user_input == "n" || user_input == "no") {
+			state_ = CheckersState::Exiting;
+		}
+		std::cout << std::endl;
 	}
 }
 
@@ -66,7 +143,6 @@ void Checkers::reset() {
 	opponent_ = players_[1];
 	previous_moves_.clear();
 	redo_moves_.clear();
-	update();
 }
 
 
@@ -87,8 +163,13 @@ void Checkers::render() {
 }
 
 
+void Checkers::new_game() {
+	state_ = CheckersState::StartScreen;
+}
+
+
 void Checkers::quit() {
-	exit(0);
+	state_ = CheckersState::Exiting;
 }
 
 
@@ -124,6 +205,19 @@ std::string Checkers::get_user_input() {
 	std::transform(user_input.begin(), user_input.end(), user_input.begin(), [](unsigned char c) { return tolower(c); });
 	
 	return user_input;
+}
+
+
+void Checkers::process_input() {
+	std::string input;
+	if (current_player_.is_user_controlled) {
+		input = get_user_input();
+	}
+	if (!current_player_.is_user_controlled || input == "a") {
+		input = ai_input();
+	}
+
+	process_input(input);
 }
 
 

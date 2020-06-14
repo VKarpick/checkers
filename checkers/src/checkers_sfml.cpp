@@ -2,7 +2,7 @@
 
 
 
-void CheckersSFML::play() {
+void CheckersSFML::start() {
 	window_.create(sf::VideoMode(constants::window_size, constants::window_size), "Checkers");
 	while (window_.isOpen()) {
 		sf::Event event;
@@ -13,7 +13,7 @@ void CheckersSFML::play() {
 
 			window_.clear(sf::Color::Black);
 
-			Checkers::play();
+			Checkers::game_loop();
 		}
 	}
 }

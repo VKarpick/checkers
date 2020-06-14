@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <ctime>
 #include <functional>
 #include <map>
 #include <random>
@@ -21,19 +22,17 @@ public:
 	std::vector<Move> get_available_moves();
 
 
-	void play();
-	void reset();
-	void update();    // updates availableMoveList
-	virtual void render();
-	void quit();
+	void start();
 
 
 protected:
+	enum class CheckersState { StartScreen, Playing, EndScreen, Exiting };
+	CheckersState state_{ CheckersState::StartScreen };
 	Checkerboard checkerboard_;
 	CheckersAI checkers_ai_;
-	std::vector<CheckersPlayer> players_{ CheckersPlayer{'r', -1, false}, CheckersPlayer{'w', 1, false} };
-	CheckersPlayer& current_player_{ players_[0] };
-	CheckersPlayer& opponent_{ players_[1] };
+	std::vector<CheckersPlayer> players_;
+	CheckersPlayer current_player_;
+	CheckersPlayer opponent_;
 	std::vector<Move> available_moves_{};
 	std::vector<Move> previous_moves_{};
 	std::vector<Move> redo_moves_{};
@@ -43,10 +42,19 @@ protected:
 	std::map<std::string, std::function<void()>> input_map;
 
 
+	void render_start_screen();
+	void render_end_screen();
+	void game_loop();
+	void reset();
+	void update();    // updates availableMoveList
+	virtual void render();
+	void new_game();
+	void quit();
 	void render_board();
 	void render_options();
 	void switch_players();
 	std::string get_user_input();
+	void process_input();
 	void process_input(std::string input);
 	void random_move();
 	void make_move(Move move, bool is_new_move = true);
