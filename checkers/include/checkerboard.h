@@ -4,6 +4,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "checkers_piece.h"
 #include "checkers_structs.h"
 #include "constants.h"
 

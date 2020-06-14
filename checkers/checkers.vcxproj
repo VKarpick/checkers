@@ -91,12 +91,12 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>C:\Users\Vincent\source\repos\checkers\checkers\include;C:\Users\Vincent\source\repos\checkers\checkers\src;C:\Users\Vincent\Documents\sfml\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Vincent\source\repos\checkers\checkers;C:\Users\Vincent\source\repos\checkers\checkers\include;C:\Users\Vincent\source\repos\checkers\checkers\src;C:\Users\Vincent\Documents\sfml\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Vincent\source\repos\checkers\checkers\include;C:\Users\Vincent\source\repos\checkers\checkers\src;C:\Users\Vincent\Documents\sfml\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Vincent\source\repos\checkers\checkers;C:\Users\Vincent\source\repos\checkers\checkers\include;C:\Users\Vincent\source\repos\checkers\checkers\src;C:\Users\Vincent\Documents\sfml\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-network-d.lib;sfml-audio-d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -164,6 +164,7 @@
     <ClCompile Include="src/checkerboard_moves.cpp" />
     <ClCompile Include="src/checkers.cpp" />
     <ClCompile Include="src/main.cpp" />
+    <ClCompile Include="src\checkers_piece.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include/checkers_sfml.h" />
@@ -181,6 +182,7 @@
     <ClInclude Include="include/checkerboard.h" />
     <ClInclude Include="include/checkerboard_moves.h" />
     <ClInclude Include="include/checkers.h" />
+    <ClInclude Include="include\checkers_piece.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -21,13 +21,23 @@ void Checkerboard::draw(sf::RenderTarget& target, sf::RenderStates state) const 
 	int inner_square_size{ constants::checkerboard_square_size * 7 / 8 };
 	for (size_t row = 0; row < board_.size(); ++row) {
 		for (size_t column = 0; column < board_[row].size(); ++column) {
+			// checkerboard squares
 			sf::RectangleShape square(sf::Vector2f(inner_square_size, inner_square_size));
 			square.setFillColor(((row + column) % 2 == 0) ? constants::checkerboard_colors[0] : constants::checkerboard_colors[1]);
-			square.setPosition(sf::Vector2f(column * constants::checkerboard_square_size + 4, row * constants::checkerboard_square_size + 4));
-			square.setOutlineThickness(4);
+			square.setPosition(sf::Vector2f(column * constants::checkerboard_square_size + constants::checkerboard_square_thickness, 
+											row * constants::checkerboard_square_size + constants::checkerboard_square_thickness));
+			square.setOutlineThickness(constants::checkerboard_square_thickness);
 			square.setOutlineColor(square.getFillColor());
 
 			target.draw(square, state);
+
+			// pieces
+			char piece{ board_[row][column] };
+			piece = tolower(piece);
+			if (piece == constants::pieces[0] || piece == constants::pieces[1]) {
+				CheckersPiece checkers_piece(piece, row, column, piece != board_[row][column]);
+				target.draw(checkers_piece);
+			}
 		}
 	}
 }

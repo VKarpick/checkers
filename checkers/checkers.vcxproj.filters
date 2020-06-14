@@ -48,6 +48,9 @@
     <ClCompile Include="src/checkers_sfml.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\checkers_piece.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include/checkers_sfml.h">
@@ -93,6 +96,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include/checkers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\checkers_piece.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

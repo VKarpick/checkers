@@ -9,7 +9,7 @@
 
 
 
-int main(int argc, char** arvg)
+int main()
 {
     //CheckersTrainer checkers_trainer(50, 6, 0.1);
     //CheckersTrainer checkers_trainer(std::vector<double>(128, 2.0), 100, 4);
