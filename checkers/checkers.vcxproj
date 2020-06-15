@@ -165,6 +165,7 @@
     <ClCompile Include="src/checkers.cpp" />
     <ClCompile Include="src/main.cpp" />
     <ClCompile Include="src\checkers_piece.cpp" />
+    <ClCompile Include="src\start_screen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include/checkers_sfml.h" />
@@ -183,6 +184,7 @@
     <ClInclude Include="include/checkerboard_moves.h" />
     <ClInclude Include="include/checkers.h" />
     <ClInclude Include="include\checkers_piece.h" />
+    <ClInclude Include="include\start_screen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

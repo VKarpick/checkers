@@ -51,6 +51,9 @@
     <ClCompile Include="src\checkers_piece.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\start_screen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include/checkers_sfml.h">
@@ -99,6 +102,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\checkers_piece.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\start_screen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

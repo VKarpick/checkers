@@ -22,7 +22,7 @@ public:
 	std::vector<Move> get_available_moves();
 
 
-	void start();
+	virtual void start();
 
 
 protected:
@@ -42,8 +42,8 @@ protected:
 	std::map<std::string, std::function<void()>> input_map;
 
 
-	void render_start_screen();
-	void render_end_screen();
+	virtual void render_start_screen();
+	virtual void render_end_screen();
 	void game_loop();
 	void reset();
 	void update();    // updates availableMoveList

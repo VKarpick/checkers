@@ -4,18 +4,34 @@
 
 void CheckersSFML::start() {
 	window_.create(sf::VideoMode(constants::window_size, constants::window_size), "Checkers");
-	while (window_.isOpen()) {
-		sf::Event event;
-		while (window_.pollEvent(event)) {
-			if (event.type == sf::Event::Closed) {
-				window_.close();
-			}
+	window_.clear(sf::Color::Black);
+	window_.display();
 
-			window_.clear(sf::Color::Black);
+	Checkers::start();
+}
 
-			Checkers::game_loop();
-		}
+
+void CheckersSFML::render_start_screen() {
+	StartScreen start_screen;
+	StartScreen::StartScreenSelection selection{ start_screen.show(window_) };
+
+	if (selection == StartScreen::StartScreenSelection::Exit) {
+		window_.close();
 	}
+	else {
+		players_ = {
+			CheckersPlayer{ constants::pieces[0], -1, start_screen.highlight_red },
+			CheckersPlayer{ constants::pieces[1], 1, start_screen.highlight_white }
+		};
+
+		reset();
+		state_ = CheckersState::Playing;
+	}
+}
+
+
+void CheckersSFML::render_end_screen() {
+	
 }
 
 

@@ -16,11 +16,11 @@ int main()
     //CheckersTrainer checkers_trainer(1, 1);
     //checkers_trainer.train();
 
-    Checkers checkers;
-    checkers.start();
-
-    /*CheckersSFML checkers;
+    /*Checkers checkers;
     checkers.start();*/
+
+    CheckersSFML checkers;
+    checkers.start();
 
     /*Checkerboard board;
 
