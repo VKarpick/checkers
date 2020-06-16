@@ -68,11 +68,21 @@ void CheckersSFML::render_end_screen() {
 		window_.clear(sf::Color::Black);
 		window_.draw(checkerboard_);
 		render_buttons(true);
+
+		Button win_button;
+		win_button.shape.setPosition(0, constants::checkerboard_square_size * 3);
+		win_button.shape.setSize(sf::Vector2f(constants::window_width, constants::checkerboard_square_size));
+		win_button.shape.setOutlineColor(sf::Color::Black);
+		sf::Text win_text{ button_text(win_button, won_lost_statement()) };
+		window_.draw(win_text);
 		window_.display();
 
 		std::string input{ get_user_input() };
 		if (input == "n" || input == "c") {
 			process_input(input);
+			return;
+		}
+		else if (state_ == CheckersState::Exiting) {
 			return;
 		}
 	}
