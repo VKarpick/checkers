@@ -38,35 +38,37 @@ StartScreen::StartScreenSelection StartScreen::show(sf::RenderWindow& window) {
 	CheckersPiece white_piece{ constants::pieces[1], white_y, white_x, false };
 	start_screen_items_.push_back(white_button);
 
-StartScreen::StartScreenSelection input;
-do {
-	window.draw(select_text);
-	window.draw(play_button.shape);
-	window.draw(play_text);
-	window.draw(exit_button.shape);
-	window.draw(exit_text);
+	StartScreen::StartScreenSelection input;
+	do {
+		window.clear(sf::Color::Black);
 
-	window.draw(red_button.shape);
-	window.draw(red_piece);
+		window.draw(select_text);
+		window.draw(play_button.shape);
+		window.draw(play_text);
+		window.draw(exit_button.shape);
+		window.draw(exit_text);
 
-	window.draw(white_button.shape);
-	window.draw(white_piece);
+		window.draw(red_button.shape);
+		window.draw(red_piece);
 
-	window.display();
+		window.draw(white_button.shape);
+		window.draw(white_piece);
 
-	input = get_input(window);
+		window.display();
 
-	if (input == StartScreenSelection::Red) {
-		highlight_red = !highlight_red;
-		red_button.shape.setOutlineColor((highlight_red) ? sf::Color::Yellow : sf::Color::White);
-	}
-	if (input == StartScreenSelection::White) {
-		highlight_white = !highlight_white;
-		white_button.shape.setOutlineColor((highlight_white) ? sf::Color::Yellow : sf::Color::White);
-	}
-} while (input != StartScreenSelection::Play && input != StartScreenSelection::Exit);
+		input = get_input(window);
 
-return input;
+		if (input == StartScreenSelection::Red) {
+			highlight_red = !highlight_red;
+			red_button.shape.setOutlineColor((highlight_red) ? sf::Color::Yellow : sf::Color::White);
+		}
+		if (input == StartScreenSelection::White) {
+			highlight_white = !highlight_white;
+			white_button.shape.setOutlineColor((highlight_white) ? sf::Color::Yellow : sf::Color::White);
+		}
+	} while (input != StartScreenSelection::Play && input != StartScreenSelection::Exit);
+
+	return input;
 }
 
 

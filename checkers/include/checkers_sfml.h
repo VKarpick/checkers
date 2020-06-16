@@ -28,9 +28,11 @@ private:
 	Button undo_button_;
 	Button redo_button_;
 	Button players_button_;
+	std::vector<Button> buttons_;
 	const int button_character_size{ 24 };
 
 
+	StartScreen start_screen_;
 	Button create_button(int top, int left, int height, int width, ButtonSelection action);
 	void render_start_screen() override;
 	void render_end_screen() override;
@@ -38,6 +40,7 @@ private:
 	static sf::Vector2f center_button_text(Button button, sf::Text text);
 	sf::Text button_text(Button button, std::string message);
 	void render_buttons(bool is_game_over);
-	void process_input() override;
 	std::string get_user_input() override;
+	ButtonSelection handle_button_click(int x);
+
 };

@@ -32,6 +32,10 @@ Checkers::Checkers() {
 	input_map["new"] = std::bind(&Checkers::new_game, this);
 	input_map["newgame"] = std::bind(&Checkers::new_game, this);
 	input_map["new game"] = std::bind(&Checkers::new_game, this);
+
+	input_map["c"] = std::bind(&Checkers::change_players, this);
+	input_map["change"] = std::bind(&Checkers::change_players, this);
+	input_map["change players"] = std::bind(&Checkers::change_players, this);
 }
 
 
@@ -76,6 +80,8 @@ void Checkers::game_loop() {
 
 
 void Checkers::render_start_screen() {
+	std::cout << std::endl;
+
 	std::string user_input;
 	std::vector<std::string> ordinal{ "first", "second" };
 	std::vector<int> directions{ -1, 1 };
@@ -288,8 +294,8 @@ void Checkers::redo() {
 		// if single player game, redo 2 moves to avoid changing ai recalculating
 		int n_moves_to_redo{ (opponent_.is_user_controlled) ? 1 : 2 };
 		for (int i = 0; i < n_moves_to_redo; ++i) {
-			make_move(redo_moves_.front(), false);
-			redo_moves_.erase(redo_moves_.begin());
+			make_move(redo_moves_.back(), false);
+			redo_moves_.erase(redo_moves_.end() - 1);
 		}
 	}
 }
@@ -305,4 +311,9 @@ std::string Checkers::ai_input() {
 	}
 
 	return "q";
+}
+
+
+void Checkers::change_players() {
+	state_ = CheckersState::StartScreen;
 }

@@ -55,11 +55,12 @@ protected:
 	void render_options();
 	void switch_players();
 	virtual std::string get_user_input();
-	virtual void process_input();
+	void process_input();
 	void process_input(std::string input);
 	void random_move();
 	void make_move(Move move, bool is_new_move = true);
 	void undo();
 	void redo();
 	std::string ai_input();
+	void change_players();
 };

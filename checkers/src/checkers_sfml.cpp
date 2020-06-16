@@ -18,6 +18,11 @@ void CheckersSFML::start() {
 	redo_button_ = create_button(top, (width + 1) * 2, height, width, ButtonSelection::Redo);
 	players_button_ = create_button(top, (width + 1) * 3, height, width, ButtonSelection::Players);
 
+	buttons_.push_back(new_game_button_);
+	buttons_.push_back(undo_button_);
+	buttons_.push_back(redo_button_);
+	buttons_.push_back(players_button_);
+
 	Button thinking_button;
 	thinking_button.shape.setPosition(new_game_button_.shape.getPosition());
 	thinking_button.shape.setSize(sf::Vector2f(constants::window_width, constants::checkerboard_square_size));
@@ -42,16 +47,15 @@ CheckersSFML::Button CheckersSFML::create_button(int top, int left, int height, 
 
 
 void CheckersSFML::render_start_screen() {
-	StartScreen start_screen;
-	StartScreen::StartScreenSelection selection{ start_screen.show(window_) };
+	StartScreen::StartScreenSelection selection{ start_screen_.show(window_) };
 
 	if (selection == StartScreen::StartScreenSelection::Exit) {
 		state_ = CheckersState::Exiting;
 	}
 	else {
 		players_ = {
-			CheckersPlayer{ constants::pieces[0], -1, start_screen.highlight_red },
-			CheckersPlayer{ constants::pieces[1], 1, start_screen.highlight_white }
+			CheckersPlayer{ constants::pieces[0], -1, start_screen_.highlight_red },
+			CheckersPlayer{ constants::pieces[1], 1, start_screen_.highlight_white }
 		};
 
 		new_game();
@@ -73,6 +77,11 @@ void CheckersSFML::render_end_screen() {
 		window_.draw(checkerboard_);
 		render_buttons(true);
 		window_.display();
+
+		std::string input{ get_user_input() };
+		if (input == "n" || input == "c") {
+			process_input(input);
+		}
 	}
 }
 
@@ -128,21 +137,42 @@ void CheckersSFML::render_buttons(bool is_game_over) {
 }
 
 
-void CheckersSFML::process_input() {
+std::string CheckersSFML::get_user_input() {
 	while (window_.isOpen()) {
 		sf::Event event;
 		while (window_.pollEvent(event)) {
 			if (event.type == sf::Event::Closed) {
 				state_ = CheckersState::Exiting;
+				return "";
+			}
+
+			if (event.type == sf::Event::MouseButtonPressed) {
+				if (event.mouseButton.y > constants::window_height - constants::checkerboard_square_size) {
+					ButtonSelection selection{ handle_button_click(event.mouseButton.x) };
+					if (selection == ButtonSelection::NewGame) { return "n"; }
+					else if (selection == ButtonSelection::Undo) { return "z"; }
+					else if (selection == ButtonSelection::Redo) { return "y"; }
+					else if (selection == ButtonSelection::Players) { return "c"; }
+					else { return ""; }
+				}
+				else {
+					return "r";
+				}
 			}
 		}
-
-		Checkers::process_input();
-		return;
 	}
 }
 
 
-std::string CheckersSFML::get_user_input() {
-	return "r";
+CheckersSFML::ButtonSelection CheckersSFML::handle_button_click(int x) {
+	std::vector<Button>::iterator it;
+	for (it = buttons_.begin(); it != buttons_.end(); ++it) {
+		sf::RectangleShape button_rectangle{ (*it).shape };
+
+		if (x > button_rectangle.getPosition().x && x < button_rectangle.getPosition().x + button_rectangle.getSize().x) {
+			if (button_rectangle.getOutlineColor() == sf::Color::White) {
+				return (*it).action;
+			}
+		}
+	}
 }
