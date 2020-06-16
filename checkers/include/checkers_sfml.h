@@ -10,30 +10,28 @@
 
 class CheckersSFML : public Checkers{
 public:
-	void start() override;
+	CheckersSFML();
 
 
 private:
-	enum class ButtonSelection { NewGame, Undo, Redo, Players };
+	enum class ButtonSelection { NewGame, Undo, Redo, Players, Nothing };
 
 	struct Button {
+		sf::Color color;
 		sf::RectangleShape shape;
+		sf::Text text;
 		ButtonSelection action;
 	};
 
 	sf::RenderWindow window_;
 	sf::Font font_;
 	sf::Text thinking_text_;
-	Button new_game_button_;
-	Button undo_button_;
-	Button redo_button_;
-	Button players_button_;
 	std::vector<Button> buttons_;
 	const int button_character_size{ 24 };
 
 
 	StartScreen start_screen_;
-	Button create_button(int top, int left, int height, int width, ButtonSelection action);
+	Button create_button(std::string text, int top, int left, int height, int width, ButtonSelection action);
 	void render_start_screen() override;
 	void render_end_screen() override;
 	void render() override;

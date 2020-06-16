@@ -15,8 +15,8 @@ int main()
     //CheckersTrainer checkers_trainer(1, 1);
     //checkers_trainer.train();
 
-    Checkers checkers;
-    //CheckersSFML checkers;
+    //Checkers checkers;
+    CheckersSFML checkers;
     checkers.start();
 
     return 0;

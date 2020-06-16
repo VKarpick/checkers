@@ -22,7 +22,7 @@ public:
 	std::vector<Move> get_available_moves();
 
 
-	virtual void start();
+	void start();
 
 
 protected:

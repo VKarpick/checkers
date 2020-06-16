@@ -2,10 +2,8 @@
 
 
 
-void CheckersSFML::start() {
+CheckersSFML::CheckersSFML() {
 	window_.create(sf::VideoMode(constants::window_width, constants::window_height), "Checkers", sf::Style::Close);
-	window_.clear(sf::Color::Black);
-	window_.display();
 
 	font_.loadFromFile("..\\checkers\\data\\arial.ttf");
 
@@ -13,33 +11,27 @@ void CheckersSFML::start() {
 	int height{ constants::checkerboard_square_size - 1 };
 	int n_buttons{ 4 };
 	int width{ constants::window_width / n_buttons - 1 };
-	new_game_button_ = create_button(top, 1, height, width, ButtonSelection::NewGame);
-	undo_button_ = create_button(top, width + 2, height, width, ButtonSelection::Undo);
-	redo_button_ = create_button(top, (width + 1) * 2, height, width, ButtonSelection::Redo);
-	players_button_ = create_button(top, (width + 1) * 3, height, width, ButtonSelection::Players);
-
-	buttons_.push_back(new_game_button_);
-	buttons_.push_back(undo_button_);
-	buttons_.push_back(redo_button_);
-	buttons_.push_back(players_button_);
+	buttons_.push_back(create_button("New\nGame", top, 1, height, width, ButtonSelection::NewGame));
+	buttons_.push_back(create_button("Undo", top, width + 2, height, width, ButtonSelection::Undo));
+	buttons_.push_back(create_button("Redo", top, (width + 1) * 2, height, width, ButtonSelection::Redo));
+	buttons_.push_back(create_button("Change\nPlayers", top, (width + 1) * 3, height, width, ButtonSelection::Players));
 
 	Button thinking_button;
-	thinking_button.shape.setPosition(new_game_button_.shape.getPosition());
+	thinking_button.shape.setPosition(buttons_[0].shape.getPosition());
 	thinking_button.shape.setSize(sf::Vector2f(constants::window_width, constants::checkerboard_square_size));
 	thinking_button.shape.setOutlineColor(sf::Color::White);
 	thinking_text_ = button_text(thinking_button, "Thinking ...");
-
-	Checkers::start();
 }
 
 
-CheckersSFML::Button CheckersSFML::create_button(int top, int left, int height, int width, ButtonSelection action) {
+CheckersSFML::Button CheckersSFML::create_button(std::string text, int top, int left, int height, int width, ButtonSelection action) {
 	Button button;
+	button.color = constants::grey;
 	button.shape.setSize(sf::Vector2f(width, height));
 	button.shape.setPosition(left, top);
 	button.shape.setFillColor(sf::Color::Black);
-	button.shape.setOutlineColor(constants::grey);
 	button.shape.setOutlineThickness(1);
+	button.text = button_text(button, text);
 	button.action = action;
 
 	return button;
@@ -81,6 +73,7 @@ void CheckersSFML::render_end_screen() {
 		std::string input{ get_user_input() };
 		if (input == "n" || input == "c") {
 			process_input(input);
+			return;
 		}
 	}
 }
@@ -116,24 +109,25 @@ sf::Text CheckersSFML::button_text(Button button, std::string message) {
 
 
 void CheckersSFML::render_buttons(bool is_game_over) {
-	new_game_button_.shape.setOutlineColor((previous_moves_.empty()) ? constants::grey : sf::Color::White);
-	window_.draw(new_game_button_.shape);
-	window_.draw(button_text(new_game_button_, "New\nGame"));
-	
-	if (!is_game_over) {
-		int n_users{ (current_player_.is_user_controlled) ? 1 : 0 + (opponent_.is_user_controlled) ? 1 : 0 };
-		undo_button_.shape.setOutlineColor((n_users >= previous_moves_.size()) ? constants::grey : sf::Color::White);
-		window_.draw(undo_button_.shape);
-		window_.draw(button_text(undo_button_, "Undo"));
+	std::vector<bool> grey_check{
+		// new game
+		previous_moves_.empty(),
+		// undo
+		previous_moves_.empty() || (previous_moves_.size() == 1 && !opponent_.is_user_controlled) || is_game_over,
+		// redo
+		redo_moves_.empty() || is_game_over,
+		// change players
+		false,
+	};
 
-		redo_button_.shape.setOutlineColor((redo_moves_.empty()) ? constants::grey : sf::Color::White);
-		window_.draw(redo_button_.shape);
-		window_.draw(button_text(redo_button_, "Redo"));
+	for (int i = 0; i < grey_check.size(); ++i) {
+		sf::Color button_color{ (grey_check[i]) ? constants::grey : sf::Color::White };
+		buttons_[i].color = button_color;
+		buttons_[i].shape.setOutlineColor(button_color);
+		buttons_[i].text.setFillColor(button_color);
+		window_.draw(buttons_[i].shape);
+		window_.draw(buttons_[i].text);
 	}
-
-	players_button_.shape.setOutlineColor(sf::Color::White);
-	window_.draw(players_button_.shape);
-	window_.draw(button_text(players_button_, "Change\nPlayers"));
 }
 
 
@@ -175,4 +169,5 @@ CheckersSFML::ButtonSelection CheckersSFML::handle_button_click(int x) {
 			}
 		}
 	}
+	return ButtonSelection::Nothing;
 }
