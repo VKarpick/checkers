@@ -44,6 +44,7 @@ protected:
 
 	virtual void render_start_screen();
 	virtual void render_end_screen();
+	std::string won_lost_statement();
 	void game_loop();
 	void reset();
 	void update();    // updates availableMoveList
@@ -53,8 +54,8 @@ protected:
 	void render_board();
 	void render_options();
 	void switch_players();
-	std::string get_user_input();
-	void process_input();
+	virtual std::string get_user_input();
+	virtual void process_input();
 	void process_input(std::string input);
 	void random_move();
 	void make_move(Move move, bool is_new_move = true);

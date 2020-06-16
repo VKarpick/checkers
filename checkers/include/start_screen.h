@@ -1,7 +1,5 @@
 #pragma once
 
-#include <list>
-
 #include <SFML/Graphics.hpp>
 
 #include "checkers_piece.h"
@@ -20,7 +18,6 @@ public:
 	
 	struct StartScreenItem {
 	public:
-		sf::Rect<int> rect;
 		sf::RectangleShape shape;
 		StartScreenSelection action;
 	};
@@ -30,7 +27,7 @@ public:
 
 
 private:
-	std::list<StartScreenItem> start_screen_items_;
+	std::vector<StartScreenItem> start_screen_items_;
 	sf::Font font_;
 
 

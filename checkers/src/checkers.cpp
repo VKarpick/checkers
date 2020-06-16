@@ -99,20 +99,12 @@ void Checkers::render_start_screen() {
 			return;
 		}
 	}
-	reset();
-	state_ = CheckersState::Playing;
+	new_game();
 }
 
 
 void Checkers::render_end_screen() {
-	int winner{ (players_[0] == current_player_) ? 1 : 0 };
-	if (players_[0].is_user_controlled == players_[1].is_user_controlled) {
-		std::cout << constants::player_colors[winner] << " wins!" << std::endl;
-	}
-	else {
-		std::string won_lost{ (players_[winner].is_user_controlled) ? " won" : "lost" };
-		std::cout << "Looks like you " << won_lost << " that one." << std::endl;
-	}
+	std::cout << won_lost_statement() << std::endl;
 
 	std::string user_input;
 	while (state_ == CheckersState::EndScreen) {
@@ -134,6 +126,23 @@ void Checkers::render_end_screen() {
 		}
 		std::cout << std::endl;
 	}
+}
+
+
+std::string Checkers::won_lost_statement() {
+	std::string who_won;
+	std::string won_lost;
+	int winner{ (players_[0] == current_player_) ? 1 : 0 };
+	if (players_[0].is_user_controlled == players_[1].is_user_controlled) {
+		who_won = constants::player_colors[winner];
+		won_lost = "won";
+	}
+	else {
+		who_won = "you";
+		won_lost = (players_[winner].is_user_controlled) ? " won" : "lost";
+	}
+
+	return "Looks like " + who_won + " " + won_lost + " that one.";
 }
 
 
@@ -164,7 +173,8 @@ void Checkers::render() {
 
 
 void Checkers::new_game() {
-	state_ = CheckersState::StartScreen;
+	reset();
+	state_ = CheckersState::Playing;
 }
 
 
