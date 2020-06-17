@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <iostream>
 
 #include <SFML/Graphics.hpp>
@@ -14,6 +15,10 @@ class Checkerboard : public sf::Drawable {
 public:
 	Checkerboard();
 	Checkerboard(std::vector<std::string> board);
+
+
+	std::vector<BoardPosition> option_highlights;
+	std::vector<BoardPosition> selected_highlights;
 
 
 	std::vector<std::string> get_board();

@@ -27,7 +27,15 @@ void Checkerboard::draw(sf::RenderTarget& target, sf::RenderStates state) const 
 			square.setPosition(sf::Vector2f(column * constants::checkerboard_square_size + constants::checkerboard_square_thickness, 
 											row * constants::checkerboard_square_size + constants::checkerboard_square_thickness));
 			square.setOutlineThickness(constants::checkerboard_square_thickness);
-			square.setOutlineColor(square.getFillColor());
+
+			BoardPosition position{ row, column };
+			if (std::find(selected_highlights.begin(), selected_highlights.end(), position) != selected_highlights.end()) {
+				square.setOutlineColor(sf::Color::Blue);
+			}
+			else {
+				bool is_option{ std::find(option_highlights.begin(), option_highlights.end(), position) != option_highlights.end() };
+				square.setOutlineColor((is_option) ? sf::Color::Yellow : square.getFillColor());
+			}
 
 			target.draw(square, state);
 

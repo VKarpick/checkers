@@ -89,15 +89,34 @@ void CheckersSFML::render_end_screen() {
 }
 
 
+void CheckersSFML::update() {
+	Checkers::update();
+	reset_current_move();
+	starting_highlights();
+}
+
+
+void CheckersSFML::starting_highlights() {
+	checkerboard_.selected_highlights.clear();
+	checkerboard_.option_highlights.clear();
+	std::vector<Move>::iterator it;
+	for (it = available_moves_.begin(); it != available_moves_.end(); ++it) {
+		checkerboard_.option_highlights.push_back((*it).start_position);
+	}
+}
+
+
 void CheckersSFML::render() {
 	window_.clear(sf::Color::Black);
-	window_.draw(checkerboard_);
+
 	if (current_player_.is_user_controlled) {
 		render_buttons(false);
 	}
 	else {
 		window_.draw(thinking_text_);
 	}
+
+	window_.draw(checkerboard_);
 	window_.display();
 }
 
@@ -160,7 +179,12 @@ std::string CheckersSFML::get_user_input() {
 					else { return ""; }
 				}
 				else {
-					return "r";
+					BoardPosition square_clicked{ event.mouseButton.y / constants::checkerboard_square_size,
+												  event.mouseButton.x / constants::checkerboard_square_size };
+					update_highlights(square_clicked);
+					int move{ legal_move_check() };
+					if (move != -1) { return std::to_string(move); }
+					render();
 				}
 			}
 		}
@@ -180,4 +204,78 @@ CheckersSFML::ButtonSelection CheckersSFML::handle_button_click(int x) {
 		}
 	}
 	return ButtonSelection::Nothing;
+}
+
+
+void CheckersSFML::update_highlights(BoardPosition square_clicked) {
+	if (is_option(square_clicked)) {
+		update_click_options(square_clicked);
+	}
+	else{
+		std::vector<BoardPosition>::iterator it{ std::find(checkerboard_.selected_highlights.begin(),
+			checkerboard_.selected_highlights.end(), square_clicked) };
+
+		if (it != checkerboard_.selected_highlights.end()) {
+			int n_positions{ std::distance(checkerboard_.selected_highlights.begin(), it) };
+			checkerboard_.selected_highlights.resize(n_positions);
+			if (n_positions == 0) {
+				reset_current_move();
+			}
+			else {
+				current_selected_move_.landing_positions.resize(n_positions - 1);
+			}
+			update_click_options(square_clicked);
+		}
+		else {
+			starting_highlights();
+			reset_current_move();
+
+			// if square clicked is one of the other starting positions, select it
+			if (is_option(square_clicked)) {
+				update_click_options(square_clicked);
+			}
+		}
+	}
+}
+
+
+bool CheckersSFML::is_option(BoardPosition square_clicked) {
+	return std::find(checkerboard_.option_highlights.begin(),
+		checkerboard_.option_highlights.end(), square_clicked) != checkerboard_.option_highlights.end();
+}
+
+
+void CheckersSFML::update_click_options(BoardPosition square_clicked) {
+	checkerboard_.option_highlights.clear();
+	checkerboard_.selected_highlights.push_back(square_clicked);
+
+	if (current_selected_move_.start_position.row == -1) {
+		current_selected_move_.start_position = square_clicked;
+	}
+	else {
+		current_selected_move_.landing_positions.push_back(square_clicked);
+	}
+}
+
+
+void CheckersSFML::reset_current_move() {
+	current_selected_move_.start_position = BoardPosition{ -1, -1 };
+	current_selected_move_.landing_positions.clear();
+}
+
+
+int CheckersSFML::legal_move_check() {
+	for (int i = 0; i < available_moves_.size(); ++i) {
+		std::vector<BoardPosition> available_landings{ available_moves_[i].landing_positions };
+		available_landings.resize(current_selected_move_.landing_positions.size());
+		Move sub_move{ available_moves_[i].start_position, available_landings };
+
+		if (available_moves_[i] == current_selected_move_) {
+			return i;
+		}
+		else if (current_selected_move_ == sub_move) {
+			checkerboard_.option_highlights.push_back(available_moves_[i].landing_positions[current_selected_move_.landing_positions.size()]);
+		}
+	}
+	return -1;
 }

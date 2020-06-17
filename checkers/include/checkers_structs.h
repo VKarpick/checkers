@@ -30,6 +30,10 @@ struct BoardPosition {
 	bool operator==(const BoardPosition& board_position) const {
 		return row == board_position.row && column == board_position.column;
 	}
+
+	bool operator< (const BoardPosition& board_position) const {
+		return row < board_position.row || (row == board_position.row && column < board_position.column);
+	}
 };
 
 

@@ -28,17 +28,24 @@ private:
 	sf::Text thinking_text_;
 	std::vector<Button> buttons_;
 	const int button_character_size{ 24 };
+	Move current_selected_move_;
 
 
 	StartScreen start_screen_;
 	Button create_button(std::string text, int top, int left, int height, int width, ButtonSelection action);
 	void render_start_screen() override;
 	void render_end_screen() override;
+	void update() override;
+	void starting_highlights();
 	void render() override;
 	static sf::Vector2f center_button_text(Button button, sf::Text text);
 	sf::Text button_text(Button button, std::string message);
 	void render_buttons(bool is_game_over);
 	std::string get_user_input() override;
 	ButtonSelection handle_button_click(int x);
-
+	void update_highlights(BoardPosition square_clicked);
+	bool is_option(BoardPosition square_clicked);
+	void update_click_options(BoardPosition square_clicked);
+	void reset_current_move();
+	int legal_move_check();
 };

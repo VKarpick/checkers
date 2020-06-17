@@ -47,7 +47,7 @@ protected:
 	std::string won_lost_statement();
 	void game_loop();
 	void reset();
-	void update();    // updates availableMoveList
+	virtual void update();    // updates availableMoveList
 	virtual void render();
 	void new_game();
 	void quit();
