@@ -20,7 +20,7 @@ private:
 		sf::Color color;
 		sf::RectangleShape shape;
 		sf::Text text;
-		ButtonSelection action;
+		ButtonSelection action{ ButtonSelection::Nothing };
 	};
 
 	sf::RenderWindow window_;
@@ -28,11 +28,11 @@ private:
 	sf::Text thinking_text_;
 	std::vector<Button> buttons_;
 	const int button_character_size{ 24 };
-	Move current_selected_move_;
+	Move current_selected_move_{};
 
 
 	StartScreen start_screen_;
-	Button create_button(std::string text, int top, int left, int height, int width, ButtonSelection action);
+	Button create_button(std::string text, float top, float left, float height, float width, ButtonSelection action);
 	void render_start_screen() override;
 	void render_end_screen() override;
 	void update() override;

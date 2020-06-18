@@ -11,12 +11,12 @@ CheckersPiece::CheckersPiece(char piece, int row, int column, bool is_king) :
 	bottom_piece_ = piece_shape();
 	top_piece_ = piece_shape();
 
-	int x{ column_ * constants::checkerboard_square_size + constants::square_padding };
-	int y{ row_ * constants::checkerboard_square_size + constants::square_padding };
+	float x{ float(column_ * constants::checkerboard_square_size + constants::square_padding) };
+	float y{ float(row_ * constants::checkerboard_square_size + constants::square_padding) };
 
-	int piece_spacing{ constants::piece_thickness + 1 };
-	bottom_piece_.setPosition(x, y + ((is_king_) ? piece_spacing : 0));
-	top_piece_.setPosition(x, y - ((is_king_) ? piece_spacing : 0));
+	float piece_spacing{ constants::piece_thickness + 1.f };
+	bottom_piece_.setPosition(x, y + ((is_king_) ? piece_spacing : 0.f));
+	top_piece_.setPosition(x, y - ((is_king_) ? piece_spacing : 0.f));
 }
 
 

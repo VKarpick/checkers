@@ -20,7 +20,7 @@ std::shared_ptr<State> CheckersEnvironment::step(std::shared_ptr<State> state, s
 	Checkerboard checkerboard{ checkerboard_from_state(state) };
 	checkerboard.execute_move(std::any_cast<Move>(action->action));
 
-	double reward{ 0 };
+	double reward{ 0.0 };
 
 	CheckersPlayer current_player{ checkers_player_from_state(state) };
 	std::shared_ptr<Player> opponent{ opponent_from_state(state) };
@@ -69,7 +69,7 @@ std::vector<double> CheckersEnvironment::featurize(std::shared_ptr<State> state)
 	std::vector<double> n_runaways{ 0.0, 0.0 };
 	for (size_t row = 0; row < board.size(); ++row) {
 		for (size_t column = 0 + (row + 1) % 2; column < board[row].size(); column += 2) {
-			for (int i = 0; i < constants::pieces.size(); ++i) {
+			for (size_t i = 0; i < constants::pieces.size(); ++i) {
 				char piece{ constants::pieces[i] };
 
 				// feature for regular piece in given spot on the board
@@ -84,7 +84,7 @@ std::vector<double> CheckersEnvironment::featurize(std::shared_ptr<State> state)
 
 				CheckersPlayer current_player{ checkers_player_from_player(players_[(i == 0) ? 0 : 1]) };
 				CheckersPlayer opponent{ checkers_player_from_player(players_[(i == 0) ? 1 : 0]) };
-				BoardPosition piece_position{ row, column };
+				BoardPosition piece_position{ int(row), int(column) };
 
 				// check for trapped king
 				if (is_king == 1.0) {

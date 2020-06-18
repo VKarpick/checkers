@@ -31,8 +31,8 @@ protected:
 	Checkerboard checkerboard_;
 	CheckersAI checkers_ai_;
 	std::vector<CheckersPlayer> players_;
-	CheckersPlayer current_player_;
-	CheckersPlayer opponent_;
+	CheckersPlayer current_player_{ CheckersPlayer() };
+	CheckersPlayer opponent_{ CheckersPlayer() };
 	std::vector<Move> available_moves_{};
 	std::vector<Move> previous_moves_{};
 	std::vector<Move> redo_moves_{};

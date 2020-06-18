@@ -39,17 +39,17 @@ struct BoardPosition {
 
 
 struct Piece {
-	BoardPosition position;
+	BoardPosition position{ -1, 1 };
 	char piece;
 };
 
 
 
 struct Move {
-	BoardPosition start_position;
+	BoardPosition start_position{ -1, -1 };
 	std::vector<BoardPosition> landing_positions;
-	bool is_crowning;
-	std::vector<Piece> captured_pieces{};
+	bool is_crowning{ false };
+	std::vector<Piece> captured_pieces;
 
 
 	bool operator==(const Move& move) const {

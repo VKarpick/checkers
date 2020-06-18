@@ -10,14 +10,12 @@
 
 int main()
 {
-    CheckersTrainer checkers_trainer(5, 6, 0.1, true, "..\\checkers\\data\\weights2.dat", "..\\checkers\\data\\weights2.dat");
-    //CheckersTrainer checkers_trainer(std::vector<double>(128, 2.0), 100, 4);
-    //CheckersTrainer checkers_trainer(1, 1);
-    checkers_trainer.train();
+    //CheckersTrainer checkers_trainer(500, 6, 0.1);
+    //checkers_trainer.train();
 
     //Checkers checkers;
-    /*CheckersSFML checkers;
-    checkers.start();*/
+    //CheckersSFML checkers;
+    //checkers.start();
 
     return 0;
 }

@@ -18,17 +18,17 @@ std::vector<std::string> Checkerboard::get_board() {
 
 
 void Checkerboard::draw(sf::RenderTarget& target, sf::RenderStates state) const {
-	int inner_square_size{ constants::checkerboard_square_size * 7 / 8 };
+	float inner_square_size{ float(constants::checkerboard_square_size) * 7.f / 8.f };
 	for (size_t row = 0; row < board_.size(); ++row) {
 		for (size_t column = 0; column < board_[row].size(); ++column) {
 			// checkerboard squares
 			sf::RectangleShape square(sf::Vector2f(inner_square_size, inner_square_size));
 			square.setFillColor(((row + column) % 2 == 0) ? constants::checkerboard_colors[0] : constants::checkerboard_colors[1]);
-			square.setPosition(sf::Vector2f(column * constants::checkerboard_square_size + constants::checkerboard_square_thickness, 
-											row * constants::checkerboard_square_size + constants::checkerboard_square_thickness));
+			square.setPosition(sf::Vector2f(float(column * constants::checkerboard_square_size + constants::checkerboard_square_thickness), 
+											float(row * constants::checkerboard_square_size + constants::checkerboard_square_thickness)));
 			square.setOutlineThickness(constants::checkerboard_square_thickness);
 
-			BoardPosition position{ row, column };
+			BoardPosition position{ int(row), int(column) };
 			if (std::find(selected_highlights.begin(), selected_highlights.end(), position) != selected_highlights.end()) {
 				square.setOutlineColor(sf::Color::Blue);
 			}
@@ -57,8 +57,8 @@ void Checkerboard::reset() {
 
 
 char Checkerboard::get_piece(BoardPosition position) {
-	bool legal_row{ position.row > -1 && position.row < board_.size() };
-	bool legal_column{ position.column > -1 && position.column < board_.size() };
+	bool legal_row{ position.row > -1 && position.row < int(board_.size()) };
+	bool legal_column{ position.column > -1 && position.column < int(board_.size()) };
 	if (legal_row && legal_column) {
 		return board_[position.row][position.column];
 	}
@@ -74,7 +74,7 @@ std::vector<BoardPosition> Checkerboard::get_player_positions(CheckersPlayer pla
 	for (size_t row = 0; row < board_.size(); ++row) {
 		// pieces can only be in every other column
 		for (size_t column = (row + 1) % 2; column < board_[row].size(); column += 2) {
-			BoardPosition piece_position{ row, column };
+			BoardPosition piece_position{ int(row), int(column) };
 
 			if (player.has_piece(board_[row][column])) {
 				player_positions.push_back(piece_position);

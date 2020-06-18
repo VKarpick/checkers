@@ -11,7 +11,7 @@ bool is_int(const std::string& s) {
 
 
 Checkers::Checkers() {
-	srand(time(0));
+	srand((unsigned int)time(0));
 
 	input_map["q"] = std::bind(&Checkers::quit, this);
 	input_map["quit"] = std::bind(&Checkers::quit, this);
@@ -245,7 +245,7 @@ void Checkers::process_input(std::string input) {
 	else {
 		if (is_int(input)) {
 			int move_index{ std::stoi(input) };
-			if (-1 < move_index && move_index < available_moves_.size()) {
+			if (-1 < move_index && move_index < int(available_moves_.size())) {
 				
 				// number representing which available move to make
 				make_move(available_moves_[move_index], true);
@@ -277,7 +277,7 @@ void Checkers::undo() {
 	// if single player game, need to reverse 2 moves to get back to user's last play
 	int moves_to_reverse{ (opponent_.is_user_controlled) ? 1 : 2 };
 
-	if (moves_to_reverse <= previous_moves_.size()) {
+	if (moves_to_reverse <= int(previous_moves_.size())) {
 		for (int i = 0; i < moves_to_reverse; ++i) {
 			Move move{ previous_moves_.back() };
 			checkerboard_.reverse_move(move);
@@ -304,7 +304,7 @@ void Checkers::redo() {
 std::string Checkers::ai_input() {
 	Move ai_move{ checkers_ai_.action_selection(checkerboard_, current_player_) };
 
-	for (int i = 0; i < available_moves_.size(); ++i) {
+	for (size_t i = 0; i < available_moves_.size(); ++i) {
 		if (available_moves_[i] == ai_move) {
 			return std::to_string(i);
 		}

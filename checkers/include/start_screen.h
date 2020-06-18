@@ -19,7 +19,7 @@ public:
 	struct StartScreenItem {
 	public:
 		sf::RectangleShape shape;
-		StartScreenSelection action;
+		StartScreenSelection action{ StartScreenSelection::Nothing };
 	};
 
 
@@ -29,10 +29,11 @@ public:
 private:
 	std::vector<StartScreenItem> start_screen_items_;
 	sf::Font font_;
+	int font_size_{ 32 };
 
 
 	StartScreenSelection get_input(sf::RenderWindow& window);
 	sf::Text text_for_display(std::string message);
-	StartScreenItem create_button(int top, int left, int height, int width, StartScreenSelection action, bool is_selected);
+	StartScreenItem create_button(float top, float left, float height, float width, StartScreenSelection action, bool is_selected);
 	StartScreenSelection handle_click(int x, int y);
 };

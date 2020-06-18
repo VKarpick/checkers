@@ -39,7 +39,7 @@ public:
 
 	// removes first instance of child from the parent's children vector
 	void remove_child(std::shared_ptr<Node<T>> node) {
-		int i{ 0 };
+		size_t i{ 0 };
 		while (i < children_.size()) {
 			if (children_[i] == node) {
 				children_.erase(children_.begin() + i);

@@ -13,28 +13,32 @@ StartScreen::StartScreenSelection StartScreen::show(sf::RenderWindow& window) {
 
 	float button_x{ select_text.getPosition().x };
 	float button_width{ select_text.getLocalBounds().width };
-	float button_height{ 42 };
+	float button_height{ 42.f };
 
-	StartScreenItem play_button{ create_button(button_x, 315, button_height, button_width, StartScreen::StartScreenSelection::Play, false) };
+	StartScreenItem play_button{ create_button(315.f, button_x, button_height, button_width, 
+		StartScreen::StartScreenSelection::Play, false) };
 	start_screen_items_.push_back(play_button);
 	sf::Text play_text{ text_for_display("Play") };
 	play_text.setPosition((window.getSize().x - play_text.getLocalBounds().width) / 2, play_button.shape.getPosition().y + 2);
 
-	StartScreenItem exit_button{ create_button(button_x, 390, button_height, button_width, StartScreen::StartScreenSelection::Exit, false) };
+	StartScreenItem exit_button{ create_button(390.f, button_x, button_height, button_width, 
+		StartScreen::StartScreenSelection::Exit, false) };
 	start_screen_items_.push_back(exit_button);
 	sf::Text exit_text{ text_for_display("Exit") };
 	exit_text.setPosition(play_text.getPosition().x, exit_button.shape.getPosition().y + 2);
 
-	int square_size{ constants::checkerboard_square_size };
-	StartScreenItem red_button{ create_button(128, 192, square_size, square_size, StartScreen::StartScreenSelection::Red, highlight_red) };
-	int red_x{ int(red_button.shape.getPosition().x) / square_size };
-	int red_y{ int(red_button.shape.getPosition().y) / square_size };
+	float square_size{ float(constants::checkerboard_square_size) };
+	StartScreenItem red_button{ create_button(192.f, 128.f, square_size, square_size, 
+		StartScreen::StartScreenSelection::Red, highlight_red) };
+	int red_x{ int(red_button.shape.getPosition().x / square_size) };
+	int red_y{ int(red_button.shape.getPosition().y / square_size) };
 	CheckersPiece red_piece{ constants::pieces[0], red_y, red_x, false };
 	start_screen_items_.push_back(red_button);
 
-	StartScreenItem white_button{ create_button(320, 192, square_size, square_size, StartScreen::StartScreenSelection::White, highlight_white) };
-	int white_x{ static_cast<int>(white_button.shape.getPosition().x) / square_size };
-	int white_y{ static_cast<int>(white_button.shape.getPosition().y) / square_size };
+	StartScreenItem white_button{ create_button(192.f, 320.f, square_size, square_size, 
+		StartScreen::StartScreenSelection::White, highlight_white) };
+	int white_x{ int(white_button.shape.getPosition().x / square_size) };
+	int white_y{ int(white_button.shape.getPosition().y / square_size) };
 	CheckersPiece white_piece{ constants::pieces[1], white_y, white_x, false };
 	start_screen_items_.push_back(white_button);
 
@@ -85,19 +89,20 @@ StartScreen::StartScreenSelection StartScreen::get_input(sf::RenderWindow& windo
 			}
 		}
 	}
+	return StartScreenSelection::Nothing;
 }
 
 
 sf::Text StartScreen::text_for_display(std::string message) {
 	sf::Text text(message, font_);
-	text.setCharacterSize(32);
+	text.setCharacterSize(font_size_);
 	text.setFillColor(sf::Color::White);
 
 	return text;
 }
 
 
-StartScreen::StartScreenItem StartScreen::create_button(int left, int top, int height, int width,
+StartScreen::StartScreenItem StartScreen::create_button(float top, float left, float height, float width,
 	StartScreenSelection action, bool is_selected) {
 
 	StartScreenItem button;

@@ -7,14 +7,14 @@ CheckersSFML::CheckersSFML() {
 
 	font_.loadFromFile("..\\checkers\\data\\arial.ttf");
 
-	int top{ constants::window_height - constants::checkerboard_square_size + 1 };
-	int height{ constants::checkerboard_square_size - 1 };
-	int n_buttons{ 4 };
-	int width{ constants::window_width / n_buttons - 1 };
-	buttons_.push_back(create_button("New\nGame", top, 1, height, width, ButtonSelection::NewGame));
-	buttons_.push_back(create_button("Undo", top, width + 2, height, width, ButtonSelection::Undo));
-	buttons_.push_back(create_button("Redo", top, (width + 1) * 2, height, width, ButtonSelection::Redo));
-	buttons_.push_back(create_button("Change\nPlayers", top, (width + 1) * 3, height, width, ButtonSelection::Players));
+	float top{ constants::window_height - constants::checkerboard_square_size + 1.f };
+	float height{ constants::checkerboard_square_size - 1.f };
+	float n_buttons{ 4.f };
+	float width{ constants::window_width / n_buttons - 1.f };
+	buttons_.push_back(create_button("New\nGame", top, 1.f, height, width, ButtonSelection::NewGame));
+	buttons_.push_back(create_button("Undo", top, width + 2.f, height, width, ButtonSelection::Undo));
+	buttons_.push_back(create_button("Redo", top, (width + 1.f) * 2.f, height, width, ButtonSelection::Redo));
+	buttons_.push_back(create_button("Change\nPlayers", top, (width + 1.f) * 3.f, height, width, ButtonSelection::Players));
 
 	Button thinking_button;
 	thinking_button.shape.setPosition(buttons_[0].shape.getPosition());
@@ -24,7 +24,7 @@ CheckersSFML::CheckersSFML() {
 }
 
 
-CheckersSFML::Button CheckersSFML::create_button(std::string text, int top, int left, int height, int width, ButtonSelection action) {
+CheckersSFML::Button CheckersSFML::create_button(std::string text, float top, float left, float height, float width, ButtonSelection action) {
 	Button button;
 	button.color = constants::grey;
 	button.shape.setSize(sf::Vector2f(width, height));
@@ -122,8 +122,9 @@ void CheckersSFML::render() {
 
 
 sf::Vector2f CheckersSFML::center_button_text(CheckersSFML::Button button, sf::Text text) {
-	return sf::Vector2f(button.shape.getPosition().x + (button.shape.getSize().x - double(text.getLocalBounds().width)) / 2.2,  
-						button.shape.getPosition().y + (button.shape.getSize().y - double(text.getLocalBounds().height)) / 3);
+	sf::RectangleShape shape{ button.shape };
+	return sf::Vector2f(float(shape.getPosition().x + (shape.getSize().x - double(text.getLocalBounds().width)) / 2.2), 
+						float(shape.getPosition().y + (shape.getSize().y - double(text.getLocalBounds().height)) / 3.0));
 }
 
 
@@ -149,7 +150,7 @@ void CheckersSFML::render_buttons(bool is_game_over) {
 		false,
 	};
 
-	for (int i = 0; i < grey_check.size(); ++i) {
+	for (size_t i = 0; i < grey_check.size(); ++i) {
 		sf::Color button_color{ (grey_check[i]) ? constants::grey : sf::Color::White };
 		buttons_[i].color = button_color;
 		buttons_[i].shape.setOutlineColor(button_color);
@@ -189,6 +190,7 @@ std::string CheckersSFML::get_user_input() {
 			}
 		}
 	}
+	return "";
 }
 
 
@@ -265,7 +267,7 @@ void CheckersSFML::reset_current_move() {
 
 
 int CheckersSFML::legal_move_check() {
-	for (int i = 0; i < available_moves_.size(); ++i) {
+	for (size_t i = 0; i < available_moves_.size(); ++i) {
 		std::vector<BoardPosition> available_landings{ available_moves_[i].landing_positions };
 		available_landings.resize(current_selected_move_.landing_positions.size());
 		Move sub_move{ available_moves_[i].start_position, available_landings };
