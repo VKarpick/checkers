@@ -13,11 +13,6 @@ std::shared_ptr<State> CheckersEnvironment::step(std::shared_ptr<Action> action)
 	++n_plays_;
 	state_ = step(state_, action);
 
-	for (auto row : checkerboard_from_state(state_).get_board()) {
-		std::cout << row << std::endl;
-	}
-	std::cout << std::endl;
-
 	return state_;
 }
 
@@ -37,7 +32,7 @@ std::shared_ptr<State> CheckersEnvironment::step(std::shared_ptr<State> state, s
 		reward = (current_player.player == 'r') ? 1 : -1;
 	}
 
-	bool is_terminal{ reward != 0 || n_plays_ > max_plays };
+	bool is_terminal{ reward != 0 || n_plays_ > max_plays_ };
 
 	return std::make_shared<State>(State{ checkerboard, reward, is_terminal, opponent });
 }

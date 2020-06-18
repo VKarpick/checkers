@@ -10,14 +10,12 @@
 
 int main()
 {
-    //CheckersTrainer checkers_trainer(6, 5, 0.1);
-    //CheckersTrainer checkers_trainer(std::vector<double>(139, 1.0), 5, 5, 0.1);
-    //CheckersTrainer checkers_trainer(95, 5, 0.1);
-    //checkers_trainer.train();
+    CheckersTrainer checkers_trainer(std::vector<double>(139, 1.0), 500, constants::default_max_depth, 0.1);
+    checkers_trainer.train();
 
     //Checkers checkers;
-    CheckersSFML checkers;
-    checkers.start();
+    //CheckersSFML checkers;
+    //checkers.start();
 
     return 0;
 }
