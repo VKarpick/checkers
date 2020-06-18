@@ -12,6 +12,12 @@ std::shared_ptr<State> CheckersEnvironment::reset() {
 std::shared_ptr<State> CheckersEnvironment::step(std::shared_ptr<Action> action) {
 	++n_plays_;
 	state_ = step(state_, action);
+
+	for (auto row : checkerboard_from_state(state_).get_board()) {
+		std::cout << row << std::endl;
+	}
+	std::cout << std::endl;
+
 	return state_;
 }
 
@@ -156,70 +162,87 @@ CheckersPlayer CheckersEnvironment::checkers_player_from_player(std::shared_ptr<
 bool CheckersEnvironment::is_trapped_king(Checkerboard board, BoardPosition piece_position, 
 	CheckersPlayer current_player, CheckersPlayer opponent) {
 
-	std::vector<Move> available_steps{ CheckerboardMoves::piece_moves(board, opponent, piece_position, {-1, 1}, false) };
-	std::vector<Move> available_jumps{ CheckerboardMoves::piece_moves(board, opponent, piece_position, {-1, 1}, true) };
+	std::vector<Move> available_moves{ CheckerboardMoves::piece_moves(board, opponent, piece_position, {-1, 1}, true) };
+	if (available_moves.empty()) {
+		available_moves = CheckerboardMoves::piece_moves(board, opponent, piece_position, { -1, 1 }, false);
+	}
 	
 	// king can't move
-	if (available_steps.empty() && available_jumps.empty()) {
+	if (available_moves.empty()) {
 		return true;
 	}
 	else {
 		// king executing any move results in king being jumped
-		std::vector<Move> available_moves{ (available_jumps.empty()) ? available_steps : available_jumps };
-		
 		for (Move move : available_moves) {
 			Checkerboard new_board{ board };
 			new_board.execute_move(move);
 			BoardPosition king_position{ move.landing_positions.back() };
-			bool is_captured{ false };
 
-			for (Move opponent_move : CheckerboardMoves::board_moves(new_board, opponent, current_player)) {
-				for (Piece captured_piece : opponent_move.captured_pieces) {
-					if (captured_piece.position == king_position) {
-						is_captured = true;
-					}
-				}
-			}
-
-			if (!is_captured) {
-				return false;
-			}
+			if (!can_be_jumped(new_board, king_position, current_player, opponent)) { return false; }
 		}
 		return true;
+	}
+}
+
+
+bool CheckersEnvironment::can_be_jumped(Checkerboard board, BoardPosition piece_position,
+	CheckersPlayer current_player, CheckersPlayer opponent) {
+
+	for (Move opponent_move : CheckerboardMoves::board_moves(board, opponent, current_player)) {
+		for (Piece captured_piece : opponent_move.captured_pieces) {
+			if (captured_piece.position == piece_position) {
+				return true;
+			}
+		}
 	}
 
 	return false;
 }
 
 
-bool CheckersEnvironment::is_runaway(Checkerboard board, BoardPosition piece_position, 
+bool CheckersEnvironment::avoid_encounters(Checkerboard board, BoardPosition piece_position, CheckersPlayer current_player) {
+	BoardPosition left{ piece_position.row + current_player.vertical_direction, piece_position.column - 1 };
+	BoardPosition right{ piece_position.row + current_player.vertical_direction, piece_position.column + 1 };
+	char left_piece{ board.get_piece(left) };
+	left_piece = tolower(left_piece);
+	char right_piece{ board.get_piece(right) };
+	right_piece = tolower(right_piece);
+
+	if (board.is_king_row(left)) { return true; }
+
+	if (left_piece == constants::board_opening) {
+		if (right_piece == constants::board_opening) {
+			return avoid_encounters(board, left, current_player) || avoid_encounters(board, right, current_player);
+		}
+		else if (right_piece == ' ' || right_piece == current_player.player) {
+			return avoid_encounters(board, left, current_player);
+		}
+		else {
+			return false;
+		}
+	}
+	else if (left_piece == ' ' || left_piece == current_player.player) {
+		if (right_piece == constants::board_opening) {
+			return avoid_encounters(board, right, current_player);
+		}
+		else {
+			return false;
+		}
+	}
+	else {
+		return false;
+	}
+}
+
+
+// allows some false positives in favor of running faster
+bool CheckersEnvironment::is_runaway(Checkerboard board, BoardPosition piece_position,
 	CheckersPlayer current_player, CheckersPlayer opponent) {
 
-	std::vector<Move> available_steps{ CheckerboardMoves::piece_moves(board, opponent, piece_position, 
-		{current_player.vertical_direction}, false) };
-
-	for (Move step : available_steps) {
-		BoardPosition new_position{ step.landing_positions.back() };
-
-		if (board.is_king_row(new_position)) {
-			return true;
-		}
-
-		Checkerboard new_board{ board };
-		new_board.execute_move(step);
-
-		// if piece can be jumped, it isn't runaway
-		for (Move opponent_move : CheckerboardMoves::board_moves(new_board, opponent, current_player)) {
-			for (Piece captured_piece : opponent_move.captured_pieces) {
-				if (captured_piece.position == new_position) {
-					return false;
-				}
-			}
-		}
-
-		// recursive call to continue stepping
-		if (is_runaway(new_board, new_position, current_player, opponent)) { return true; }
+	if (can_be_jumped(board, piece_position, current_player, opponent)) {
+		return false;
 	}
-
-	return false;
+	else {
+		return avoid_encounters(board, piece_position, current_player);
+	}
 }

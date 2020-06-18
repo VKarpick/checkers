@@ -26,7 +26,7 @@ public:
 private:
 	std::shared_ptr<State> state_{ nullptr };
 	int n_plays_{ 0 };
-	const int max_plays{ 150 };    // simple way of determining draws, terminate after given number of plays
+	const int max_plays{ 100 };    // simple way of determining draws, terminate after given number of plays
 	std::vector<std::shared_ptr<Player>> players_{
 		std::make_shared<Player>(Player{CheckersPlayer{constants::pieces[0], -1, false}}),
 		std::make_shared<Player>(Player{CheckersPlayer{constants::pieces[1], 1, false}})
@@ -38,5 +38,7 @@ private:
 	CheckersPlayer checkers_player_from_state(std::shared_ptr<State> state);
 	CheckersPlayer checkers_player_from_player(std::shared_ptr<Player> player);
 	bool is_trapped_king(Checkerboard board, BoardPosition piece_position, CheckersPlayer current_player, CheckersPlayer opponent);
+	bool can_be_jumped(Checkerboard board, BoardPosition piece_position, CheckersPlayer current_player, CheckersPlayer opponent);
+	bool avoid_encounters(Checkerboard board, BoardPosition piece_position, CheckersPlayer current_player);
 	bool is_runaway(Checkerboard board, BoardPosition piece_position, CheckersPlayer current_player, CheckersPlayer opponent);
 };
