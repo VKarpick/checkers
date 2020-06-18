@@ -10,9 +10,8 @@
 
 
 // how Checkers AI was actually trained
-// used max depth of 6, trained for _ episodes    <-------------    TODO fill in the blank
-// automatically defaults to TD Leaf - if using with max depth < 6, have to initialize weights to something other than zero
-// otherwise, will continually force draws and never update weights
+// automatically defaults to TD Leaf - best to initialize weights to something other than zero
+// otherwise, could continually force draws and never update weights
 class CheckersTrainer {
 public:
     CheckersTrainer(int n_episodes = 1, int max_depth = 1, double step_size = 0.01, bool is_printing_episodes = true,

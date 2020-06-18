@@ -22,6 +22,6 @@ private:
 	std::shared_ptr<State> state_;
 	std::shared_ptr<TDEstimator> estimator_;
 	std::vector<std::shared_ptr<Player>> players_;
-	int max_depth_{ 6 };
+	int max_depth_{ constants::default_max_depth };
 	std::shared_ptr<MinimaxPolicy> minimax_policy_;
 };

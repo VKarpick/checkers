@@ -302,12 +302,18 @@ void Checkers::redo() {
 
 
 std::string Checkers::ai_input() {
-	Move ai_move{ checkers_ai_.action_selection(checkerboard_, current_player_) };
+	if (available_moves_.size() == 1) {
+		return std::to_string(0);
+	}
+	else {
+		Move ai_move{ checkers_ai_.action_selection(checkerboard_, current_player_) };
 
-	for (size_t i = 0; i < available_moves_.size(); ++i) {
-		if (available_moves_[i] == ai_move) {
-			return std::to_string(i);
+		for (size_t i = 0; i < available_moves_.size(); ++i) {
+			if (available_moves_[i] == ai_move) {
+				return std::to_string(i);
+			}
 		}
+
 	}
 
 	return "q";

@@ -40,4 +40,6 @@ namespace constants {
 		" r r r r",
 		"r r r r ",
 	};
+
+	const int default_max_depth{ 4 };
 }

@@ -180,12 +180,14 @@ std::string CheckersSFML::get_user_input() {
 					else { return ""; }
 				}
 				else {
-					BoardPosition square_clicked{ event.mouseButton.y / constants::checkerboard_square_size,
-												  event.mouseButton.x / constants::checkerboard_square_size };
-					update_highlights(square_clicked);
-					int move{ legal_move_check() };
-					if (move != -1) { return std::to_string(move); }
-					render();
+					if (state_ != CheckersState::EndScreen) {
+						BoardPosition square_clicked{ event.mouseButton.y / constants::checkerboard_square_size,
+													  event.mouseButton.x / constants::checkerboard_square_size };
+						update_highlights(square_clicked);
+						int move{ legal_move_check() };
+						if (move != -1) { return std::to_string(move); }
+						render();
+					}
 				}
 			}
 		}
