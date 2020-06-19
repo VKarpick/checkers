@@ -6,6 +6,7 @@
 
 
 #pragma once
+
 #include "checkers_environment.h"
 #include "checkers_trainer.h"
 #include "../reinforcement_learning/policy.h"
@@ -13,10 +14,10 @@
 
 class CheckersAI {
 public:
-	CheckersAI(const int max_depth = constants::default_max_depth);
+	CheckersAI(int max_depth = constants::default_max_depth);
 
 
-	Move action_selection(const Checkerboard checkerboard, const CheckersPlayer player);
+	Move action_selection(Checkerboard checkerboard, CheckersPlayer player);
 
 
 private:

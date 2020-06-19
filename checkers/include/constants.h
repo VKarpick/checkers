@@ -29,6 +29,7 @@ namespace constants {
 	const std::string pieces{ "rw" };    // how the pieces are represented on the board
 	const std::vector<std::string> player_colors{ "red", "white" };
 	const std::vector<sf::Color> piece_colors{ sf::Color::Red, sf::Color::White };
+	const std::vector<int> player_directions{ -1, 1 };    // first player moves up, second player moves down
 	constexpr char board_opening{ '-' };    // how available spots on the board are represented
 	const std::vector<std::string> starting_board{
 		" w w w w",
