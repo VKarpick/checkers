@@ -1,27 +1,27 @@
+/*-------------------------------------------------------------------------------------------------
+ Determines which move the AI will select in a Checkers game.
+
+ Piggybacks off of action selection already developed for training the AI in CheckersEnvironment.
+-------------------------------------------------------------------------------------------------*/
+
+
 #pragma once
 #include "checkers_environment.h"
 #include "checkers_trainer.h"
 #include "../reinforcement_learning/policy.h"
 
 
-
-const std::string weights_file{ "..\\checkers\\data\\weights.dat" };
-
-
-
 class CheckersAI {
 public:
-	CheckersAI();
+	CheckersAI(const int max_depth = constants::default_max_depth);
 
 
-	Move action_selection(Checkerboard checkerboard, CheckersPlayer player);
+	Move action_selection(const Checkerboard checkerboard, const CheckersPlayer player);
 
 
 private:
+	const int max_depth_;    // for minimax
 	std::shared_ptr<CheckersEnvironment> checkers_environment_;
-	std::shared_ptr<State> state_;
-	std::shared_ptr<TDEstimator> estimator_;
 	std::vector<std::shared_ptr<Player>> players_;
-	int max_depth_{ constants::default_max_depth };
 	std::shared_ptr<MinimaxPolicy> minimax_policy_;
 };
