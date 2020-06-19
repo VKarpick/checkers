@@ -42,4 +42,5 @@ namespace constants {
 	};
 
 	const int default_max_depth{ 4 };
+	const std::string weights_file{ "..\\checkers\\data\\weights.dat" };
 }

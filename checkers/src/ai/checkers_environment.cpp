@@ -28,8 +28,7 @@ std::shared_ptr<State> CheckersEnvironment::step(std::shared_ptr<State> state, s
 	std::vector<Move> opponent_actions{ CheckerboardMoves::board_moves(checkerboard, checkers_player_from_player(opponent), current_player) };
 
 	if (opponent_actions.size() == 0) {
-		//TODO remove magic variable
-		reward = (current_player.player == 'r') ? 1 : -1;
+		reward = (current_player.player == constants::pieces[0]) ? 0.001 : -0.001;
 	}
 
 	bool is_terminal{ reward != 0 || n_plays_ > max_plays_ };

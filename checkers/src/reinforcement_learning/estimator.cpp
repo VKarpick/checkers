@@ -57,7 +57,10 @@ double TDEstimator::predict(std::vector<double> features) {
 void TDEstimator::update(double target, double estimate, std::vector<double> features, double discount_factor, double trace_decay) {
 	double delta = target - estimate;
 	for (size_t i = 0; i < weights_.size(); ++i) {
-		if (is_using_eligibility_trace_) eligibility_trace_[i] = discount_factor * trace_decay * eligibility_trace_[i] + features[i];
+		if (is_using_eligibility_trace_) {
+			eligibility_trace_[i] = discount_factor * trace_decay * eligibility_trace_[i] + features[i];
+		}
+
 		weights_[i] += step_size_ * delta * eligibility_trace_[i];
 	}
 }
