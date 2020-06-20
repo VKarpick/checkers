@@ -1,3 +1,8 @@
+/*-------------------------------------------------------------------------------------------------
+ Abstract base class for reinforcement learning environments and related structs.
+-------------------------------------------------------------------------------------------------*/
+
+
 #pragma once
 
 #include <any>
@@ -5,24 +10,21 @@
 #include <vector>
 
 
-
 // only necessary for multi-player games
-// allow flexibility in defining players while passing around smart pointers to struct
+// allow flexibility in defining players with std::any
 struct Player {
 	std::any player;
 };
 
 
-
-// allow flexibility in defining actions while passing around smart pointers to struct
+// allow flexibility in defining actions with std::any
 struct Action {
 	std::any action;
 };
 
 
-
-// allow flexibility in defining observations
-// optional current_player member for multi-player games
+// allow flexibility in defining observations with std::any
+// optional current_player member for multi-player environments
 struct State {
 	std::any observation;
 	double reward{ 0.0 };
@@ -31,8 +33,6 @@ struct State {
 };
 
 
-
-// abstract base class to be inherited from
 class Environment {
 public:
 	// reset environment to a starting state, returning the state
