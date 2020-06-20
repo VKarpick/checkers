@@ -1,3 +1,12 @@
+/*-------------------------------------------------------------------------------------------------
+ TD learning algorithms.
+
+ Currently includes:
+     - TDLambda
+	 - TDLeaf
+-------------------------------------------------------------------------------------------------*/
+
+
 #pragma once
 
 #include <iostream>
@@ -5,8 +14,6 @@
 #include "policy.h"
 
 
-
-//TODO prediction vs control
 class TDLambda {
 public:
 	TDLambda();
@@ -27,7 +34,6 @@ protected:
 
 	void train_single_episode();
 };
-
 
 
 class TDLeaf : public TDLambda {
