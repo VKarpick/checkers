@@ -1,14 +1,19 @@
+/*-------------------------------------------------------------------------------------------------
+ Estimators for reinforcement learning.
+ 
+ Currently includes a TD estimator for linear prediction.
+-------------------------------------------------------------------------------------------------*/
+
+
 #pragma once
 
 #include <numeric>
 #include <vector>
 
 
-
-// generic reinforcement learning estimator to be inherited from
+// abstract base class to be inherited from
 class Estimator {
 public:
-	// can either provide starting weights or a feature size to initialize weights to 0
 	Estimator(double step_size, std::vector<double> weights, bool is_using_eligibility_trace = false);
 	Estimator(double step_size, int feature_size, bool is_using_eligibility_trace = false);
 
@@ -34,8 +39,6 @@ protected:
 
 
 
-// Estimator for temporal difference learning
-//TODO allow for both prediction and control, possibly non-linear learning
 class TDEstimator : public Estimator {
 public:
 	TDEstimator(double step_size, std::vector<double> weights, bool is_using_eligibility_trace = false);
