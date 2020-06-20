@@ -1,3 +1,12 @@
+/*-------------------------------------------------------------------------------------------------
+ Policies for reinforcement learning.
+
+ Currently includes:
+     - RandomWalkPolicy to select actions at random.
+	 - MinimaxPolicy to use minimax algorithm to select actions.
+-------------------------------------------------------------------------------------------------*/
+
+
 #pragma once
 
 #include <memory>
@@ -8,12 +17,10 @@
 #include "../tree/minimax.h"
 
 
-
 struct StateActionPair {
 	std::shared_ptr<State> state;
 	std::shared_ptr<Action> action;
 };
-
 
 
 // abstract base class to be inherited from
@@ -34,7 +41,6 @@ protected:
 };
 
 
-
 // choose actions entirely at random
 class RandomWalkPolicy : public Policy {
 public:
@@ -47,7 +53,6 @@ public:
 private:
 	std::shared_ptr<Environment> environment_{ nullptr };
 };
-
 
 
 // use minimax to choose actions
@@ -68,7 +73,7 @@ private:
 	std::shared_ptr<Environment> environment_{ nullptr };
 	std::shared_ptr<Estimator> estimator_{ nullptr };
 	std::shared_ptr<Player> max_player_{ nullptr };
-	int max_depth_{ 1 };
+	const int max_depth_;
 	std::shared_ptr<Node<StateActionPair>> node_{ nullptr };
 	std::unique_ptr<Minimax<StateActionPair>> minimax_{ nullptr };
 };

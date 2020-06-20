@@ -1,7 +1,6 @@
 #include "reinforcement_learning/policy.h"
 
 
-
 Policy::Policy() {}
 Policy::Policy(std::shared_ptr<Environment> environment) : environment_(environment) {}
 
@@ -11,19 +10,20 @@ std::shared_ptr<Node<StateActionPair>> Policy::get_node() {
 }
 
 
-
 RandomWalkPolicy::RandomWalkPolicy(std::shared_ptr<Environment> environment) : environment_(environment) {}
 
 
 std::shared_ptr<Action> RandomWalkPolicy::action_selection(std::shared_ptr<State> state) {
-	std::vector<std::shared_ptr<Action>> actions = environment_->get_actions();
+	const std::vector<std::shared_ptr<Action>> actions{ environment_->get_actions() };
+
 	if (!actions.empty()) {
 		int random_index = rand() % actions.size();
 		return actions[random_index];
 	}
-	return nullptr;
+	else {
+		return nullptr;
+	}
 }
-
 
 
 MinimaxPolicy::MinimaxPolicy(std::shared_ptr<Environment> environment, std::shared_ptr<Estimator> estimator, 
@@ -34,17 +34,21 @@ MinimaxPolicy::MinimaxPolicy(std::shared_ptr<Environment> environment, std::shar
 	max_depth_(maxDepth)
 {
 	minimax_ = std::make_unique<Minimax<StateActionPair>>(Minimax<StateActionPair>(
+
 		// a state's value is the estimator's predicted value for that state
 		[environment, estimator](std::shared_ptr<Node<StateActionPair>> node) {
 			std::vector<double> features = environment->featurize(node->get_data().state);
 			return estimator->predict(features);
 		},
+		
 		max_depth_, 
+
 		// add children for every possible action from the current state
 		[environment](std::shared_ptr<Node<StateActionPair>> node) {
 			for (std::shared_ptr<Action> action : environment->get_actions(node->get_data().state)) {
-				std::shared_ptr<State> next_state = environment->step(node->get_data().state, action);
-				std::shared_ptr<Node<StateActionPair>> child = std::make_shared<Node<StateActionPair>>(StateActionPair{ next_state, action });
+				std::shared_ptr<State> next_state{ environment->step(node->get_data().state, action) };
+				std::shared_ptr<Node<StateActionPair>> child{ 
+					std::make_shared<Node<StateActionPair>>(StateActionPair{ next_state, action }) };
 				node->add_child(child);
 			}
 		}
@@ -59,7 +63,9 @@ std::shared_ptr<Node<StateActionPair>> MinimaxPolicy::get_node() {
 
 std::shared_ptr<Action> MinimaxPolicy::action_selection(std::shared_ptr<State> state) {
 	// StateActionPair of node has to reflect current state to provide accurate action selection
-	if (node_ == nullptr || node_->get_data().state != state) reset_node(state);
+	if (node_ == nullptr || node_->get_data().state != state) {
+		reset_node(state);
+	}
 
 	node_ = minimax_->minimax_node(node_, 0, node_->get_data().state->current_player == max_player_);
 	return node_->get_data().action;
