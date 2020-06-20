@@ -222,7 +222,7 @@ void Checkers::process_input() {
 	if (current_player_.is_user_controlled) {
 		input = get_user_input();
 	}
-	if (!current_player_.is_user_controlled || input == "a") {
+	if (!current_player_.is_user_controlled) {
 		input = ai_input();
 	}
 

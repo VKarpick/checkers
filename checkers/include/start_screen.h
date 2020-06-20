@@ -11,8 +11,8 @@ public:
 	StartScreen();
 
 
-	bool highlight_red{ true };
-	bool highlight_white{ false };
+	bool has_red_highlighted{ true };
+	bool has_white_highlighted{ false };
 	enum class StartScreenSelection{ Red, White, Play, Exit, Nothing };
 	
 	

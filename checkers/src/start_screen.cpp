@@ -29,14 +29,14 @@ StartScreen::StartScreenSelection StartScreen::show(sf::RenderWindow& window) {
 
 	float square_size{ float(constants::checkerboard_square_size) };
 	StartScreenItem red_button{ create_button(192.f, 128.f, square_size, square_size, 
-		StartScreen::StartScreenSelection::Red, highlight_red) };
+		StartScreen::StartScreenSelection::Red, has_red_highlighted) };
 	int red_x{ int(red_button.shape.getPosition().x / square_size) };
 	int red_y{ int(red_button.shape.getPosition().y / square_size) };
 	CheckersPiece red_piece{ constants::pieces[0], red_y, red_x, false };
 	start_screen_items_.push_back(red_button);
 
 	StartScreenItem white_button{ create_button(192.f, 320.f, square_size, square_size, 
-		StartScreen::StartScreenSelection::White, highlight_white) };
+		StartScreen::StartScreenSelection::White, has_white_highlighted) };
 	int white_x{ int(white_button.shape.getPosition().x / square_size) };
 	int white_y{ int(white_button.shape.getPosition().y / square_size) };
 	CheckersPiece white_piece{ constants::pieces[1], white_y, white_x, false };
@@ -63,12 +63,12 @@ StartScreen::StartScreenSelection StartScreen::show(sf::RenderWindow& window) {
 		input = get_input(window);
 
 		if (input == StartScreenSelection::Red) {
-			highlight_red = !highlight_red;
-			red_button.shape.setOutlineColor((highlight_red) ? sf::Color::Yellow : sf::Color::White);
+			has_red_highlighted = !has_red_highlighted;
+			red_button.shape.setOutlineColor((has_red_highlighted) ? sf::Color::Yellow : sf::Color::White);
 		}
 		if (input == StartScreenSelection::White) {
-			highlight_white = !highlight_white;
-			white_button.shape.setOutlineColor((highlight_white) ? sf::Color::Yellow : sf::Color::White);
+			has_white_highlighted = !has_white_highlighted;
+			white_button.shape.setOutlineColor((has_white_highlighted) ? sf::Color::Yellow : sf::Color::White);
 		}
 	} while (input != StartScreenSelection::Play && input != StartScreenSelection::Exit);
 
