@@ -1,18 +1,18 @@
 #include "checkerboard_moves.h"
 
 
-
 std::vector<Move> CheckerboardMoves::piece_moves(Checkerboard checkerboard, CheckersPlayer opponent,
 	BoardPosition piece_position, std::vector<int> row_moves, bool can_capture) {
 
 	std::vector<Move> moves;
-	int move_distance{ (can_capture) ? constants::jump_distance : constants::step_distance };
+	const int move_distance{ (can_capture) ? constants::jump_distance : constants::step_distance };
 
 	for (int row_move : row_moves) {
 		for (int column_move : constants::column_moves) {
-			BoardPosition move_position{ piece_position.row + row_move * move_distance, piece_position.column + column_move * move_distance };
+			const BoardPosition move_position{ piece_position.row + row_move * move_distance, 
+				piece_position.column + column_move * move_distance };
 			// can only move to open squares
-			bool is_legal_move{ checkerboard.get_piece(move_position) == constants::board_opening };
+			const bool is_legal_move{ checkerboard.get_piece(move_position) == constants::board_opening };
 
 			bool is_legal_capture{ true };    // initialized to true to simplify if statement
 			BoardPosition capture_position;
@@ -72,7 +72,7 @@ std::vector<Move> CheckerboardMoves::board_moves(Checkerboard checkerboard, Chec
 		std::vector<int> row_moves;
 
 		if (piece == toupper(piece)) {
-			row_moves = { -1, 1 };    // kings can move up or down
+			row_moves = { -constants::step_distance, constants::step_distance };    // kings can move up or down
 		}
 		else {
 			row_moves = { current_player.vertical_direction };    // regular pieces can only move in their player's direction
@@ -92,8 +92,8 @@ std::vector<Move> CheckerboardMoves::board_moves(Checkerboard checkerboard, Chec
 }
 
 
-// pieces are crowned if they aren't already kings and can reach the top/bottom of the board
+// pieces are crowned if they aren't already kings and will reach a king's row
 bool CheckerboardMoves::is_crowning_move(Checkerboard checkerboard, char piece, BoardPosition board_position) {
-	bool is_king{ piece == toupper(piece) };
+	const bool is_king{ piece == toupper(piece) };
 	return !is_king && checkerboard.is_king_row(board_position);
 }

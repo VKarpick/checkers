@@ -1,13 +1,18 @@
+/*-------------------------------------------------------------------------------------------------
+ Simple class for determining allowable moves on a checkerboard.
+
+ Broken out from other classes to avoid circular references with AI.
+-------------------------------------------------------------------------------------------------*/
+
+
 #pragma once
 
 #include "checkerboard.h"
-#include "checkers_structs.h"
-
 
 
 class CheckerboardMoves {
 public:
-	// returns the moves a piece is allowed to make
+	// returns the moves a single piece is allowed to make
 	static std::vector<Move> piece_moves(Checkerboard checkerboard, CheckersPlayer opponent,
 		BoardPosition piece_position, std::vector<int> row_moves, bool can_capture);
 
