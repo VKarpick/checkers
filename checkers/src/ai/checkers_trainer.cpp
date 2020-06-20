@@ -1,7 +1,6 @@
 #include "ai/checkers_trainer.h"
 
 
-
 CheckersTrainer::CheckersTrainer(int n_episodes, int max_depth, double step_size, bool is_printing_episodes,
     std::string read_filename, std::string write_filename) :
     n_episodes_(n_episodes),
@@ -78,11 +77,14 @@ void CheckersTrainer::train() {
             std::cout << std::endl;
         }
 
-        weights_.assign(feature_size, 0);
+        weights_.assign(feature_size, 0.0);
     }
 
     std::shared_ptr<TDEstimator> estimator{ std::make_shared<TDEstimator>(step_size_, weights_, true) };
+
+    // use first player as max player
     std::shared_ptr<Player> max_player{ std::make_shared<Player>(Player{ checkers_environment->get_players()[0] }) };
+
     TDLeaf td_leaf(checkers_environment, estimator, max_player, max_depth_);
     
     td_leaf.train(n_episodes_, is_printing_episodes_);

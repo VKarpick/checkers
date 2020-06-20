@@ -1,7 +1,6 @@
 #include "ai/checkers_environment.h"
 
 
-
 std::shared_ptr<State> CheckersEnvironment::reset() {
 	n_plays_ = 0;
 	state_ = std::make_shared<State>(State{ Checkerboard(constants::starting_board), 0.0, false, players_[0] });

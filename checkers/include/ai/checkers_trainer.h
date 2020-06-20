@@ -1,3 +1,11 @@
+/*-------------------------------------------------------------------------------------------------
+ Trains the AI for Checkers using TD Leaf.
+
+ It's best to initialize weights to something other than zero to avoid constantly forced draws 
+ which will never update weights if they're set at 0.
+-------------------------------------------------------------------------------------------------*/
+
+
 #pragma once
 
 #include <fstream>
@@ -8,10 +16,6 @@
 #include "../reinforcement_learning/td_learning.h"
 
 
-
-// how Checkers AI was actually trained
-// automatically defaults to TD Leaf - best to initialize weights to something other than zero
-// otherwise, could continually force draws and never update weights
 class CheckersTrainer {
 public:
     CheckersTrainer(int n_episodes = 1, int max_depth = 1, double step_size = 0.01, bool is_printing_episodes = true,
@@ -28,7 +32,7 @@ public:
 
 private:
     int n_episodes_{ 1 };
-    int max_depth_{ 1 };
+    const int max_depth_;
     double step_size_{ 0.01 };
     bool is_printing_episodes_{ true };
     std::string read_filename_{ "" };
