@@ -1,7 +1,6 @@
 #include "checkerboard.h"
 
 
-
 Checkerboard::Checkerboard() {
 	reset();
 }
@@ -18,7 +17,7 @@ std::vector<std::string> Checkerboard::get_board() {
 
 
 void Checkerboard::draw(sf::RenderTarget& target, sf::RenderStates state) const {
-	float inner_square_size{ float(constants::checkerboard_square_size) * 7.f / 8.f };
+	const float inner_square_size{ float(constants::checkerboard_square_size) * 7.f / 8.f };
 	for (size_t row = 0; row < board_.size(); ++row) {
 		for (size_t column = 0; column < board_[row].size(); ++column) {
 			// checkerboard squares
@@ -28,12 +27,13 @@ void Checkerboard::draw(sf::RenderTarget& target, sf::RenderStates state) const 
 											float(row * constants::checkerboard_square_size + constants::checkerboard_square_thickness)));
 			square.setOutlineThickness(constants::checkerboard_square_thickness);
 
+			// selected squares are blue, option squares are yellow
 			BoardPosition position{ int(row), int(column) };
 			if (std::find(selected_highlights.begin(), selected_highlights.end(), position) != selected_highlights.end()) {
 				square.setOutlineColor(sf::Color::Blue);
 			}
 			else {
-				bool is_option{ std::find(option_highlights.begin(), option_highlights.end(), position) != option_highlights.end() };
+				const bool is_option{ std::find(option_highlights.begin(), option_highlights.end(), position) != option_highlights.end() };
 				square.setOutlineColor((is_option) ? sf::Color::Yellow : square.getFillColor());
 			}
 
@@ -57,8 +57,8 @@ void Checkerboard::reset() {
 
 
 char Checkerboard::get_piece(BoardPosition position) {
-	bool legal_row{ position.row > -1 && position.row < int(board_.size()) };
-	bool legal_column{ position.column > -1 && position.column < int(board_.size()) };
+	const bool legal_row{ position.row > -1 && position.row < int(board_.size()) };
+	const bool legal_column{ position.column > -1 && position.column < int(board_.size()) };
 	if (legal_row && legal_column) {
 		return board_[position.row][position.column];
 	}
@@ -101,10 +101,13 @@ void Checkerboard::execute_move(Move move) {
 
 
 void Checkerboard::reverse_move(Move move) {
-	BoardPosition end_position{ move.landing_positions.back() };
+	const BoardPosition end_position{ move.landing_positions.back() };
 	char piece{ get_piece(end_position) };
 	
-	if (move.is_crowning) piece = tolower(piece);
+	// dethrone king if move crowned it
+	if (move.is_crowning) {
+		piece = tolower(piece);
+	}
 
 	// move piece back to its starting position
 	board_[move.start_position.row][move.start_position.column] = piece;
@@ -120,7 +123,6 @@ void Checkerboard::reverse_move(Move move) {
 bool Checkerboard::is_king_row(BoardPosition board_position) {
 	return board_position.row == 0 || board_position.row == board_.size() - 1;
 }
-
 
 
 std::ostream& operator<< (std::ostream& out, Checkerboard& checkerboard) {
