@@ -19,10 +19,10 @@
 class CheckersTrainer {
 public:
     CheckersTrainer(int n_episodes = 1, int max_depth = 1, double step_size = 0.01, bool is_printing_episodes = true,
-        std::string read_filename = "..\\checkers\\data\\weights.dat", 
-        std::string write_filename = "..\\checkers\\data\\weights.dat");
+        std::string read_filename = constants::weights_file, 
+        std::string write_filename = constants::weights_file);
     CheckersTrainer(std::vector<double> weights, int n_episodes = 1, int max_depth = 1, double step_size = 0.01, 
-        bool is_printing_episodes = true, std::string write_filename = "..\\checkers\\data\\weights.dat");
+        bool is_printing_episodes = true, std::string write_filename = constants::weights_file);
     
     
     static std::vector<double> read_weights(const std::string filename);
