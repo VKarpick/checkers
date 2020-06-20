@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <ctime>
 #include <memory>
 #include <random>
 

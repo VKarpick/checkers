@@ -10,7 +10,11 @@ std::shared_ptr<Node<StateActionPair>> Policy::get_node() {
 }
 
 
-RandomWalkPolicy::RandomWalkPolicy(std::shared_ptr<Environment> environment) : environment_(environment) {}
+RandomWalkPolicy::RandomWalkPolicy(std::shared_ptr<Environment> environment)
+	: environment_(environment) 
+{
+	srand((unsigned int)time(0));
+}
 
 
 std::shared_ptr<Action> RandomWalkPolicy::action_selection(std::shared_ptr<State> state) {
