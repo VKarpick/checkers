@@ -1,15 +1,6 @@
 #include "checkers.h"
 
 
-
-bool is_int(const std::string& s) {
-	std::string::const_iterator it = s.begin();
-	while (it != s.end() && std::isdigit(*it)) ++it;
-	return !s.empty() && it == s.end();
-}
-
-
-
 Checkers::Checkers() {
 	srand((unsigned int)time(0));
 
@@ -33,9 +24,10 @@ Checkers::Checkers() {
 	input_map["newgame"] = std::bind(&Checkers::new_game, this);
 	input_map["new game"] = std::bind(&Checkers::new_game, this);
 
-	input_map["c"] = std::bind(&Checkers::change_players, this);
-	input_map["change"] = std::bind(&Checkers::change_players, this);
-	input_map["change players"] = std::bind(&Checkers::change_players, this);
+	input_map["c"] = std::bind(&Checkers::alter_players, this);
+	input_map["change"] = std::bind(&Checkers::alter_players, this);
+	input_map["changeplayers"] = std::bind(&Checkers::alter_players, this);
+	input_map["change players"] = std::bind(&Checkers::alter_players, this);
 }
 
 
@@ -83,10 +75,10 @@ void Checkers::render_start_screen() {
 	std::cout << std::endl;
 
 	std::string user_input;
-	std::vector<std::string> ordinal{ "first", "second" };
-	std::vector<int> directions{ -1, 1 };
+	const std::vector<std::string> ordinal{ "first", "second" };
 	players_.clear();
 	while (players_.size() < 2) {
+		// ask if user wants to control player
 		std::string player_color{ constants::player_colors[players_.size()] };
 		std::cout << "User controlling " << ordinal[players_.size()] << " player (" << player_color << ")? (y/n) ";
 		user_input = get_user_input();
@@ -94,9 +86,10 @@ void Checkers::render_start_screen() {
 		if (user_input == "yes") { user_input = "y"; }
 		if (user_input == "no") { user_input = "n"; }
 
+		// add player to member variable based on user input
 		if (user_input == "y" || user_input == "n") {
-			char piece{ constants::pieces[players_.size()] };
-			int direction{ directions[players_.size()] };
+			const char piece{ constants::pieces[players_.size()] };
+			const int direction{ constants::player_directions[players_.size()] };
 			players_.push_back(CheckersPlayer{ piece, direction, user_input == "y" });
 		}
 
@@ -138,7 +131,7 @@ void Checkers::render_end_screen() {
 std::string Checkers::won_lost_statement() {
 	std::string who_won;
 	std::string won_lost;
-	int winner{ (players_[0] == current_player_) ? 1 : 0 };
+	const int winner{ (players_[0] == current_player_) ? 1 : 0 };
 	if (players_[0].is_user_controlled == players_[1].is_user_controlled) {
 		who_won = constants::player_colors[winner];
 		won_lost = "won";
@@ -239,16 +232,16 @@ void Checkers::process_input() {
 
 void Checkers::process_input(std::string input) {
 	if (input_map.count(input) == 1) {
-		// pre-defined allowable input
+		// pre-defined allowable input for non-moves
 		input_map[input]();
 	}
 	else {
 		if (is_int(input)) {
-			int move_index{ std::stoi(input) };
+			const int move_index{ std::stoi(input) };
 			if (-1 < move_index && move_index < int(available_moves_.size())) {
 				
 				// number representing which available move to make
-				make_move(available_moves_[move_index], true);
+				execute_move(available_moves_[move_index], true);
 			}
 		}
 	}
@@ -256,11 +249,11 @@ void Checkers::process_input(std::string input) {
 
 
 void Checkers::random_move() {
-	make_move(available_moves_[rand() % available_moves_.size()], true);
+	execute_move(available_moves_[rand() % available_moves_.size()], true);
 }
 
 
-void Checkers::make_move(Move move, bool is_new_move) {
+void Checkers::execute_move(Move move, bool is_new_move) {
 	checkerboard_.execute_move(move);
 	previous_moves_.push_back(move);    // update for potential undo
 
@@ -275,7 +268,7 @@ void Checkers::make_move(Move move, bool is_new_move) {
 
 void Checkers::undo() {
 	// if single player game, need to reverse 2 moves to get back to user's last play
-	int moves_to_reverse{ (opponent_.is_user_controlled) ? 1 : 2 };
+	const int moves_to_reverse{ (opponent_.is_user_controlled) ? 1 : 2 };
 
 	if (moves_to_reverse <= int(previous_moves_.size())) {
 		for (int i = 0; i < moves_to_reverse; ++i) {
@@ -292,9 +285,9 @@ void Checkers::undo() {
 void Checkers::redo() {
 	if (!redo_moves_.empty()) {
 		// if single player game, redo 2 moves to avoid changing ai recalculating
-		int n_moves_to_redo{ (opponent_.is_user_controlled) ? 1 : 2 };
+		const int n_moves_to_redo{ (opponent_.is_user_controlled) ? 1 : 2 };
 		for (int i = 0; i < n_moves_to_redo; ++i) {
-			make_move(redo_moves_.back(), false);
+			execute_move(redo_moves_.back(), false);
 			redo_moves_.erase(redo_moves_.end() - 1);
 		}
 	}
@@ -320,6 +313,16 @@ std::string Checkers::ai_input() {
 }
 
 
-void Checkers::change_players() {
+void Checkers::alter_players() {
 	state_ = CheckersState::StartScreen;
+}
+
+
+bool Checkers::is_int(std::string& s) {
+	std::string::const_iterator it = s.begin();
+	while (it != s.end() && std::isdigit(*it)) {
+		++it;
+	}
+
+	return !s.empty() && it == s.end();
 }

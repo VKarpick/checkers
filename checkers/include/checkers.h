@@ -1,3 +1,8 @@
+/*-------------------------------------------------------------------------------------------------
+ Class for playing Checkers by printing to console.
+-------------------------------------------------------------------------------------------------*/
+
+
 #pragma once
 
 #include <algorithm>
@@ -7,11 +12,7 @@
 #include <random>
 
 #include "checkerboard.h"
-#include "checkerboard_moves.h"
-#include "checkers_structs.h"
-#include "constants.h"
 #include "ai/checkers_ai.h"
-
 
 
 class Checkers {
@@ -58,9 +59,10 @@ protected:
 	void process_input();
 	void process_input(std::string input);
 	void random_move();
-	void make_move(Move move, bool is_new_move = true);
+	void execute_move(Move move, bool is_new_move = true);
 	void undo();
 	void redo();
 	std::string ai_input();
-	void change_players();
+	void alter_players();
+	static bool is_int(std::string& s);
 };
