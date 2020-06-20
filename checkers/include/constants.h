@@ -6,7 +6,6 @@
 #include <vector>
 
 
-
 namespace constants {
 	constexpr int checkerboard_square_size{ 64 };
 	constexpr int window_width{ checkerboard_square_size * 8 };

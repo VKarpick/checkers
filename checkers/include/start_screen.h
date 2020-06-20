@@ -1,9 +1,13 @@
+/*-------------------------------------------------------------------------------------------------
+ Screen for selecting players to use in checkers_sfml.
+-------------------------------------------------------------------------------------------------*/
+
+
 #pragma once
 
 #include <SFML/Graphics.hpp>
 
 #include "checkers_piece.h"
-
 
 
 class StartScreen {
@@ -29,7 +33,8 @@ public:
 private:
 	std::vector<StartScreenItem> start_screen_items_;
 	sf::Font font_;
-	int font_size_{ 32 };
+	const int font_size_{ 32 };
+	const float button_height{ 42.f };
 
 
 	StartScreenSelection get_input(sf::RenderWindow& window);

@@ -1,7 +1,6 @@
 #include "start_screen.h"
 
 
-
 StartScreen::StartScreen() {
 	font_.loadFromFile("..\\checkers\\data\\arial.ttf");
 }
@@ -11,9 +10,8 @@ StartScreen::StartScreenSelection StartScreen::show(sf::RenderWindow& window) {
 	sf::Text select_text{ text_for_display("Select which color(s)\n   you intend to use") };
 	select_text.setPosition((window.getSize().x - select_text.getLocalBounds().width) / 2, 80);
 
-	float button_x{ select_text.getPosition().x };
-	float button_width{ select_text.getLocalBounds().width };
-	float button_height{ 42.f };
+	const float button_x{ select_text.getPosition().x };
+	const float button_width{ select_text.getLocalBounds().width };
 
 	StartScreenItem play_button{ create_button(315.f, button_x, button_height, button_width, 
 		StartScreen::StartScreenSelection::Play, false) };
@@ -27,7 +25,7 @@ StartScreen::StartScreenSelection StartScreen::show(sf::RenderWindow& window) {
 	sf::Text exit_text{ text_for_display("Exit") };
 	exit_text.setPosition(play_text.getPosition().x, exit_button.shape.getPosition().y + 2);
 
-	float square_size{ float(constants::checkerboard_square_size) };
+	const float square_size{ float(constants::checkerboard_square_size) };
 	StartScreenItem red_button{ create_button(192.f, 128.f, square_size, square_size, 
 		StartScreen::StartScreenSelection::Red, has_red_highlighted) };
 	int red_x{ int(red_button.shape.getPosition().x / square_size) };
