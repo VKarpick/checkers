@@ -1,7 +1,13 @@
+/*-------------------------------------------------------------------------------------------------
+ Simple structs useful in Checkers.
+
+ Broken out into separate file to avoid circular references.
+-------------------------------------------------------------------------------------------------*/
+
+
 #pragma once
 
 #include <vector>
-
 
 
 struct CheckersPlayer {
