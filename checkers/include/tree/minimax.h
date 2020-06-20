@@ -5,7 +5,6 @@
 #include "node.h"
 
 
-
 // storing values and nodes together allows for easy retrieval of whichever is needed
 template<typename T>
 struct MinimaxPair {
@@ -26,7 +25,7 @@ public:
 	}
 
 
-	MinimaxPair<T> minimax(std::shared_ptr<Node<T>> node, int current_depth = 0, bool is_max_player = true,
+	MinimaxPair<T> minimax(std::shared_ptr<Node<T>> node, const int current_depth = 0, const bool is_max_player = true,
 		double alpha = -DBL_MAX, double beta = DBL_MAX) {
 		
 		if (current_depth == max_depth_) {
@@ -39,7 +38,6 @@ public:
 
 		if (is_max_player) {
 			MinimaxPair<T> best_pair{ -DBL_MAX, nullptr };
-			int i{ 0 };
 			for (auto child : node->get_children()) {
 				MinimaxPair<T> child_pair{ minimax(child, current_depth + 1, false, alpha, beta) };
 
@@ -73,14 +71,14 @@ public:
 	}
 
 
-	double minimax_value(std::shared_ptr<Node<T>> node, int current_depth = 0, bool is_max_player = true,
+	double minimax_value(std::shared_ptr<Node<T>> node, const int current_depth = 0, const bool is_max_player = true,
 		double alpha = -DBL_MAX, double beta = DBL_MAX) {
 		
 		return minimax(node, current_depth, is_max_player, alpha, beta).value;
 	}
 
 
-	std::shared_ptr<Node<T>> minimax_node(std::shared_ptr<Node<T>> node, int current_depth = 0, bool is_max_player = true,
+	std::shared_ptr<Node<T>> minimax_node(std::shared_ptr<Node<T>> node, const int current_depth = 0, const bool is_max_player = true,
 		double alpha = -DBL_MAX, double beta = DBL_MAX) {
 		
 		return minimax(node, current_depth, is_max_player, alpha, beta).node;

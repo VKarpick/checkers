@@ -253,7 +253,7 @@ void Checkers::random_move() {
 }
 
 
-void Checkers::execute_move(Move move, bool is_new_move) {
+void Checkers::execute_move(const Move move, const bool is_new_move) {
 	checkerboard_.execute_move(move);
 	previous_moves_.push_back(move);    // update for potential undo
 

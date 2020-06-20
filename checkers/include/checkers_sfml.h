@@ -35,7 +35,8 @@ private:
 
 
 	StartScreen start_screen_;
-	Button create_button(std::string text, float top, float left, float height, float width, ButtonSelection action);
+	Button create_button(const std::string text, const float top, const float left, 
+		const float height, const float width, const ButtonSelection action);
 	void render_start_screen() override;
 	void render_end_screen() override;
 	void update() override;
@@ -44,14 +45,14 @@ private:
 	void starting_highlights();
 
 	void render() override;
-	static sf::Vector2f center_button_text(Button button, sf::Text text);
-	sf::Text button_text(Button button, std::string message);
-	void render_buttons(bool is_game_over);
+	static sf::Vector2f center_button_text(const Button button, const sf::Text text);
+	sf::Text button_text(const Button button, const std::string message);
+	void render_buttons(const bool is_game_over);
 	std::string get_user_input() override;
-	ButtonSelection handle_button_click(int x);
-	void update_highlights(BoardPosition square_clicked);
-	bool is_option(BoardPosition square_clicked);
-	void update_click_options(BoardPosition square_clicked);
+	ButtonSelection handle_button_click(const int x);    // buttons are all in same row, don't need y
+	void update_highlights(const BoardPosition square_clicked);
+	bool is_option(const BoardPosition square_clicked);
+	void update_click_options(const BoardPosition square_clicked);
 	void reset_current_move();
 	int legal_move_check();    // illegal moves represented by -1, legal moves by their index
 };

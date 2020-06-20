@@ -59,7 +59,7 @@ protected:
 	void process_input();
 	void process_input(std::string input);
 	void random_move();
-	void execute_move(Move move, bool is_new_move = true);
+	void execute_move(const Move move, const bool is_new_move = true);
 	void undo();
 	void redo();
 	std::string ai_input();

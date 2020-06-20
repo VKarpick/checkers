@@ -91,7 +91,7 @@ StartScreen::StartScreenSelection StartScreen::get_input(sf::RenderWindow& windo
 }
 
 
-sf::Text StartScreen::text_for_display(std::string message) {
+sf::Text StartScreen::text_for_display(const std::string message) {
 	sf::Text text(message, font_);
 	text.setCharacterSize(font_size_);
 	text.setFillColor(sf::Color::White);
@@ -100,8 +100,8 @@ sf::Text StartScreen::text_for_display(std::string message) {
 }
 
 
-StartScreen::StartScreenItem StartScreen::create_button(float top, float left, float height, float width,
-	StartScreenSelection action, bool is_selected) {
+StartScreen::StartScreenItem StartScreen::create_button(const float top, const float left, const float height, const float width,
+	const StartScreenSelection action, const bool is_selected) {
 
 	StartScreenItem button;
 	button.shape.setSize(sf::Vector2f(width, height));
@@ -115,7 +115,7 @@ StartScreen::StartScreenItem StartScreen::create_button(float top, float left, f
 }
 
 
-StartScreen::StartScreenSelection StartScreen::handle_click(int x, int y) {
+StartScreen::StartScreenSelection StartScreen::handle_click(const int x, const int y) {
 	std::vector<StartScreen::StartScreenItem>::iterator it;
 	for (it = start_screen_items_.begin(); it != start_screen_items_.end(); ++it) {
 		sf::RectangleShape item_rectangle{ (*it).shape };

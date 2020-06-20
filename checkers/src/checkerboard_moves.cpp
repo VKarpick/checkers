@@ -2,7 +2,7 @@
 
 
 std::vector<Move> CheckerboardMoves::piece_moves(Checkerboard checkerboard, CheckersPlayer opponent,
-	BoardPosition piece_position, std::vector<int> row_moves, bool can_capture) {
+	BoardPosition piece_position, const std::vector<int> row_moves, const bool can_capture) {
 
 	std::vector<Move> moves;
 	const int move_distance{ (can_capture) ? constants::jump_distance : constants::step_distance };
@@ -93,7 +93,7 @@ std::vector<Move> CheckerboardMoves::board_moves(Checkerboard checkerboard, Chec
 
 
 // pieces are crowned if they aren't already kings and will reach a king's row
-bool CheckerboardMoves::is_crowning_move(Checkerboard checkerboard, char piece, BoardPosition board_position) {
+bool CheckerboardMoves::is_crowning_move(Checkerboard checkerboard, const char piece, const BoardPosition board_position) {
 	const bool is_king{ piece == toupper(piece) };
 	return !is_king && checkerboard.is_king_row(board_position);
 }

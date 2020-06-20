@@ -18,7 +18,7 @@ CheckersAI::CheckersAI(int max_depth) :
 }
 
 
-Move CheckersAI::action_selection(Checkerboard checkerboard, CheckersPlayer current_player) {
+Move CheckersAI::action_selection(const Checkerboard checkerboard, const CheckersPlayer current_player) {
 	std::shared_ptr<Player> player{ (current_player == std::any_cast<CheckersPlayer>(players_[0]->player)) ? players_[0] : players_[1] };
 	const std::shared_ptr<State> state{ std::make_shared<State>(State{ checkerboard, 0.0, false, player }) };
 	checkers_environment_->set_state(state);

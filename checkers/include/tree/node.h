@@ -24,9 +24,11 @@ public:
 	}
 
 
-	void set_parent(std::shared_ptr<Node<T>> new_parent) {
+	void set_parent(const std::shared_ptr<Node<T>> new_parent) {
 		// have to remove this node as member of previous parent's children
-		if (parent_.lock() != nullptr) parent_.lock()->remove_child(this->shared_from_this());
+		if (parent_.lock() != nullptr) {
+			parent_.lock()->remove_child(this->shared_from_this());
+		}
 		parent_ = new_parent;
 	}
 

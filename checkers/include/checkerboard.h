@@ -27,11 +27,11 @@ public:
 
 	void draw(sf::RenderTarget& target, sf::RenderStates state) const override;
 	void reset();
-	char get_piece(BoardPosition board_position);    // returns ' ' if board_position is invalid
+	char get_piece(const BoardPosition board_position);    // returns ' ' if board_position is invalid
 	std::vector<BoardPosition> get_player_positions(CheckersPlayer player);
-	void execute_move(Move move);
-	void reverse_move(Move move);
-	bool is_king_row(BoardPosition board_position);    // top and bottom rows of the board
+	void execute_move(const Move move);
+	void reverse_move(const Move move);
+	bool is_king_row(const BoardPosition board_position);    // top and bottom rows of the board
 
 
 private:

@@ -56,7 +56,7 @@ void Checkerboard::reset() {
 }
 
 
-char Checkerboard::get_piece(BoardPosition position) {
+char Checkerboard::get_piece(const BoardPosition position) {
 	const bool legal_row{ position.row > -1 && position.row < int(board_.size()) };
 	const bool legal_column{ position.column > -1 && position.column < int(board_.size()) };
 	if (legal_row && legal_column) {
@@ -86,7 +86,7 @@ std::vector<BoardPosition> Checkerboard::get_player_positions(CheckersPlayer pla
 }
 
 
-void Checkerboard::execute_move(Move move) {
+void Checkerboard::execute_move(const Move move) {
 	char piece{ get_piece(move.start_position) };
 
 	// piece moves from starting position to last landing position
@@ -100,7 +100,7 @@ void Checkerboard::execute_move(Move move) {
 }
 
 
-void Checkerboard::reverse_move(Move move) {
+void Checkerboard::reverse_move(const Move move) {
 	const BoardPosition end_position{ move.landing_positions.back() };
 	char piece{ get_piece(end_position) };
 	
@@ -120,7 +120,7 @@ void Checkerboard::reverse_move(Move move) {
 }
 
 
-bool Checkerboard::is_king_row(BoardPosition board_position) {
+bool Checkerboard::is_king_row(const BoardPosition board_position) {
 	return board_position.row == 0 || board_position.row == board_.size() - 1;
 }
 

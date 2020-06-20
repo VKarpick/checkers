@@ -23,7 +23,7 @@ CheckersTrainer::CheckersTrainer(std::vector<double> weights, int n_episodes, in
 {}
 
 
-std::vector<double> CheckersTrainer::read_weights(std::string filename) {
+std::vector<double> CheckersTrainer::read_weights(const std::string filename) {
     std::ifstream weights_file;
     weights_file.open(filename.c_str());
 
@@ -49,7 +49,7 @@ std::vector<double> CheckersTrainer::read_weights(std::string filename) {
 }
 
 
-void CheckersTrainer::write_weights(std::string filename, std::vector<double> weights) {
+void CheckersTrainer::write_weights(const std::string filename, const std::vector<double> weights) {
     std::ofstream weights_file;
     weights_file.open(filename.c_str());
     for (double weight : weights) {
@@ -67,8 +67,8 @@ void CheckersTrainer::train() {
         weights_ = read_weights(read_filename_);
     }
 
-    unsigned int feature_size{ checkers_environment->featurize(state).size() };
-    bool has_correct_size{ weights_.size() == feature_size };
+    const unsigned int feature_size{ checkers_environment->featurize(state).size() };
+    const bool has_correct_size{ weights_.size() == feature_size };
     if (!has_correct_size) {
         if (!weights_.empty()) {
             std::cout << "Weights from file not of right size.  Weights will be initialized to zero." << std::endl;

@@ -41,7 +41,7 @@ public:
 	std::vector<std::shared_ptr<Player>> get_players();
 
 
-	void set_state(std::shared_ptr<State> state);
+	void set_state(const std::shared_ptr<State> state);
 
 
 private:
@@ -54,12 +54,15 @@ private:
 	};
 
 
-	Checkerboard checkerboard_from_state(std::shared_ptr<State> state);
-	std::shared_ptr<Player> opponent_from_state(std::shared_ptr<State> state);
-	CheckersPlayer checkers_player_from_state(std::shared_ptr<State> state);
-	CheckersPlayer checkers_player_from_player(std::shared_ptr<Player> player);
-	bool is_trapped_king(Checkerboard board, BoardPosition piece_position, CheckersPlayer current_player, CheckersPlayer opponent);
-	bool can_be_jumped(Checkerboard board, BoardPosition piece_position, CheckersPlayer current_player, CheckersPlayer opponent);
-	bool avoid_encounters(Checkerboard board, BoardPosition piece_position, CheckersPlayer current_player);
-	bool is_runaway(Checkerboard board, BoardPosition piece_position, CheckersPlayer current_player, CheckersPlayer opponent);
+	Checkerboard checkerboard_from_state(const std::shared_ptr<State> state);
+	std::shared_ptr<Player> opponent_from_state(const std::shared_ptr<State> state);
+	CheckersPlayer checkers_player_from_state(const std::shared_ptr<State> state);
+	CheckersPlayer checkers_player_from_player(const std::shared_ptr<Player> player);
+	bool is_trapped_king(const Checkerboard board, const BoardPosition piece_position, 
+		const CheckersPlayer current_player, const CheckersPlayer opponent);
+	bool can_be_jumped(const Checkerboard board, const BoardPosition piece_position, 
+		const CheckersPlayer current_player, const CheckersPlayer opponent);
+	bool avoid_encounters(Checkerboard board, const BoardPosition piece_position, const CheckersPlayer current_player);
+	bool is_runaway(const Checkerboard board, const BoardPosition piece_position, 
+		const CheckersPlayer current_player, const CheckersPlayer opponent);
 };

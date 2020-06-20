@@ -17,7 +17,7 @@ public:
 	CheckersAI(int max_depth = constants::default_max_depth);
 
 
-	Move action_selection(Checkerboard checkerboard, CheckersPlayer player);
+	Move action_selection(const Checkerboard checkerboard, const CheckersPlayer player);
 
 
 private:

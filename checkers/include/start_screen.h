@@ -38,7 +38,8 @@ private:
 
 
 	StartScreenSelection get_input(sf::RenderWindow& window);
-	sf::Text text_for_display(std::string message);
-	StartScreenItem create_button(float top, float left, float height, float width, StartScreenSelection action, bool is_selected);
-	StartScreenSelection handle_click(int x, int y);
+	sf::Text text_for_display(const std::string message);
+	StartScreenItem create_button(const float top, const float left, const float height, const float width, 
+		const StartScreenSelection action, const bool is_selected);
+	StartScreenSelection handle_click(const int x, const int y);
 };

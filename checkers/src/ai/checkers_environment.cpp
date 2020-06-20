@@ -131,33 +131,33 @@ std::vector<std::shared_ptr<Player>> CheckersEnvironment::get_players() {
 }
 
 
-void CheckersEnvironment::set_state(std::shared_ptr<State> state) {
+void CheckersEnvironment::set_state(const std::shared_ptr<State> state) {
 	state_ = state;
 }
 
 
-Checkerboard CheckersEnvironment::checkerboard_from_state(std::shared_ptr<State> state) {
+Checkerboard CheckersEnvironment::checkerboard_from_state(const std::shared_ptr<State> state) {
 	return std::any_cast<Checkerboard>(state->observation);
 }
 
 
-std::shared_ptr<Player> CheckersEnvironment::opponent_from_state(std::shared_ptr<State> state) {
+std::shared_ptr<Player> CheckersEnvironment::opponent_from_state(const std::shared_ptr<State> state) {
 	return (state->current_player == players_[0]) ? players_[1] : players_[0];
 }
 
 
-CheckersPlayer CheckersEnvironment::checkers_player_from_state(std::shared_ptr<State> state) {
+CheckersPlayer CheckersEnvironment::checkers_player_from_state(const std::shared_ptr<State> state) {
 	return checkers_player_from_player(state->current_player);
 }
 
 
-CheckersPlayer CheckersEnvironment::checkers_player_from_player(std::shared_ptr<Player> player) {
+CheckersPlayer CheckersEnvironment::checkers_player_from_player(const std::shared_ptr<Player> player) {
 	return std::any_cast<CheckersPlayer>(player->player);
 }
 
 
-bool CheckersEnvironment::is_trapped_king(Checkerboard board, BoardPosition piece_position, 
-	CheckersPlayer current_player, CheckersPlayer opponent) {
+bool CheckersEnvironment::is_trapped_king(const Checkerboard board, const BoardPosition piece_position, 
+	const CheckersPlayer current_player, const CheckersPlayer opponent) {
 
 	// kings can move in any direction
 	const std::vector<int> king_row_moves{ -constants::step_distance, constants::step_distance };
@@ -188,8 +188,8 @@ bool CheckersEnvironment::is_trapped_king(Checkerboard board, BoardPosition piec
 }
 
 
-bool CheckersEnvironment::can_be_jumped(Checkerboard board, BoardPosition piece_position,
-	CheckersPlayer current_player, CheckersPlayer opponent) {
+bool CheckersEnvironment::can_be_jumped(const Checkerboard board, const BoardPosition piece_position,
+	const CheckersPlayer current_player, const CheckersPlayer opponent) {
 
 	for (Move opponent_move : CheckerboardMoves::board_moves(board, opponent, current_player)) {
 		for (Piece captured_piece : opponent_move.captured_pieces) {
@@ -203,7 +203,8 @@ bool CheckersEnvironment::can_be_jumped(Checkerboard board, BoardPosition piece_
 }
 
 
-bool CheckersEnvironment::avoid_encounters(Checkerboard board, BoardPosition piece_position, CheckersPlayer current_player) {
+bool CheckersEnvironment::avoid_encounters(Checkerboard board, const BoardPosition piece_position, const CheckersPlayer current_player) {
+
 	const BoardPosition left{ piece_position.row + current_player.vertical_direction, piece_position.column - 1 };
 	const BoardPosition right{ piece_position.row + current_player.vertical_direction, piece_position.column + 1 };
 	char left_piece{ board.get_piece(left) };
@@ -263,8 +264,8 @@ bool CheckersEnvironment::avoid_encounters(Checkerboard board, BoardPosition pie
 }
 
 
-bool CheckersEnvironment::is_runaway(Checkerboard board, BoardPosition piece_position,
-	CheckersPlayer current_player, CheckersPlayer opponent) {
+bool CheckersEnvironment::is_runaway(const Checkerboard board, const BoardPosition piece_position,
+	const CheckersPlayer current_player, const CheckersPlayer opponent) {
 
 	// if piece can currently be jumped, can't be a runaway
 	if (can_be_jumped(board, piece_position, current_player, opponent)) {

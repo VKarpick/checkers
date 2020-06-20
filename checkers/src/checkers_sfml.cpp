@@ -23,7 +23,9 @@ CheckersSFML::CheckersSFML() {
 }
 
 
-CheckersSFML::Button CheckersSFML::create_button(std::string text, float top, float left, float height, float width, ButtonSelection action) {
+CheckersSFML::Button CheckersSFML::create_button(const std::string text, const float top, const float left, 
+	const float height, const float width, const ButtonSelection action) {
+
 	Button button;
 	button.color = constants::grey;
 	button.shape.setSize(sf::Vector2f(width, height));
@@ -123,14 +125,14 @@ void CheckersSFML::render() {
 }
 
 
-sf::Vector2f CheckersSFML::center_button_text(CheckersSFML::Button button, sf::Text text) {
+sf::Vector2f CheckersSFML::center_button_text(const CheckersSFML::Button button, const sf::Text text) {
 	sf::RectangleShape shape{ button.shape };
 	return sf::Vector2f(float(shape.getPosition().x + (shape.getSize().x - double(text.getLocalBounds().width)) / 2.2), 
 						float(shape.getPosition().y + (shape.getSize().y - double(text.getLocalBounds().height)) / 3.0));
 }
 
 
-sf::Text CheckersSFML::button_text(Button button, std::string message) {
+sf::Text CheckersSFML::button_text(const Button button, const std::string message) {
 	sf::Text text(message, font_);
 	text.setCharacterSize(button_character_size);
 	text.setFillColor(button.shape.getOutlineColor());
@@ -140,7 +142,7 @@ sf::Text CheckersSFML::button_text(Button button, std::string message) {
 }
 
 
-void CheckersSFML::render_buttons(bool is_game_over) {
+void CheckersSFML::render_buttons(const bool is_game_over) {
 	std::vector<bool> grey_check{
 		// new game
 		previous_moves_.empty(),
@@ -198,7 +200,7 @@ std::string CheckersSFML::get_user_input() {
 }
 
 
-CheckersSFML::ButtonSelection CheckersSFML::handle_button_click(int x) {
+CheckersSFML::ButtonSelection CheckersSFML::handle_button_click(const int x) {
 	std::vector<Button>::iterator it;
 	for (it = buttons_.begin(); it != buttons_.end(); ++it) {
 		sf::RectangleShape button_rectangle{ (*it).shape };
@@ -213,7 +215,7 @@ CheckersSFML::ButtonSelection CheckersSFML::handle_button_click(int x) {
 }
 
 
-void CheckersSFML::update_highlights(BoardPosition square_clicked) {
+void CheckersSFML::update_highlights(const BoardPosition square_clicked) {
 	if (is_option(square_clicked)) {
 		update_click_options(square_clicked);
 	}
@@ -248,13 +250,13 @@ void CheckersSFML::update_highlights(BoardPosition square_clicked) {
 }
 
 
-bool CheckersSFML::is_option(BoardPosition square_clicked) {
+bool CheckersSFML::is_option(const BoardPosition square_clicked) {
 	return std::find(checkerboard_.option_highlights.begin(),
 		checkerboard_.option_highlights.end(), square_clicked) != checkerboard_.option_highlights.end();
 }
 
 
-void CheckersSFML::update_click_options(BoardPosition square_clicked) {
+void CheckersSFML::update_click_options(const BoardPosition square_clicked) {
 	checkerboard_.option_highlights.clear();
 	checkerboard_.selected_highlights.push_back(square_clicked);
 

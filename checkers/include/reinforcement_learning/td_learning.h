@@ -21,7 +21,7 @@ public:
 		std::shared_ptr<Policy> policy, double discount_factor = 1.0, double trace_decay = 1.0);
 
 
-	void train(int n_episodes = 1, bool is_printing_updates = false);
+	void train(const int n_episodes = 1, const bool is_printing_updates = false);
 
 
 protected:

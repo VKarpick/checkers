@@ -15,7 +15,7 @@ TDLambda::TDLambda(std::shared_ptr<Environment> environment, std::shared_ptr<Est
 {}
 
 
-void TDLambda::train(int n_episodes, bool is_printing_updates) {
+void TDLambda::train(const int n_episodes, const bool is_printing_updates) {
 	for (int episode_no = 0; episode_no < n_episodes; ++episode_no) {
 		estimator_->reset_eligibility_trace();
 		if (is_printing_updates) {
