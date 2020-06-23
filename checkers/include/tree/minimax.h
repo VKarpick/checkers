@@ -1,3 +1,15 @@
+/*-------------------------------------------------------------------------------------------------
+ A class for implementing minimax algorithm, templated for use of different types of nodes.
+
+ Allows for retrieval of the value, the node, or both.
+
+ Requires:
+	A function to determine the value of a given node.
+	The maximum depth to search to.
+	And, if passing in an incomplete tree, a function for determining a node's children.
+-------------------------------------------------------------------------------------------------*/
+
+
 #pragma once
 
 #include <functional>
@@ -16,7 +28,7 @@ struct MinimaxPair {
 template <typename T>    // allowing for any type of Node requires template
 class Minimax {
 public:
-	Minimax(std::function<double(std::shared_ptr<Node<T>>)> compute_node_value, int max_depth = 0,
+	Minimax(std::function<double(std::shared_ptr<Node<T>>)> compute_node_value, unsigned int max_depth = 0,
 		const std::function<void(std::shared_ptr<Node<T>>)> extend_tree = [](std::shared_ptr<Node<T>>) {}) {
 
 		compute_node_value_ = compute_node_value;
@@ -25,7 +37,7 @@ public:
 	}
 
 
-	MinimaxPair<T> minimax(std::shared_ptr<Node<T>> node, const int current_depth = 0, const bool is_max_player = true,
+	MinimaxPair<T> minimax(std::shared_ptr<Node<T>> node, const unsigned int current_depth = 0, const bool is_max_player = true,
 		double alpha = -DBL_MAX, double beta = DBL_MAX) {
 		
 		if (current_depth == max_depth_) {
@@ -86,12 +98,7 @@ public:
 
 
 private:
-	int max_depth_{ 1 };
-
-	// function to calculate the value of a given node
+	unsigned int max_depth_{ 1 };
 	std::function<double(std::shared_ptr<Node<T>>)> compute_node_value_;
-
-	// function to find children of a node when passing incomplete tree
-	// if complete tree is provided, can be ignored
 	std::function<void(std::shared_ptr<Node<T>>)> extend_tree_;
 };
