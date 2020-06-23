@@ -174,7 +174,9 @@ std::string CheckersSFML::get_user_input() {
 				return "";
 			}
 
-			if (event.type == sf::Event::MouseButtonPressed) {
+			else if (event.type == sf::Event::MouseButtonPressed) {
+
+				// buttons
 				if (event.mouseButton.y > constants::window_height - constants::checkerboard_square_size) {
 					ButtonSelection selection{ handle_button_click(event.mouseButton.x) };
 					if (selection == ButtonSelection::NewGame) { return "n"; }
@@ -183,6 +185,8 @@ std::string CheckersSFML::get_user_input() {
 					else if (selection == ButtonSelection::Players) { return "c"; }
 					else { return ""; }
 				}
+
+				// checkerboard squares
 				else {
 					if (state_ != CheckersState::EndScreen) {
 						BoardPosition square_clicked{ event.mouseButton.y / constants::checkerboard_square_size,
@@ -194,8 +198,21 @@ std::string CheckersSFML::get_user_input() {
 					}
 				}
 			}
+
+			else if (event.type == sf::Event::KeyPressed) {
+
+				// holding Ctrl and other pressing keys
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::RControl)) {
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) { return "r"; }
+					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) { return "q"; }
+					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) { return "z"; }
+					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y)) { return "y"; }
+					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::C)) { return "c"; }
+				}
+			}
 		}
 	}
+
 	return "";
 }
 

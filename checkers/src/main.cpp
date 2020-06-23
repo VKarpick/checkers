@@ -1,7 +1,4 @@
-#include <iostream>
-
 #include "ai/checkers_trainer.h"
-#include "checkers.h"
 #include "checkers_sfml.h"
 
 
