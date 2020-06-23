@@ -3,7 +3,7 @@
 
  State:  instance of Checkerboard
  Action:  moves available in an instance of Checkerboard
- Reward:  0.001 if first player wins, -0.001 if second players, 0 for anything else
+ Reward:  1 if first player wins, -1 if second player wins, 0 for anything else
  Termination:  someone wins or the game reaches a maximal number of turns
 
  Checkerboard features:
