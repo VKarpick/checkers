@@ -16,12 +16,12 @@ int main()
     //    }
     //}
 
-    //unsigned int n_save_rounds{ 1 };
+    //unsigned int n_save_rounds{ 29 };
     //unsigned int n_episodes{ 10 };
     //for (unsigned int round_no = 0; round_no < n_save_rounds; ++round_no) {
     //    std::cout << "Round " << round_no << " of " << n_save_rounds << std::endl;
-    //    CheckersTrainer checkers_trainer(weights, n_episodes, constants::default_max_depth, 0.0001);
-    //    //CheckersTrainer checkers_trainer(n_episodes, constants::default_max_depth, 0.0001);
+    //    //CheckersTrainer checkers_trainer(weights, n_episodes, constants::default_max_depth, 0.0001);
+    //    CheckersTrainer checkers_trainer(n_episodes, constants::default_max_depth, 0.0001);
     //    checkers_trainer.train();
     //}
 
