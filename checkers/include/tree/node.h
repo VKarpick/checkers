@@ -1,3 +1,10 @@
+/*-------------------------------------------------------------------------------------------------
+ A templated class for different types of nodes.
+ Forces all children of a node to have the node as their parent.
+ Only allows for one parent to each node but a variable amount of children.
+-------------------------------------------------------------------------------------------------*/
+
+
 #pragma once
 
 #include <memory>
