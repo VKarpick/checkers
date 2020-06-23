@@ -5,11 +5,7 @@
 
 #pragma once
 
-#include <algorithm>
-#include <ctime>
-#include <functional>
 #include <map>
-#include <random>
 
 #include "checkerboard.h"
 #include "ai/checkers_ai.h"

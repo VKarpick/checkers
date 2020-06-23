@@ -24,8 +24,8 @@
 
 #pragma once
 
-#include "../checkerboard_moves.h"
-#include "../reinforcement_learning/environment.h"
+#include "checkerboard_moves.h"
+#include "reinforcement_learning/environment.h"
 
 
 class CheckersEnvironment : public Environment {

@@ -8,8 +8,7 @@
 #pragma once
 
 #include "checkers_environment.h"
-#include "checkers_trainer.h"
-#include "../reinforcement_learning/policy.h"
+#include "reinforcement_learning/policy.h"
 
 
 class CheckersAI {

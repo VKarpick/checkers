@@ -5,8 +5,6 @@
 
 #pragma once
 
-#include <SFML/Graphics.hpp>
-
 #include "checkers_piece.h"
 
 

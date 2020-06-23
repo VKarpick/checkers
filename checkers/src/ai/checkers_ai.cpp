@@ -1,5 +1,7 @@
 #include "ai/checkers_ai.h"
 
+#include "ai/checkers_trainer.h"
+
 
 CheckersAI::CheckersAI(int max_depth) :
 	max_depth_(max_depth)

@@ -10,10 +10,9 @@
 
 #include <fstream>
 #include <iostream>
+#include <vector>
 
-#include "checkers_environment.h"
-#include "../reinforcement_learning/estimator.h"
-#include "../reinforcement_learning/td_learning.h"
+#include "constants.h"
 
 
 class CheckersTrainer {

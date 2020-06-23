@@ -1,5 +1,9 @@
 #include "ai/checkers_trainer.h"
 
+#include "ai/checkers_environment.h"
+#include "reinforcement_learning/estimator.h"
+#include "reinforcement_learning/td_learning.h"
+
 
 CheckersTrainer::CheckersTrainer(int n_episodes, int max_depth, double step_size, bool is_printing_episodes,
     std::string read_filename, std::string write_filename) :

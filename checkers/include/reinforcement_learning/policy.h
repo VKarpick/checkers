@@ -10,12 +10,11 @@
 #pragma once
 
 #include <ctime>
-#include <memory>
 #include <random>
 
 #include "environment.h"
 #include "estimator.h"
-#include "../tree/minimax.h"
+#include "tree/minimax.h"
 
 
 struct StateActionPair {
