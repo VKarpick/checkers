@@ -5,7 +5,7 @@ Written with C++17 and SFML 2.5.1.
 
 ## Gameplay
 
-<img src="/checkers/data/start-menu.png"
+<img src="/checkers/data/start-screen.png"
 	width="280"/>
 <img src="/checkers/data/gameplay.png"
 	width="280"/>
