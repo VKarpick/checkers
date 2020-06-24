@@ -6,10 +6,8 @@ Written with C++17 and SFML 2.5.1.
 ## Gameplay
 
 <img src="/checkers/data/start-screen.png"
-	align="left"
-	width="300"/>
+	width="300"/> &nbsp;&nbsp;&nbsp;
 <img src="/checkers/data/gameplay.png"
-	align="right"
 	width="300"/>
 
 #### AI
