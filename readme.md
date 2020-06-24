@@ -54,7 +54,7 @@ I also started with fewer features.  I wanted to see how good it could get with 
 the current configuration of pieces on the board) and a minimax depth of six moves.  But I later changed my 
 mind and added further features which necessitated decreasing the max depth (it's now four moves).
 
-# Hat Tips
+## Hat Tips
 
 [David Silver's YouTube lectures and slides](https://www.davidsilver.uk/teaching/)  
 Reinforcement Learning:  An Introduction - Sutton and Barto
