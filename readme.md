@@ -5,7 +5,10 @@ Written with C++17 and SFML 2.5.1.
 
 ## Gameplay
 
-![](/checkers/data/start-menu.png) ![](/checkers/data/gameplay.png)
+<img src="/checkers/data/start-menu.png"
+	width="280"/>
+<img src="/checkers/data/gameplay.png"
+	width="280"/>
 
 #### AI
 
