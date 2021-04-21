@@ -29,7 +29,7 @@ std::shared_ptr<State> CheckersEnvironment::step(std::shared_ptr<State> state, s
 
 	// game is over if current player has no possible moves
 	if (opponent_actions.size() == 0) {
-		reward = (current_player.player == constants::pieces[0]) ? 1 : 1;
+		reward = (current_player.player == constants::pieces[0]) ? 1.0 : -1.0;
 	}
 
 	bool is_terminal{ reward != 0.0 || n_plays_ > max_plays_ };

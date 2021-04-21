@@ -29,6 +29,8 @@ std::vector<Move> CheckerboardMoves::piece_moves(Checkerboard checkerboard, Chec
 					is_crowning_move(checkerboard, checkerboard.get_piece(piece_position), move_position)
 				};
 
+				std::vector<Move> moves_continuing_jump;
+
 				if (can_capture) {
 					current_move.captured_pieces = { Piece{capture_position, checkerboard.get_piece(capture_position)} };
 
@@ -37,9 +39,19 @@ std::vector<Move> CheckerboardMoves::piece_moves(Checkerboard checkerboard, Chec
 					board_after_move.execute_move(current_move);
 
 					// use recursion to continue jump
-					std::vector<Move> moves_continuing_jump{ piece_moves(board_after_move, opponent, move_position, row_moves, can_capture) };
+					moves_continuing_jump = piece_moves(board_after_move, opponent, move_position, row_moves, can_capture);
+				}
+
+				if (moves_continuing_jump.empty()) {
+					moves.push_back(current_move);
+				}
+				else {
+					Move current_move_to_now{ current_move };
 
 					for (Move jump : moves_continuing_jump) {
+						// need to reset for multiple jumps from the same square
+						current_move = current_move_to_now;
+
 						current_move.landing_positions.insert(
 							current_move.landing_positions.end(),
 							jump.landing_positions.begin(),
@@ -51,10 +63,10 @@ std::vector<Move> CheckerboardMoves::piece_moves(Checkerboard checkerboard, Chec
 							jump.captured_pieces.end());
 
 						current_move.is_crowning = jump.is_crowning;
+
+						moves.push_back(current_move);
 					}
 				}
-
-				moves.push_back(current_move);
 			}
 		}
 	}
